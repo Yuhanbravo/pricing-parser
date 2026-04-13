@@ -1,0 +1,7 @@
+equity:
+  sh_prefixes: ["5", "6", "9"]
+  sz_prefixes: ["0", "1", "2", "3"]
+hk:
+  width: 5
+review:
+  unknown_exchange: true

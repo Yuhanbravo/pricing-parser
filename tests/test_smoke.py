@@ -1,0 +1,27 @@
+from pathlib import Path
+
+from valuation_parser.pipeline import run_pipeline
+
+
+def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    sample_file = raw_dir / "2025-03-27_PRODUCT_001估值表.csv"
+    sample_file.write_text("header,value\nproduct,PRODUCT_001\n", encoding="utf-8-sig")
+
+    mapping_path = tmp_path / "mapping.csv"
+    mapping_path.write_text(
+        "fake_custodian_id,fake_custodian_name,true_custodian_name,product_count,fake_product_ids,fake_association_codes\n"
+        "CUSTODIAN_007,CUSTODIAN_GROUP_007,国信证券股份有限公司,1,PRODUCT_001,XXX001\n",
+        encoding="utf-8-sig",
+    )
+
+    output_dir = tmp_path / "output"
+    outputs = run_pipeline(raw_dir, mapping_path, output_dir)
+
+    routing_csv = outputs["routing_results"]
+    assert routing_csv.exists()
+    content = routing_csv.read_text(encoding="utf-8-sig")
+    assert "CUSTODIAN_007" in content
+    assert "guosen" in content
+    assert outputs["parse_summary"].exists()
