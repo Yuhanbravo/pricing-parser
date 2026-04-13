@@ -1,0 +1,26 @@
+adapter_key: xyzc
+description: Minimal parsing rules for the Phase 2 xyzc XLS sample.
+sheet_policy: single_sheet
+header_row: 4
+data_start_row: 5
+column_aliases:
+  subject_code:
+    - 科目代码
+  subject_name:
+    - 科目名称
+  quantity:
+    - 数量
+  unit_cost:
+    - 单位成本
+  cost:
+    - 成本
+  market_price:
+    - 市价
+  market_value:
+    - 市值
+  pnl:
+    - 估值增值
+skip_name_keywords:
+  - 合计
+  - 单位净值
+  - 可分配利润

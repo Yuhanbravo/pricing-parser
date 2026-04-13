@@ -3,10 +3,16 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.vscode/.ropeproject/
 .coverage
 build/
 dist/
 output/
+output*/
 tmp/
 *.log
+*.xlsx
+*.xls
 *.parquet
+*.csv
+!data_samples/README.md

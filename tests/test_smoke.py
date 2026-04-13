@@ -41,3 +41,21 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "02208.HK" in positions_content
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
+
+
+def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> None:
+    sample_file = Path("data_samples/raw/20250327_PRODUCT_002_证券投资基金估值表.xls")
+    output_dir = tmp_path / "output"
+
+    outputs = run_pipeline(sample_file, Path("产品与托管机构映射表.csv"), output_dir)
+
+    routing_content = outputs["routing_results"].read_text(encoding="utf-8-sig")
+    subjects_content = outputs["valuation_subjects"].read_text(encoding="utf-8-sig")
+    positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
+
+    assert "xyzc" in routing_content
+    assert "11020101600309" in subjects_content
+    assert "600309.SH" in positions_content
+    assert "00700.HK" in positions_content
+    assert "Position rows exported: " in summary_content
