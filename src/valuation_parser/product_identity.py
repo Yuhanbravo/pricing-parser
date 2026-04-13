@@ -6,9 +6,8 @@ import re
 
 from valuation_parser.models import ProductIdentity, WorkbookPreview
 
-PRODUCT_PATTERN = re.compile(r"\bPRODUCT[_-]?(\d{3,})\b", re.IGNORECASE)
-ASSOCIATION_PATTERN = re.compile(r"\bXXX[_-]?(\d{3,})\b", re.IGNORECASE)
-
+PRODUCT_PATTERN = re.compile(r"(?<![A-Z0-9])PRODUCT[_-]?(\d{3,})(?!\d)", re.IGNORECASE)
+ASSOCIATION_PATTERN = re.compile(r"(?<![A-Z0-9])XXX[_-]?(\d{3,})(?!\d)", re.IGNORECASE)
 
 def extract_product_identity(source_file: str | Path, preview: WorkbookPreview | None = None) -> ProductIdentity:
     path = Path(source_file)

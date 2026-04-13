@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: valuation-parser
+Version: 0.1.0
+Summary: Valuation statement parser scaffold with mapping-driven routing.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: openpyxl>=3.1.5
+Requires-Dist: xlrd>=2.0.1
+Requires-Dist: PyYAML>=6.0.2
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.0; extra == "dev"
+
+# valuation-parser
+
+估值表解析器项目初始脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织，当前优先落地 Phase 0：产品身份提取、映射加载、自动路由、标准化输出骨架。
+
+## 当前能力
+
+- 从文件名、Sheet 名、表头预览中提取 `product_id` 与 `association_code`
+- 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
+- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`parse_summary.md`
+- 提供可扩展的 adapter registry 和占位 adapter
+- 包含最小 pytest 测试，覆盖身份提取、映射加载、路由和管线 smoke
+
+当前 scaffold 还没有实现真实估值表科目解析和持仓抽取；对应能力应在具体 custodian adapter 中继续补齐。
+
+## 项目结构
+
+```text
+pricing_parser/
+├─ README.md
+├─ pyproject.toml
+├─ config/
+│  ├─ adapters/
+│  │  ├─ generic.yaml
+│  │  ├─ greatwall.yaml
+│  │  └─ guosen.yaml
+│  └─ code_rules.yaml
+├─ data_samples/
+│  ├─ raw/
+│  ├─ mapping/
+│  └─ expected/
+├─ docs/
+├─ src/
+│  └─ valuation_parser/
+│     ├─ adapter_registry.py
+│     ├─ cli.py
+│     ├─ exporters.py
+│     ├─ mapping_loader.py
+│     ├─ models.py
+│     ├─ normalizers.py
+│     ├─ pipeline.py
+│     ├─ product_identity.py
+│     ├─ routing.py
+│     └─ adapters/
+└─ tests/
+```
+
+## 安装
+
+```bash
+python -m pip install -e .[dev]
+```
+
+## 运行
+
+自动路由模式：
+
+```bash
+python -m valuation_parser.cli \
+  --input data_samples/raw \
+  --mapping 产品与托管机构映射表.csv \
+  --output-dir output
+```
+
+手动 override 模式：
+
+```bash
+python -m valuation_parser.cli \
+  --input data_samples/raw \
+  --mapping 产品与托管机构映射表.csv \
+  --adapter generic \
+  --output-dir output
+```
+
+## 映射表说明
+
+加载器支持两种格式：
+
+1. 规范格式：`product_id, association_code, custodian_id, custodian_name, adapter_key, is_active, note`
+2. 当前仓库样例的紧凑格式：按托管机构一行，产品和关联代码使用分号分隔；加载时会自动展开成规范格式
+
+## 下一步建议
+
+1. 先选一家具备代表性的托管机构样表，补齐其 adapter 的表头定位和科目识别。
+2. 用 `data_samples/expected/` 中的样例定义真实字段口径，再固定导出 schema。
+3. 增加 `.xls/.xlsx` 样表级 smoke test，验证预览、路由和 adapter 接口。
