@@ -17,3 +17,4 @@ def test_load_compact_mapping_csv(tmp_path: Path) -> None:
     assert records[0].product_id == "PRODUCT_001"
     assert records[0].association_code == "XXX001"
     assert records[0].adapter_key == "guosen"
+    assert records[0].true_custodian_name == "国信证券股份有限公司"

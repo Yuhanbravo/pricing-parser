@@ -14,6 +14,7 @@ class WorkbookPreview:
 class ProductIdentity:
     product_id: str | None = None
     association_code: str | None = None
+    custodian_name_chinese: str | None = None
     route_message: str = ""
     evidence: tuple[str, ...] = ()
 
@@ -28,6 +29,7 @@ class MappingRecord:
     association_code: str | None
     custodian_id: str
     custodian_name: str
+    true_custodian_name: str | None
     adapter_key: str
     is_active: bool = True
     note: str | None = None
@@ -38,6 +40,7 @@ class RouteDecision:
     source_file: str
     product_id: str | None
     association_code: str | None
+    custodian_name_chinese: str | None
     custodian_id: str | None
     custodian_name: str | None
     adapter_key: str | None

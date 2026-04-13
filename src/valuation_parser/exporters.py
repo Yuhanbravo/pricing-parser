@@ -9,6 +9,7 @@ ROUTING_FIELDS = [
     "source_file",
     "product_id",
     "association_code",
+    "custodian_name_chinese",
     "custodian_id",
     "custodian_name",
     "adapter_key",

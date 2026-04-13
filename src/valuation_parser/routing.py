@@ -14,6 +14,7 @@ def route_identity(
             source_file=source_file,
             product_id=identity.product_id,
             association_code=identity.association_code,
+            custodian_name_chinese=identity.custodian_name_chinese,
             custodian_id=None,
             custodian_name=None,
             adapter_key=adapter_override,
@@ -37,10 +38,16 @@ def route_identity(
         if match is not None:
             return _success_decision(source_file, identity, match, "mapping(association_code)")
 
+    if identity.custodian_name_chinese:
+        match = _match_custodian_name(identity.custodian_name_chinese, mappings)
+        if match is not None:
+            return _success_decision(source_file, identity, match, "mapping(custodian_name_chinese)")
+
     return RouteDecision(
         source_file=source_file,
         product_id=identity.product_id,
         association_code=identity.association_code,
+        custodian_name_chinese=identity.custodian_name_chinese,
         custodian_id=None,
         custodian_name=None,
         adapter_key=None,
@@ -71,6 +78,22 @@ def _match_association(association_code: str, mappings: list[MappingRecord]) -> 
     return None
 
 
+def _match_custodian_name(custodian_name_chinese: str, mappings: list[MappingRecord]) -> MappingRecord | None:
+    canonical_name = _normalize_custodian_name(custodian_name_chinese)
+    for mapping in mappings:
+        if _normalize_custodian_name(mapping.true_custodian_name) == canonical_name:
+            return mapping
+    return None
+
+
+def _normalize_custodian_name(name: str | None) -> str | None:
+    if not name:
+        return None
+    if "国泰" in name:
+        return "国泰海通证券股份有限公司"
+    return name.strip()
+
+
 def _success_decision(
     source_file: str,
     identity: ProductIdentity,
@@ -81,6 +104,7 @@ def _success_decision(
         source_file=source_file,
         product_id=identity.product_id,
         association_code=identity.association_code,
+        custodian_name_chinese=identity.custodian_name_chinese,
         custodian_id=mapping.custodian_id,
         custodian_name=mapping.custodian_name,
         adapter_key=mapping.adapter_key,

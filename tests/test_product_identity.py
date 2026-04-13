@@ -1,3 +1,4 @@
+from valuation_parser.models import WorkbookPreview
 from valuation_parser.product_identity import extract_product_identity
 
 
@@ -10,3 +11,12 @@ def test_extract_product_identity_from_multiple_filename_variants() -> None:
     assert second.product_id == "PRODUCT_022"
     assert second.association_code == "XXX022"
     assert third.product_id == "PRODUCT_008"
+
+
+def test_extract_custodian_name_chinese_from_preview_top_rows() -> None:
+    identity = extract_product_identity(
+        "sample.xlsx",
+        preview=WorkbookPreview(header_texts=["国泰君安证券资产托管部", "估值表", "2025-03-27"]),
+    )
+
+    assert identity.custodian_name_chinese == "国泰"

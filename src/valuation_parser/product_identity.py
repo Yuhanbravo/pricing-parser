@@ -8,17 +8,23 @@ from valuation_parser.models import ProductIdentity, WorkbookPreview
 
 PRODUCT_PATTERN = re.compile(r"(?<![A-Z0-9])PRODUCT[_-]?(\d{3,})(?!\d)", re.IGNORECASE)
 ASSOCIATION_PATTERN = re.compile(r"(?<![A-Z0-9])XXX[_-]?(\d{3,})(?!\d)", re.IGNORECASE)
+CUSTODIAN_ALIAS_PATTERNS = {
+    "国泰": "国泰",
+}
 
 def extract_product_identity(source_file: str | Path, preview: WorkbookPreview | None = None) -> ProductIdentity:
     path = Path(source_file)
     text_candidates = [("filename", path.stem)]
+    top_row_texts: list[str] = []
 
     if preview is not None:
         text_candidates.extend(("sheet", value) for value in preview.sheet_names)
         text_candidates.extend(("header", value) for value in preview.header_texts)
+        top_row_texts = preview.header_texts[:3]
 
     product_id = None
     association_code = None
+    custodian_name_chinese = _extract_custodian_name_chinese(top_row_texts)
     evidence: list[str] = []
 
     for source, text in text_candidates:
@@ -37,21 +43,35 @@ def extract_product_identity(source_file: str | Path, preview: WorkbookPreview |
         if product_id and association_code:
             break
 
+    if custodian_name_chinese:
+        evidence.append("custodian_name_chinese:header")
+
     if product_id and association_code:
         message = "resolved product_id and association_code"
     elif product_id:
         message = "resolved product_id only"
     elif association_code:
         message = "resolved association_code only"
+    elif custodian_name_chinese:
+        message = "resolved custodian_name_chinese only"
     else:
         message = "unable to resolve product identity from filename, sheet names, or header preview"
 
     return ProductIdentity(
         product_id=product_id,
         association_code=association_code,
+        custodian_name_chinese=custodian_name_chinese,
         route_message=message,
         evidence=tuple(evidence),
     )
+
+
+def _extract_custodian_name_chinese(top_row_texts: list[str]) -> str | None:
+    for text in top_row_texts:
+        for marker, canonical_name in CUSTODIAN_ALIAS_PATTERNS.items():
+            if marker in text:
+                return canonical_name
+    return None
 
 
 def preview_workbook(source_file: str | Path) -> WorkbookPreview:
@@ -106,7 +126,7 @@ def _preview_xlsx(path: Path) -> WorkbookPreview:
 
     for sheet_name in sheet_names[:3]:
         worksheet = workbook[sheet_name]
-        for row in worksheet.iter_rows(min_row=1, max_row=5, max_col=8, values_only=True):
+        for row in worksheet.iter_rows(min_row=1, max_row=3, max_col=8, values_only=True):
             text = " ".join(str(value).strip() for value in row if value not in (None, ""))
             if text:
                 header_texts.append(text)
@@ -130,7 +150,7 @@ def _preview_xls(path: Path) -> WorkbookPreview:
 
     for sheet_name in sheet_names[:3]:
         sheet = workbook.sheet_by_name(sheet_name)
-        max_rows = min(sheet.nrows, 5)
+        max_rows = min(sheet.nrows, 3)
         max_cols = min(sheet.ncols, 8)
         for row_index in range(max_rows):
             values = [str(sheet.cell_value(row_index, col_index)).strip() for col_index in range(max_cols)]

@@ -9,6 +9,7 @@ def test_route_prefers_exact_match() -> None:
             association_code="XXX001",
             custodian_id="CUSTODIAN_007",
             custodian_name="CUSTODIAN_GROUP_007",
+            true_custodian_name="国信证券股份有限公司",
             adapter_key="guosen",
         )
     ]
@@ -22,3 +23,26 @@ def test_route_prefers_exact_match() -> None:
     assert route.route_status == "success"
     assert route.adapter_key == "guosen"
     assert route.route_source == "mapping(product_id+association_code)"
+
+
+def test_route_can_fallback_to_true_custodian_name_alias() -> None:
+    mappings = [
+        MappingRecord(
+            product_id="PRODUCT_012",
+            association_code="XXX012",
+            custodian_id="CUSTODIAN_006",
+            custodian_name="CUSTODIAN_GROUP_006",
+            true_custodian_name="国泰海通证券股份有限公司",
+            adapter_key="gtja",
+        )
+    ]
+
+    route = route_identity(
+        source_file="sample.xlsx",
+        identity=ProductIdentity(custodian_name_chinese="国泰", route_message="resolved custodian_name_chinese only"),
+        mappings=mappings,
+    )
+
+    assert route.route_status == "success"
+    assert route.adapter_key == "gtja"
+    assert route.route_source == "mapping(custodian_name_chinese)"
