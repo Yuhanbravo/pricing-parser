@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from valuation_parser.adapters.greatwall import GreatwallValuationAdapter
 from valuation_parser.adapters.base import BaseValuationAdapter
 from valuation_parser.adapters.placeholder import PlaceholderValuationAdapter
 
@@ -17,7 +18,9 @@ SUPPORTED_ADAPTERS = {
 
 
 def build_registry() -> dict[str, BaseValuationAdapter]:
-    return {key: PlaceholderValuationAdapter(key) for key in sorted(SUPPORTED_ADAPTERS)}
+    registry = {key: PlaceholderValuationAdapter(key) for key in sorted(SUPPORTED_ADAPTERS)}
+    registry["greatwall"] = GreatwallValuationAdapter()
+    return registry
 
 
 def get_adapter(adapter_key: str, registry: dict[str, BaseValuationAdapter] | None = None) -> BaseValuationAdapter:

@@ -25,3 +25,19 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert "CUSTODIAN_007" in content
     assert "guosen" in content
     assert outputs["parse_summary"].exists()
+
+
+def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:
+    sample_file = Path("data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx")
+    output_dir = tmp_path / "output"
+
+    outputs = run_pipeline(sample_file, Path("产品与托管机构映射表.csv"), output_dir)
+
+    subjects_content = outputs["valuation_subjects"].read_text(encoding="utf-8-sig")
+    positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
+
+    assert "11028101H02208" in subjects_content
+    assert "02208.HK" in positions_content
+    assert "Subject rows exported: 48" in summary_content
+    assert "Position rows exported: 2" in summary_content
