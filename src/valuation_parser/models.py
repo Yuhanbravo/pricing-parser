@@ -55,6 +55,7 @@ class RouteDecision:
 @dataclass(frozen=True)
 class SubjectRecord:
     source_file: str
+    broker: str | None = None
     sheet_name: str | None = None
     valuation_date: str | None = None
     product_id: str | None = None
@@ -67,13 +68,19 @@ class SubjectRecord:
     subject_name: str | None = None
     parent_subject_code: str | None = None
     subject_level: int | None = None
+    root_subject_code: str | None = None
+    root_subject_name: str | None = None
     is_leaf: bool | None = None
+    is_position_candidate: bool | None = None
     quantity: float | None = None
     unit_cost: float | None = None
     cost: float | None = None
+    cost_pct_nav: float | None = None
     market_price: float | None = None
     market_value: float | None = None
+    market_value_pct_nav: float | None = None
     pnl: float | None = None
+    suspension_info: str | None = None
     raw_row_index: int | None = None
     raw_text: str | None = None
 
@@ -84,6 +91,7 @@ class SubjectRecord:
 @dataclass(frozen=True)
 class PositionRecord:
     source_file: str
+    broker: str | None = None
     sheet_name: str | None = None
     valuation_date: str | None = None
     product_id: str | None = None
@@ -105,7 +113,27 @@ class PositionRecord:
     unrealized_pnl: float | None = None
     subject_code: str | None = None
     subject_name: str | None = None
+    raw_row_index: int | None = None
+    suspension_info: str | None = None
     review_flag: str | None = None
+    review_note: str | None = None
+
+    def to_row(self) -> dict[str, object | None]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class ReviewItem:
+    broker: str | None = None
+    valuation_date: str | None = None
+    raw_row_index: int | None = None
+    subject_code: str | None = None
+    subject_name: str | None = None
+    quantity: float | None = None
+    cost: float | None = None
+    market_value: float | None = None
+    pnl: float | None = None
+    review_reason: str | None = None
 
     def to_row(self) -> dict[str, object | None]:
         return asdict(self)
@@ -116,3 +144,4 @@ class ParseArtifacts:
     route: RouteDecision
     subjects: list[SubjectRecord] = field(default_factory=list)
     positions: list[PositionRecord] = field(default_factory=list)
+    review_items: list[ReviewItem] = field(default_factory=list)

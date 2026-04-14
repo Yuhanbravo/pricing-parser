@@ -25,6 +25,7 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert "CUSTODIAN_007" in content
     assert "guosen" in content
     assert outputs["parse_summary"].exists()
+    assert outputs["phase3_workbook"].exists()
 
 
 def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:
@@ -35,12 +36,17 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
 
     subjects_content = outputs["valuation_subjects"].read_text(encoding="utf-8-sig")
     positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    review_content = outputs["review_items"].read_text(encoding="utf-8-sig")
     summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
 
+    assert "broker,sheet_name,valuation_date,raw_row_index,subject_code" in subjects_content
     assert "11028101H02208" in subjects_content
     assert "02208.HK" in positions_content
+    assert "review_reason" in review_content
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
+    assert "Review items exported:" in summary_content
+    assert outputs["phase3_workbook"].exists()
 
 
 def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> None:
@@ -52,10 +58,15 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     routing_content = outputs["routing_results"].read_text(encoding="utf-8-sig")
     subjects_content = outputs["valuation_subjects"].read_text(encoding="utf-8-sig")
     positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    review_content = outputs["review_items"].read_text(encoding="utf-8-sig")
     summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
 
     assert "xyzc" in routing_content
+    assert "broker,sheet_name,valuation_date,raw_row_index,subject_code" in subjects_content
     assert "11020101600309" in subjects_content
     assert "600309.SH" in positions_content
     assert "00700.HK" in positions_content
+    assert "review_reason" in review_content
     assert "Position rows exported: " in summary_content
+    assert "Review items exported:" in summary_content
+    assert outputs["phase3_workbook"].exists()

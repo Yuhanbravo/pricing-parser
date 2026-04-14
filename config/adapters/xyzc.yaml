@@ -14,12 +14,18 @@ column_aliases:
     - 单位成本
   cost:
     - 成本
+  cost_pct_nav:
+    - 成本占净值%
   market_price:
     - 市价
   market_value:
     - 市值
+  market_value_pct_nav:
+    - 市值占净值%
   pnl:
     - 估值增值
+  suspension_info:
+    - 停牌信息
 skip_name_keywords:
   - 合计
   - 单位净值

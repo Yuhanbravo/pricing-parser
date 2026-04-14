@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from valuation_parser.adapter_registry import build_registry, get_adapter
-from valuation_parser.exporters import write_positions, write_routing_results, write_subjects, write_summary
+from valuation_parser.exporters import write_excel_workbook, write_positions, write_review_items, write_routing_results, write_subjects, write_summary
 from valuation_parser.mapping_loader import load_mapping
 from valuation_parser.models import ParseArtifacts
 from valuation_parser.product_identity import extract_product_identity, preview_workbook
@@ -47,21 +47,28 @@ def run_pipeline(
     routing_path = output_root / "routing_results.csv"
     subjects_path = output_root / "valuation_subjects.csv"
     positions_path = output_root / "valuation_positions.csv"
+    review_items_path = output_root / "review_items.csv"
+    workbook_path = output_root / "phase3_outputs.xlsx"
     summary_output = Path(summary_path) if summary_path else output_root / "parse_summary.md"
 
     routes = [artifact.route for artifact in artifacts]
     subjects = [subject for artifact in artifacts for subject in artifact.subjects]
     positions = [position for artifact in artifacts for position in artifact.positions]
+    review_items = [review_item for artifact in artifacts for review_item in artifact.review_items]
 
     write_routing_results(routing_path, routes)
     write_subjects(subjects_path, subjects)
     write_positions(positions_path, positions)
-    write_summary(summary_output, files_processed=len(source_files), routes=routes, subjects=subjects, positions=positions)
+    write_review_items(review_items_path, review_items)
+    write_excel_workbook(workbook_path, routes=routes, subjects=subjects, positions=positions, review_items=review_items)
+    write_summary(summary_output, files_processed=len(source_files), routes=routes, subjects=subjects, positions=positions, review_items=review_items)
 
     return {
         "routing_results": routing_path,
         "valuation_subjects": subjects_path,
         "valuation_positions": positions_path,
+        "review_items": review_items_path,
+        "phase3_workbook": workbook_path,
         "parse_summary": summary_output,
     }
 

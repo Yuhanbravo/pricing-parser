@@ -18,7 +18,10 @@ src/valuation_parser.egg-info/requires.txt
 src/valuation_parser.egg-info/top_level.txt
 src/valuation_parser/adapters/__init__.py
 src/valuation_parser/adapters/base.py
+src/valuation_parser/adapters/greatwall.py
 src/valuation_parser/adapters/placeholder.py
+src/valuation_parser/adapters/xyzc.py
+tests/test_adapter_sample.py
 tests/test_code_normalizer.py
 tests/test_mapping_loader.py
 tests/test_product_identity.py
