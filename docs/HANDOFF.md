@@ -4,17 +4,17 @@ This file is the single source of truth for project handoff.
 
 ## Current Status
 
-- Current phase: Phase 3 delivery completed.
-- Latest bounded delivery completed the shared review-rule convergence, summary-stat alignment, expected-workbook schema alignment, and multi-sheet Excel export.
-- Real adapters verified in the current run: `greatwall`, `xyzc`.
-- Latest validated outputs were generated under `output_phase3/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `phase3_outputs.xlsx`.
+- Current phase: Phase 5 delivery completed.
+- Latest bounded delivery extended the verified path to the full 11-file controlled raw set, preserved zero routing failures, and refreshed derivative-subject review handling.
+- Verified adapters in the current run: `citics`, `cmsc`, `csc`, `generic`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
+- Latest validated outputs were generated under `output_phase5/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `phase3_outputs.xlsx`.
 
-## What Was Delivered In Phase 3
+## What Was Delivered In Phase 5
 
-- Shared review logic was expanded into common behavior instead of remaining adapter-only logic.
-- Summary statistics now include review-item counts and normalization totals in the exported markdown summary.
-- Output schemas were aligned more closely to the expected workbook shape used for downstream review.
-- A multi-sheet Excel workbook export was added so the Phase 3 CSV outputs can also be reviewed in a single file.
+- Full-run validation now covers all 11 controlled raw fixtures in `data_samples/raw/`.
+- The verified adapter path now includes `citics`, `cmsc`, `csc`, `generic`, `greatwall`, `gtja`, `guosen`, `orient`, and `xyzc`.
+- Shared review logic now explicitly flags `3102*` derivative subjects as review items.
+- Output artifacts were regenerated under `output_phase5/`; the workbook export still uses the legacy filename `phase3_outputs.xlsx` for compatibility.
 
 ## Hard Boundaries
 
@@ -25,26 +25,27 @@ This file is the single source of truth for project handoff.
 
 ## Verified Scope
 
-- Verified input coverage in code remains centered on the two real samples currently used for `greatwall` and `xyzc`.
+- Verified input coverage in code now spans the current 11-file fixture set under `data_samples/raw/`.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
+- Latest parse summary numbers: 11 processed files, 11 successful routes, 1113 subject rows, 202 position rows, 253 review items, and 0 normalization issues.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
 
 ## Known Gaps
 
-- Unsupported raw sample formats still exist outside the verified Phase 3 path and may fail without adapter-specific follow-up.
+- `phase3_outputs.xlsx` is still the workbook export name, so artifact naming remains historically coupled to an older phase label.
 - `asset_type` remains technically usable but is not yet fully aligned with the target workbook's preferred business terminology.
-- Review rules are broader than Phase 2, but additional asset-class coverage and more edge-case regression fixtures are still needed.
-- Placeholder adapters still exist for unsupported custodians and should not be presented as production-ready parsing support.
+- Review rules are broader now, but additional asset-class coverage and more edge-case regression fixtures are still needed.
+- The repository still has no `docs_readable/` derivative layer; if one is introduced, it must not become a second source of truth.
 
 ## Recommended Next Steps
 
-1. Expand verified sample coverage beyond the current two real adapters before adding more shared rule complexity.
+1. Decide whether the workbook artifact should keep the legacy `phase3_outputs.xlsx` name or move to a neutral name with compatibility handling.
 2. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
-3. Add regression tests for review-item generation and workbook-export structure.
+3. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
 4. Decide which current repository sample assets remain in Git and which should be reduced to minimal fixtures only.
 
 ## Practical Takeover Notes
 
 - Start from `docs/status.md` when you need the current snapshot of phase, scope, and risks.
 - Use `MIGRATION_PLAN.md` for planned convergence work and deferred items; do not overload this handoff file with implementation scheduling.
-- If you change parser behavior, regenerate Phase outputs in an ignored output directory and verify that workbook and CSV artifacts remain mutually consistent.
+- If you change parser behavior, regenerate outputs in an ignored output directory and verify that workbook and CSV artifacts remain mutually consistent.

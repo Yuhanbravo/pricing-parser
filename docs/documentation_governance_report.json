@@ -1,0 +1,97 @@
+{
+  "date": "2026-04-16",
+  "mode": "audit-report-fix",
+  "project_root": "pricing_parser",
+  "requested_config_path": "pricing_parser/config",
+  "config_resolution": {
+    "documentation_specific_config_found": false,
+    "effective_source": [
+      "documentation-governance skill defaults",
+      "repository markdown structure",
+      "current project artifacts and tests"
+    ]
+  },
+  "scan_scope": {
+    "root_docs": [
+      "README.md",
+      "MIGRATION_PLAN.md"
+    ],
+    "project_docs": [
+      "docs/status.md",
+      "docs/HANDOFF.md"
+    ],
+    "sample_policy_docs": [
+      "data_samples/README.md"
+    ]
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "category": "phase_drift",
+      "summary": "Core status documents were stale against the current Phase 5 state.",
+      "files": [
+        "README.md",
+        "docs/status.md",
+        "docs/HANDOFF.md",
+        "MIGRATION_PLAN.md"
+      ]
+    },
+    {
+      "severity": "high",
+      "category": "capability_understatement",
+      "summary": "Documentation understated current verified adapter and review-rule coverage.",
+      "evidence": {
+        "processed_files": 11,
+        "successful_routes": 11,
+        "review_items_exported": 253,
+        "verified_adapter_keys": [
+          "citics",
+          "cmsc",
+          "csc",
+          "generic",
+          "greatwall",
+          "gtja",
+          "guosen",
+          "orient",
+          "xyzc"
+        ],
+        "derivative_review_rule": "3102* subjects are exported as review items"
+      }
+    },
+    {
+      "severity": "medium",
+      "category": "artifact_naming",
+      "summary": "Workbook artifact keeps the legacy name phase3_outputs.xlsx under output_phase5/."
+    },
+    {
+      "severity": "medium",
+      "category": "config_gap",
+      "summary": "No documentation-specific governance config exists under pricing_parser/config."
+    },
+    {
+      "severity": "low",
+      "category": "readable_layer_absent",
+      "summary": "No docs_readable/ derivative layer exists, so no dual-layer conflict was detected."
+    }
+  ],
+  "single_source_of_truth": [
+    "output_phase5/parse_summary.md",
+    "src/valuation_parser/adapter_registry.py",
+    "src/valuation_parser/pipeline.py",
+    "tests/test_smoke.py",
+    "tests/test_phase5_adapters.py",
+    "tests/test_review_items.py"
+  ],
+  "fixes_applied": [
+    "Updated README.md to Phase 5 facts",
+    "Updated docs/status.md to current run statistics",
+    "Updated docs/HANDOFF.md to Phase 5 handoff state",
+    "Updated MIGRATION_PLAN.md to Phase 5 baseline and next-step planning",
+    "Added markdown and JSON governance reports under docs/"
+  ],
+  "residual_risks": [
+    "Workbook filename migration may break downstream consumers if changed without compatibility handling.",
+    "Additional asset classes may still expose review-rule gaps beyond the current fixture set.",
+    "Documentation may drift again if status documents are not refreshed after each bounded delivery."
+  ]
+}
