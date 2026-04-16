@@ -140,23 +140,36 @@ def _infer_subject_level(code: str | None) -> int | None:
 
 def _is_position_subject(subject: SubjectRecord, *, is_leaf: bool | None = None) -> bool:
     leaf_flag = subject.is_leaf if is_leaf is None else is_leaf
+    instrument_code = _extract_instrument_code(subject.subject_code)
     return bool(
         leaf_flag
         and subject.quantity not in (None, 0)
-        and subject.unit_cost is not None
-        and subject.market_price is not None
+        and (subject.unit_cost is not None or subject.cost is not None)
+        and (subject.market_price is not None or subject.market_value is not None)
         and subject.subject_code
-        and re.search(r"[A-Z]\d{5}$|\d{6}$", subject.subject_code)
+        and instrument_code is not None
     )
 
 
 def _extract_instrument_code(subject_code: str | None) -> str | None:
     if not subject_code:
         return None
-    match = re.search(r"([A-Z]?)(\d{5,6})$", subject_code)
-    if not match:
-        return None
-    return match.group(2)
+    normalized = subject_code.strip().upper()
+    normalized = re.sub(r"[._\- ](?:SH|SZ|HK|HG|CFX)$", "", normalized)
+
+    embedded_match = re.search(r"[A-Z]{1,2}(\d{5,6})$", normalized)
+    if embedded_match:
+        return embedded_match.group(1)
+
+    separated_match = re.search(r"(?:^|[._\- ])(\d{4,6})$", normalized)
+    if separated_match:
+        return separated_match.group(1)
+
+    plain_match = re.search(r"(\d{6})$", normalized)
+    if plain_match:
+        return plain_match.group(1)
+
+    return None
 
 
 def _determine_review_reason(subject: SubjectRecord) -> str | None:

@@ -1,0 +1,23 @@
+adapter_key: cmsc
+description: Phase 5 shared parsing rules for the CMSC XLS sample.
+sheet_policy: single_sheet
+valuation_date_scan_rows: 6
+valuation_date_row: 4
+header_row: 7
+data_start_row: 8
+column_indices:
+  subject_code: 0
+  subject_name: 1
+  quantity: 4
+  unit_cost: 5
+  cost: 6
+  cost_pct_nav: 7
+  market_price: 8
+  market_value: 9
+  market_value_pct_nav: 10
+  pnl: 11
+  suspension_info: 12
+skip_name_keywords:
+  - 合计
+  - 单位净值
+  - 可分配利润

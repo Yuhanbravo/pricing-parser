@@ -9,6 +9,7 @@ def route_identity(
     mappings: list[MappingRecord],
     adapter_override: str | None = None,
 ) -> RouteDecision:
+    attempts: list[str] = []
     if adapter_override:
         return RouteDecision(
             source_file=source_file,
@@ -24,24 +25,30 @@ def route_identity(
         )
 
     if identity.product_id and identity.association_code:
+        attempts.append("mapping(product_id+association_code)")
         match = _match_exact(identity.product_id, identity.association_code, mappings)
         if match is not None:
             return _success_decision(source_file, identity, match, "mapping(product_id+association_code)")
 
     if identity.product_id:
+        attempts.append("mapping(product_id)")
         match = _match_product(identity.product_id, mappings)
         if match is not None:
             return _success_decision(source_file, identity, match, "mapping(product_id)")
 
     if identity.association_code:
+        attempts.append("mapping(association_code)")
         match = _match_association(identity.association_code, mappings)
         if match is not None:
             return _success_decision(source_file, identity, match, "mapping(association_code)")
 
     if identity.custodian_name_chinese:
+        attempts.append("mapping(custodian_name_chinese)")
         match = _match_custodian_name(identity.custodian_name_chinese, mappings)
         if match is not None:
             return _success_decision(source_file, identity, match, "mapping(custodian_name_chinese)")
+
+    detail = _build_failure_message(identity, attempts)
 
     return RouteDecision(
         source_file=source_file,
@@ -53,8 +60,25 @@ def route_identity(
         adapter_key=None,
         route_source="unresolved",
         route_status="failed",
-        route_message=identity.route_message,
+        route_message=detail,
     )
+
+
+def _build_failure_message(identity: ProductIdentity, attempts: list[str]) -> str:
+    resolved_parts = []
+    if identity.product_id:
+        resolved_parts.append(f"product_id={identity.product_id}")
+    if identity.association_code:
+        resolved_parts.append(f"association_code={identity.association_code}")
+    if identity.custodian_name_chinese:
+        resolved_parts.append(f"custodian_name_chinese={identity.custodian_name_chinese}")
+
+    if not resolved_parts:
+        return identity.route_message
+
+    attempt_text = ", ".join(attempts) if attempts else "no routing strategy attempted"
+    resolved_text = ", ".join(resolved_parts)
+    return f"identity resolved ({resolved_text}) but no active mapping matched; tried {attempt_text}"
 
 
 def _match_exact(product_id: str, association_code: str, mappings: list[MappingRecord]) -> MappingRecord | None:

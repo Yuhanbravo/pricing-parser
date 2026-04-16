@@ -5,8 +5,8 @@ from pathlib import Path
 from valuation_parser.adapters.tabular import ConfigurableTabularAdapter
 
 
-class GreatwallValuationAdapter(ConfigurableTabularAdapter):
-    key = "greatwall"
+class OrientValuationAdapter(ConfigurableTabularAdapter):
+    key = "orient"
 
     def __init__(self, config_path: Path | None = None) -> None:
         super().__init__(config_name=self.key, config_path=config_path)

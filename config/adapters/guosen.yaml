@@ -1,2 +1,23 @@
 adapter_key: guosen
-description: Placeholder for Guosen custodian parsing rules.
+description: Phase 5 shared parsing rules for the Guosen XLSX sample.
+sheet_policy: single_sheet
+valuation_date_scan_rows: 5
+valuation_date_row: 2
+header_row: 3
+data_start_row: 4
+column_indices:
+  subject_code: 0
+  subject_name: 1
+  quantity: 2
+  unit_cost: 3
+  cost: 4
+  cost_pct_nav: 5
+  market_price: 6
+  market_value: 7
+  market_value_pct_nav: 8
+  pnl: 9
+  suspension_info: 10
+skip_name_keywords:
+  - 合计
+  - 单位净值
+  - 可分配利润

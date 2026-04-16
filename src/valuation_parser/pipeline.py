@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from dataclasses import replace
 
 from valuation_parser.adapter_registry import build_registry, get_adapter
 from valuation_parser.exporters import write_excel_workbook, write_positions, write_review_items, write_routing_results, write_subjects, write_summary
 from valuation_parser.mapping_loader import load_mapping
-from valuation_parser.models import ParseArtifacts
+from valuation_parser.models import ParseArtifacts, RouteDecision, WorkbookPreview
 from valuation_parser.product_identity import extract_product_identity, preview_workbook
 from valuation_parser.routing import route_identity
 
@@ -36,10 +37,13 @@ def run_pipeline(
         identity = extract_product_identity(source_file, preview=preview)
         route = route_identity(str(source_file), identity, mapping, adapter_override=adapter_override)
         if route.route_status != "success":
-            artifacts.append(ParseArtifacts(route=route))
-            if fail_on_routing_error:
-                raise RuntimeError(f"Routing failed for {source_file}: {route.route_message}")
-            continue
+            fallback_route = _build_generic_fallback_route(source_file, route, preview)
+            if fallback_route is None:
+                artifacts.append(ParseArtifacts(route=route))
+                if fail_on_routing_error:
+                    raise RuntimeError(f"Routing failed for {source_file}: {route.route_message}")
+                continue
+            route = fallback_route
 
         adapter = get_adapter(route.adapter_key or "generic", registry)
         artifacts.append(adapter.parse(source_file, route))
@@ -71,6 +75,29 @@ def run_pipeline(
         "phase3_workbook": workbook_path,
         "parse_summary": summary_output,
     }
+
+
+def _build_generic_fallback_route(source_file: Path, route: RouteDecision, preview: WorkbookPreview) -> RouteDecision | None:
+    if not (route.product_id or route.association_code):
+        return None
+    if not _is_generic_tabular_preview(preview):
+        return None
+    return replace(
+        route,
+        adapter_key="generic",
+        route_source="layout_fallback(generic)",
+        route_status="success",
+        route_message=f"{route.route_message}; fallback to generic tabular parser",
+    )
+
+
+def _is_generic_tabular_preview(preview: WorkbookPreview) -> bool:
+    if preview.errors:
+        return False
+    combined_text = "\n".join(preview.header_texts)
+    required_markers = ("科目代码", "科目名称")
+    value_markers = ("市值", "成本", "估值增值")
+    return all(marker in combined_text for marker in required_markers) and any(marker in combined_text for marker in value_markers)
 
 
 def _iter_input_files(input_root: Path):

@@ -1,7 +1,7 @@
-adapter_key: generic
-description: Generic tabular fallback parser for unmapped but structurally standard valuation tables.
+adapter_key: orient
+description: Phase 4 shared parsing rules for the Orient XLS sample.
 sheet_policy: single_sheet
-valuation_date_scan_rows: 6
+valuation_date_scan_rows: 4
 valuation_date_row: 3
 header_row: 4
 data_start_row: 5
@@ -18,14 +18,12 @@ column_aliases:
     - 成本
   cost_pct_nav:
     - 成本占净值%
-    - 成本占净值(%)
   market_price:
     - 市价
   market_value:
     - 市值
   market_value_pct_nav:
     - 市值占净值%
-    - 市值占净值(%)
   pnl:
     - 估值增值
   suspension_info:

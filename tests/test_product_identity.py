@@ -20,3 +20,12 @@ def test_extract_custodian_name_chinese_from_preview_top_rows() -> None:
     )
 
     assert identity.custodian_name_chinese == "国泰"
+
+
+def test_extract_other_custodian_alias_from_preview_rows() -> None:
+    identity = extract_product_identity(
+        "sample.xls",
+        preview=WorkbookPreview(header_texts=["东方证券股份有限公司___PRODUCT_010___专用表", "估值表", "2025-03-27"]),
+    )
+
+    assert identity.custodian_name_chinese == "东方证券"

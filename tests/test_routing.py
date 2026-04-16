@@ -46,3 +46,18 @@ def test_route_can_fallback_to_true_custodian_name_alias() -> None:
     assert route.route_status == "success"
     assert route.adapter_key == "gtja"
     assert route.route_source == "mapping(custodian_name_chinese)"
+
+
+def test_route_reports_attempted_strategies_when_mapping_is_missing() -> None:
+    route = route_identity(
+        source_file="sample.xlsx",
+        identity=ProductIdentity(product_id="PRODUCT_022", association_code="XXX022", route_message="resolved product_id and association_code"),
+        mappings=[],
+    )
+
+    assert route.route_status == "failed"
+    assert "PRODUCT_022" in route.route_message
+    assert "XXX022" in route.route_message
+    assert "mapping(product_id+association_code)" in route.route_message
+    assert "mapping(product_id)" in route.route_message
+    assert "mapping(association_code)" in route.route_message

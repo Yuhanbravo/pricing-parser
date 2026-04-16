@@ -10,6 +10,15 @@ PRODUCT_PATTERN = re.compile(r"(?<![A-Z0-9])PRODUCT[_-]?(\d{3,})(?!\d)", re.IGNO
 ASSOCIATION_PATTERN = re.compile(r"(?<![A-Z0-9])XXX[_-]?(\d{3,})(?!\d)", re.IGNORECASE)
 CUSTODIAN_ALIAS_PATTERNS = {
     "国泰": "国泰",
+    "国泰君安": "国泰",
+    "国泰海通": "国泰",
+    "东方证券": "东方证券",
+    "中信证券": "中信证券",
+    "中信建投": "中信建投",
+    "长城证券": "长城证券",
+    "国信证券": "国信证券",
+    "招商证券": "招商证券",
+    "兴业证券": "兴业证券",
 }
 
 def extract_product_identity(source_file: str | Path, preview: WorkbookPreview | None = None) -> ProductIdentity:
@@ -20,7 +29,7 @@ def extract_product_identity(source_file: str | Path, preview: WorkbookPreview |
     if preview is not None:
         text_candidates.extend(("sheet", value) for value in preview.sheet_names)
         text_candidates.extend(("header", value) for value in preview.header_texts)
-        top_row_texts = preview.header_texts[:3]
+        top_row_texts = preview.header_texts[:6]
 
     product_id = None
     association_code = None
@@ -95,14 +104,14 @@ def _preview_csv(path: Path) -> WorkbookPreview:
             reader = csv.reader(handle)
             for index, row in enumerate(reader):
                 header_texts.append(" ".join(cell.strip() for cell in row if cell))
-                if index >= 4:
+                if index >= 5:
                     break
     except UnicodeDecodeError:
         with path.open("r", encoding="gb18030", newline="") as handle:
             reader = csv.reader(handle)
             for index, row in enumerate(reader):
                 header_texts.append(" ".join(cell.strip() for cell in row if cell))
-                if index >= 4:
+                if index >= 5:
                     break
     except OSError as exc:
         return WorkbookPreview(errors=[str(exc)])
@@ -126,7 +135,7 @@ def _preview_xlsx(path: Path) -> WorkbookPreview:
 
     for sheet_name in sheet_names[:3]:
         worksheet = workbook[sheet_name]
-        for row in worksheet.iter_rows(min_row=1, max_row=3, max_col=8, values_only=True):
+        for row in worksheet.iter_rows(min_row=1, max_row=6, max_col=12, values_only=True):
             text = " ".join(str(value).strip() for value in row if value not in (None, ""))
             if text:
                 header_texts.append(text)
@@ -150,8 +159,8 @@ def _preview_xls(path: Path) -> WorkbookPreview:
 
     for sheet_name in sheet_names[:3]:
         sheet = workbook.sheet_by_name(sheet_name)
-        max_rows = min(sheet.nrows, 3)
-        max_cols = min(sheet.ncols, 8)
+        max_rows = min(sheet.nrows, 6)
+        max_cols = min(sheet.ncols, 12)
         for row_index in range(max_rows):
             values = [str(sheet.cell_value(row_index, col_index)).strip() for col_index in range(max_cols)]
             text = " ".join(value for value in values if value)

@@ -1,0 +1,23 @@
+adapter_key: citics
+description: Phase 4 shared parsing rules for the CITICS XLS sample.
+sheet_policy: single_sheet
+valuation_date_scan_rows: 4
+valuation_date_row: 4
+header_row: 6
+data_start_row: 8
+column_indices:
+  subject_code: 0
+  subject_name: 1
+  quantity: 3
+  unit_cost: 5
+  cost: 7
+  cost_pct_nav: 8
+  market_price: 9
+  market_value: 11
+  market_value_pct_nav: 12
+  pnl: 14
+  suspension_info: 15
+skip_name_keywords:
+  - 合计
+  - 单位净值
+  - 可分配利润

@@ -70,3 +70,51 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert "Position rows exported: " in summary_content
     assert "Review items exported:" in summary_content
     assert outputs["phase3_workbook"].exists()
+
+
+def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) -> None:
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    sample_names = [
+        "PRODUCT_006_资产估值表_20250327.xls",
+        "PRODUCT_010_证券投资基金估值表_2025-03-27.xls",
+        "PRODUCT_012_估值表_20250327.xls",
+    ]
+    for sample_name in sample_names:
+        source = Path("data_samples/raw") / sample_name
+        (raw_dir / sample_name).write_bytes(source.read_bytes())
+
+    output_dir = tmp_path / "output"
+    outputs = run_pipeline(raw_dir, Path("产品与托管机构映射表.csv"), output_dir)
+
+    routing_content = outputs["routing_results"].read_text(encoding="utf-8-sig")
+    positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
+
+    assert "citics" in routing_content
+    assert "orient" in routing_content
+    assert "gtja" in routing_content
+    assert "600036.SH" in positions_content
+    assert "00700.HK" in positions_content
+    assert "000333.SZ" in positions_content
+    assert "Processed files: 3" in summary_content
+
+
+def test_pipeline_writes_non_empty_outputs_for_full_phase5_raw_set(tmp_path: Path) -> None:
+    output_dir = tmp_path / "output_phase5"
+
+    outputs = run_pipeline(Path("data_samples/raw"), Path("产品与托管机构映射表.csv"), output_dir)
+
+    routing_content = outputs["routing_results"].read_text(encoding="utf-8-sig")
+    positions_content = outputs["valuation_positions"].read_text(encoding="utf-8-sig")
+    summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
+
+    assert "guosen" in routing_content
+    assert "cmsc" in routing_content
+    assert "csc" in routing_content
+    assert "layout_fallback(generic)" in routing_content
+    assert "688617.SH" in positions_content
+    assert "600309.SH" in positions_content
+    assert "002475.SZ" in positions_content
+    assert "Processed files: 11" in summary_content
+    assert "Routing failures: 0" in summary_content
