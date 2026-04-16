@@ -173,6 +173,8 @@ def _extract_instrument_code(subject_code: str | None) -> str | None:
 
 
 def _determine_review_reason(subject: SubjectRecord) -> str | None:
+    if _is_derivative_subject(subject.subject_code):
+        return "衍生工具科目，需单独建模或排除"
     if subject.subject_code and subject.subject_code.endswith("99"):
         return "估值增值汇总行，通常不作为持仓叶子"
     if subject.is_leaf and subject.quantity not in (None, 0) and subject.market_price is None:
@@ -180,6 +182,12 @@ def _determine_review_reason(subject: SubjectRecord) -> str | None:
     if subject.is_leaf and subject.market_price is not None and subject.quantity in (None, 0):
         return "叶子行存在市价但缺少数量"
     return None
+
+
+def _is_derivative_subject(subject_code: str | None) -> bool:
+    if not subject_code:
+        return False
+    return subject_code.strip().upper().startswith("3102")
 
 
 def _build_review_note(review_flag: str | None) -> str | None:
