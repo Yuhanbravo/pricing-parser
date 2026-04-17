@@ -6,6 +6,7 @@ from itertools import zip_longest
 from pathlib import Path
 import re
 
+from valuation_parser.adapter_registry import SUPPORTED_ADAPTERS
 from valuation_parser.models import MappingRecord
 
 CANONICAL_FIELDS = {
@@ -200,6 +201,8 @@ def _validate_records(records: Iterable[MappingRecord]) -> None:
     for record in records:
         if record.adapter_key.strip() == "":
             raise ValueError(f"Missing adapter_key for custodian_id={record.custodian_id}")
+        if record.adapter_key not in SUPPORTED_ADAPTERS:
+            raise ValueError(f"Unsupported adapter_key in mapping: {record.adapter_key}")
 
         pair_key = (record.product_id, record.association_code)
         if pair_key in pair_index:

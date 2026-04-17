@@ -23,6 +23,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="exclude",
         help="Whether inactive mappings should remain routable.",
     )
+    parser.add_argument(
+        "--allow-generic-fallback",
+        action="store_true",
+        help="Allow the generic tabular parser to run after routing failure for development-only recovery.",
+    )
     return parser
 
 
@@ -37,6 +42,7 @@ def main() -> None:
         adapter_override=args.adapter,
         fail_on_routing_error=args.fail_on_routing_error,
         include_inactive_mapping=args.inactive_mapping_policy == "include",
+        allow_generic_fallback=args.allow_generic_fallback,
     )
 
 

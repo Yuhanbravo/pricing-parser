@@ -21,9 +21,16 @@ ROUTING_FIELDS = [
 ]
 
 SUBJECT_FIELDS = [
+    "source_file",
     "broker",
     "sheet_name",
     "valuation_date",
+    "product_id",
+    "association_code",
+    "custodian_id",
+    "custodian_name",
+    "adapter_key",
+    "route_source",
     "raw_row_index",
     "subject_code",
     "subject_name",
@@ -46,9 +53,16 @@ SUBJECT_FIELDS = [
 ]
 
 POSITION_FIELDS = [
+    "source_file",
     "broker",
     "sheet_name",
     "valuation_date",
+    "product_id",
+    "association_code",
+    "custodian_id",
+    "custodian_name",
+    "adapter_key",
+    "route_source",
     "raw_row_index",
     "instrument_name",
     "instrument_code_raw",
@@ -153,7 +167,7 @@ def write_excel_workbook(
 def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, object | None]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 

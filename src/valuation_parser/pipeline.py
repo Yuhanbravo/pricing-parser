@@ -22,6 +22,7 @@ def run_pipeline(
     adapter_override: str | None = None,
     fail_on_routing_error: bool = False,
     include_inactive_mapping: bool = False,
+    allow_generic_fallback: bool = False,
 ) -> dict[str, Path]:
     input_root = Path(input_path)
     output_root = Path(output_dir)
@@ -36,14 +37,16 @@ def run_pipeline(
         preview = preview_workbook(source_file)
         identity = extract_product_identity(source_file, preview=preview)
         route = route_identity(str(source_file), identity, mapping, adapter_override=adapter_override)
-        if route.route_status != "success":
+        if route.route_status != "success" and allow_generic_fallback:
             fallback_route = _build_generic_fallback_route(source_file, route, preview)
-            if fallback_route is None:
-                artifacts.append(ParseArtifacts(route=route))
-                if fail_on_routing_error:
-                    raise RuntimeError(f"Routing failed for {source_file}: {route.route_message}")
-                continue
-            route = fallback_route
+            if fallback_route is not None:
+                route = fallback_route
+
+        if route.route_status != "success":
+            artifacts.append(ParseArtifacts(route=route))
+            if fail_on_routing_error:
+                raise RuntimeError(f"Routing failed for {source_file}: {route.route_message}")
+            continue
 
         adapter = get_adapter(route.adapter_key or "generic", registry)
         artifacts.append(adapter.parse(source_file, route))
