@@ -121,8 +121,8 @@ def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) ->
     assert "Processed files: 3" in summary_content
 
 
-def test_pipeline_writes_non_empty_outputs_for_full_phase5_raw_set(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output_phase5"
+def test_pipeline_writes_non_empty_outputs_for_full_phase6_raw_set(tmp_path: Path) -> None:
+    output_dir = tmp_path / "output_phase6"
 
     outputs = run_pipeline(Path("data_samples/raw"), Path("产品与托管机构映射表.csv"), output_dir)
 
@@ -143,7 +143,7 @@ def test_pipeline_writes_non_empty_outputs_for_full_phase5_raw_set(tmp_path: Pat
 
 
 def test_pipeline_can_enable_generic_layout_fallback_explicitly(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output_phase5"
+    output_dir = tmp_path / "output_phase6"
 
     outputs = run_pipeline(
         Path("data_samples/raw"),

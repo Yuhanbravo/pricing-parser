@@ -4,17 +4,17 @@ This file is the single source of truth for project handoff.
 
 ## Current Status
 
-- Current phase: Phase 5 delivery completed.
-- Latest bounded delivery extended the verified path to the full 11-file controlled raw set, preserved zero routing failures, and refreshed derivative-subject review handling.
-- Verified adapters in the current run: `citics`, `cmsc`, `csc`, `generic`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Latest validated outputs were generated under `output_phase5/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `phase3_outputs.xlsx`.
+- Current phase: Phase 5 delivery with post-review contract alignment refresh.
+- Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, so unresolved files are no longer upgraded to successful generic fallback routes.
+- Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
+- Latest validated outputs were generated under `output_phase6/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `phase3_outputs.xlsx`.
 
-## What Was Delivered In Phase 5
+## What Was Refreshed In The Contract-Alignment Pass
 
-- Full-run validation now covers all 11 controlled raw fixtures in `data_samples/raw/`.
-- The verified adapter path now includes `citics`, `cmsc`, `csc`, `generic`, `greatwall`, `gtja`, `guosen`, `orient`, and `xyzc`.
-- Shared review logic now explicitly flags `3102*` derivative subjects as review items.
-- Output artifacts were regenerated under `output_phase5/`; the workbook export still uses the legacy filename `phase3_outputs.xlsx` for compatibility.
+- Full-run validation continues to use all 11 controlled raw fixtures in `data_samples/raw/`.
+- `valuation_subjects` and `valuation_positions` exports now retain trace columns needed for handoff and audit: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
+- Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
+- Output artifacts were regenerated under `output_phase6/`; the workbook export still uses the legacy filename `phase3_outputs.xlsx` for compatibility.
 
 ## Hard Boundaries
 
@@ -27,7 +27,8 @@ This file is the single source of truth for project handoff.
 
 - Verified input coverage in code now spans the current 11-file fixture set under `data_samples/raw/`.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
-- Latest parse summary numbers: 11 processed files, 11 successful routes, 1113 subject rows, 202 position rows, 253 review items, and 0 normalization issues.
+- Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
+- The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
 
 ## Known Gaps
@@ -35,17 +36,18 @@ This file is the single source of truth for project handoff.
 - `phase3_outputs.xlsx` is still the workbook export name, so artifact naming remains historically coupled to an older phase label.
 - `asset_type` remains technically usable but is not yet fully aligned with the target workbook's preferred business terminology.
 - Review rules are broader now, but additional asset-class coverage and more edge-case regression fixtures are still needed.
+- `review_flag` still behaves mainly as a normalization signal, while most human-review workload continues to surface through `review_items.csv`.
 - The repository still has no `docs_readable/` derivative layer; if one is introduced, it must not become a second source of truth.
 
 ## Recommended Next Steps
 
 1. Decide whether the workbook artifact should keep the legacy `phase3_outputs.xlsx` name or move to a neutral name with compatibility handling.
-2. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
-3. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
-4. Decide which current repository sample assets remain in Git and which should be reduced to minimal fixtures only.
+2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
+3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
+4. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
 
 ## Practical Takeover Notes
 
 - Start from `docs/status.md` when you need the current snapshot of phase, scope, and risks.
 - Use `MIGRATION_PLAN.md` for planned convergence work and deferred items; do not overload this handoff file with implementation scheduling.
-- If you change parser behavior, regenerate outputs in an ignored output directory and verify that workbook and CSV artifacts remain mutually consistent.
+- If you change parser behavior, rerun `data_samples/raw/` and regenerate outputs in an ignored output directory such as `output_phase6/`, then verify that workbook and CSV artifacts remain mutually consistent.

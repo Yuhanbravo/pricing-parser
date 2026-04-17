@@ -1,6 +1,6 @@
 # valuation-parser
 
-估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成 Phase 5 的受控交付：全量 11 份受控原始样本可端到端跑通，覆盖 mapping-driven routing、9 个 adapter key、标准化 CSV/Markdown/Excel 导出，以及 `3102*` 衍生工具科目 review 规则。
+估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成一轮契约收口刷新：基于 `data_samples/raw/` 的全量 11 份受控样表重新生成了 `output_phase6/`，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出，以及 `3102*` 衍生工具科目 review 规则；默认严格路由口径下保留 1 个未命中 mapping 的失败样本。
 
 ## 工作区边界
 
@@ -28,10 +28,12 @@ D:\intern_workspace\
 - 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
 - 支持 `.xls/.xlsx` 估值表输入
 - 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 Excel 工作簿 `phase3_outputs.xlsx`（当前仍保留该历史文件名）
-- 当前注册并在受控路径中验证过的 adapter key：`citics`、`cmsc`、`csc`、`generic`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
-- 最新 `output_phase5/` 全量运行结果：11 个文件、11 次成功路由、0 次路由失败、1113 条科目、202 条持仓、253 条 review items、0 个 normalization issues
+- `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
+- 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
+- 最新 `output_phase6/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
+- 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
-- 测试已覆盖身份提取、映射加载、路由、adapter 样表、Phase 5 全量 smoke 和 review-item 回归
+- 测试已覆盖身份提取、映射加载、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item 回归
 
 当前已验证的真实样表：
 
@@ -40,7 +42,7 @@ D:\intern_workspace\
 - `2025-03-27_PRODUCT_001估值表.xlsx` -> `guosen`
 - `PRODUCT_008委托资产资产估值表20250327.xls` -> `cmsc`
 - `估值表_PRODUCT_021_20250327.xls` -> `csc`
-- `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx` -> `generic` fallback
+- `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx` 默认未路由；仅在显式启用 `--allow-generic-fallback` 时走 `generic` fallback
 - `PRODUCT_006_资产估值表_20250327.xls`、`PRODUCT_010_证券投资基金估值表_2025-03-27.xls`、`PRODUCT_012_估值表_20250327.xls` 已在批量管线测试中分别覆盖 `citics`、`orient`、`gtja`
 
 ## 项目结构
@@ -127,6 +129,16 @@ python -m valuation_parser.cli \
   --output-dir output
 ```
 
+开发态显式启用 generic fallback：
+
+```bash
+python -m valuation_parser.cli \
+  --input D:/local_samples/raw \
+  --mapping D:/local_samples/mapping/custodian_mapping.csv \
+  --output-dir output \
+  --allow-generic-fallback
+```
+
 运行产物应写入 `output/`、`tmp/` 或其他已忽略目录，不要直接提交解析输出。
 
 ## 映射表说明
@@ -150,5 +162,5 @@ python -m valuation_parser.cli \
 ## 下一步建议
 
 1. 制定 `phase3_outputs.xlsx` 的兼容迁移方案，再决定是否切换到中性命名的工作簿文件名。
-2. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。
-3. 用 `data_samples/expected/` 中的样例继续收敛 `valuation_subjects.csv`、`valuation_positions.csv` 和 `review_items.csv` 的字段口径。
+2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
+3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。
