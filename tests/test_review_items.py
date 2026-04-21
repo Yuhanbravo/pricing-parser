@@ -40,3 +40,8 @@ def test_build_positions_and_review_items_marks_derivative_subjects_for_review()
     assert any(item.subject_code == "3102A101000002" for item in review_items)
     assert any(item.review_reason == "衍生工具科目，需单独建模或排除" for item in review_items)
     assert all(item.subject_code != "600000" for item in review_items)
+    derivative_position = next(position for position in positions if position.subject_code == "3102A101000002")
+    non_derivative_position = next(position for position in positions if position.subject_code == "600000")
+    assert derivative_position.review_flag == "manual_review_required"
+    assert derivative_position.review_note == "衍生工具科目，需单独建模或排除"
+    assert non_derivative_position.review_flag is None

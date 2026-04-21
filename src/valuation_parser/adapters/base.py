@@ -68,7 +68,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
         instrument_code_raw = _extract_instrument_code(subject.subject_code)
         instrument_code_std, exchange, normalization_flag = normalize_security_code(instrument_code_raw)
         asset_type = infer_asset_type(instrument_code_raw, exchange)
-        review_flag = resolve_review_flag(normalization_flag, asset_type)
+        review_flag = resolve_review_flag(normalization_flag, asset_type, review_reason)
         positions.append(
             PositionRecord(
                 source_file=subject.source_file,
@@ -97,7 +97,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 raw_row_index=subject.raw_row_index,
                 suspension_info=subject.suspension_info,
                 review_flag=review_flag,
-                review_note=_build_review_note(review_flag),
+                review_note=_build_review_note(review_flag, review_reason),
             )
         )
     return positions, review_items
@@ -190,11 +190,18 @@ def _is_derivative_subject(subject_code: str | None) -> bool:
     return subject_code.strip().upper().startswith("3102")
 
 
-def _build_review_note(review_flag: str | None) -> str | None:
+def _build_review_note(review_flag: str | None, review_reason: str | None) -> str | None:
+    notes: list[str] = []
     if review_flag == "missing_code":
-        return "缺少可标准化的证券代码"
-    if review_flag == "unknown_exchange":
-        return "无法根据证券代码识别交易所"
-    if review_flag == "unknown_asset_type":
-        return "无法推断资产类型"
-    return None
+        notes.append("缺少可标准化的证券代码")
+    elif review_flag == "unknown_exchange":
+        notes.append("无法根据证券代码识别交易所")
+    elif review_flag == "unknown_asset_type":
+        notes.append("无法推断资产类型")
+
+    if review_reason:
+        notes.append(review_reason)
+
+    if not notes:
+        return None
+    return "；".join(notes)

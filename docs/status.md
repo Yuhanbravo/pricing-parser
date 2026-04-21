@@ -4,7 +4,7 @@
 
 - Current milestone: Phase 5 delivery with post-review contract alignment refresh.
 - Latest bounded delivery verified the full `data_samples/raw/` set end to end under strict default routing, resulting in 1 retained routing failure instead of silent generic fallback success.
-- Latest review-rule update still forces `3102*` derivative subjects into `review_items`.
+- Latest review-rule update still forces `3102*` derivative subjects into `review_items`, and matching position rows now carry `review_flag` as the manual-review entrypoint.
 
 ## Current Snapshot
 
@@ -33,7 +33,7 @@
 - `phase3_outputs.xlsx` remains the workbook artifact name even in `output_phase6/`; this is now a documented compatibility holdover rather than a Phase 3-only artifact.
 - `asset_type` terminology still needs refinement to match downstream workbook language more closely.
 - Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
-- `review_flag` is still weaker than `review_items.csv` as the main manual-review surface.
+- `review_flag` now marks every position that requires manual review, while `review_items.csv` remains the detailed queue explaining why each record needs attention.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
 
 ## Recommended Next Steps

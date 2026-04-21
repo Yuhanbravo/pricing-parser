@@ -33,6 +33,7 @@ D:\intern_workspace\
 - 最新 `output_phase6/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
 - 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
+- `valuation_positions.csv` 中的 `review_flag` 用于标记所有需要人工复核的持仓记录：既包含证券代码标准化/资产类型推断失败，也包含已进入 `review_items.csv` 的业务复核场景；`review_note` 会保留具体原因
 - 测试已覆盖身份提取、映射加载、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item 回归
 
 当前已验证的真实样表：

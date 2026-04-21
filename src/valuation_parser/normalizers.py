@@ -37,11 +37,17 @@ def infer_asset_type(raw_code: str | None, exchange: str | None) -> str | None:
     return None
 
 
-def resolve_review_flag(normalization_flag: str | None, asset_type: str | None) -> str | None:
+def resolve_review_flag(
+    normalization_flag: str | None,
+    asset_type: str | None,
+    review_reason: str | None = None,
+) -> str | None:
     if normalization_flag:
         return normalization_flag
     if asset_type is None:
         return "unknown_asset_type"
+    if review_reason:
+        return "manual_review_required"
     return None
 
 

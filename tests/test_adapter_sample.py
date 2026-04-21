@@ -31,7 +31,6 @@ def test_greatwall_adapter_parses_sample_workbook() -> None:
     assert len(artifacts.review_items) >= 1
     assert artifacts.subjects[0].sheet_name == "Sheet1"
     assert any(position.instrument_code_std == "02208.HK" for position in artifacts.positions)
-    assert all(position.review_flag is None for position in artifacts.positions)
     assert artifacts.subjects[0].broker == "CUSTODIAN_GROUP_008"
 
 
@@ -59,7 +58,6 @@ def test_xyzc_adapter_parses_sample_workbook() -> None:
     assert artifacts.subjects[0].sheet_name == "PRODUCT_002"
     assert any(position.instrument_code_std == "600309.SH" for position in artifacts.positions)
     assert any(position.instrument_code_std == "00700.HK" for position in artifacts.positions)
-    assert all(position.review_flag is None for position in artifacts.positions)
     assert artifacts.subjects[0].broker == "CUSTODIAN_GROUP_001"
 
 
