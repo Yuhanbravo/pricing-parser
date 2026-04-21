@@ -99,7 +99,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 subject_code=subject.subject_code,
                 subject_name=subject.subject_name,
                 raw_row_index=subject.raw_row_index,
-                suspension_info=subject.suspension_info,
+                suspension_info=_normalize_position_suspension_info(subject.suspension_info),
                 review_flag=review_flag,
                 review_note=_build_review_note(review_flag, review_reason),
             )
@@ -201,6 +201,15 @@ def _is_derivative_subject(subject_code: str | None) -> bool:
     if not subject_code:
         return False
     return subject_code.strip().upper().startswith("3102")
+
+
+def _normalize_position_suspension_info(suspension_info: str | None) -> str | None:
+    if not suspension_info:
+        return None
+    normalized = suspension_info.strip()
+    if normalized in {"【正常交易】", "(正常交易)", "（正常交易）", "[正常交易]"}:
+        return "正常交易"
+    return normalized
 
 
 def _build_review_note(review_flag: str | None, review_reason: str | None) -> str | None:

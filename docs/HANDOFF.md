@@ -14,6 +14,7 @@ This file is the single source of truth for project handoff.
 - Full-run validation continues to use all 11 controlled raw fixtures in `data_samples/raw/`.
 - `valuation_subjects` and `valuation_positions` exports now retain trace columns needed for handoff and audit: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - `routing_results` now exports canonical `custodian_name_chinese` values, so alias forms such as `国泰` are normalized to `国泰海通证券股份有限公司` in downstream artifacts.
+- `valuation_positions` now normalizes the routine suspension marker to plain `正常交易`, so downstream consumers no longer need to strip bracketed variants.
 - Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
 - Output artifacts were regenerated under `output_phase6/`; the workbook export now uses the same filename as the expected workbook artifact: `估值表解析_expected_output_2025-12-01.xlsx`.
 

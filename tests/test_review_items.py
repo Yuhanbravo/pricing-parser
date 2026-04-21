@@ -72,4 +72,5 @@ def test_build_positions_and_review_items_does_not_flag_real_position_codes_endi
 
     assert subjects[0].review_flag is None
     assert positions[0].review_flag is None
+    assert positions[0].suspension_info == "正常交易"
     assert review_items == []

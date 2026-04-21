@@ -60,6 +60,8 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "02208.HK" in positions_content
     assert ",PRODUCT_023," in positions_content
     assert ",greatwall,mapping(product_id)" in positions_content
+    assert "【正常交易】" not in positions_content
+    assert "正常交易" in positions_content
     assert "review_reason" in review_content
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
@@ -92,6 +94,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert "00700.HK" in positions_content
     assert ",PRODUCT_002," in positions_content
     assert ",xyzc,mapping(product_id)" in positions_content
+    assert "【正常交易】" not in positions_content
     assert "review_reason" in review_content
     assert "Position rows exported: " in summary_content
     assert "Review items exported:" in summary_content
