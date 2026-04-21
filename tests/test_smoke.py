@@ -52,6 +52,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
 
     assert TRACE_SUBJECT_HEADER in subjects_content
+    assert "suspension_info,review_flag,raw_text" in subjects_content
     assert "11028101H02208" in subjects_content
     assert ",PRODUCT_023," in subjects_content
     assert ",greatwall,mapping(product_id)" in subjects_content
@@ -80,6 +81,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
 
     assert "xyzc" in routing_content
     assert TRACE_SUBJECT_HEADER in subjects_content
+    assert "suspension_info,review_flag,raw_text" in subjects_content
     assert "11020101600309" in subjects_content
     assert ",PRODUCT_002," in subjects_content
     assert ",xyzc,mapping(product_id)" in subjects_content

@@ -43,11 +43,11 @@ def resolve_review_flag(
     review_reason: str | None = None,
 ) -> str | None:
     if normalization_flag:
-        return normalization_flag
+        return "01"
     if asset_type is None:
-        return "unknown_asset_type"
+        return "01"
     if review_reason:
-        return "manual_review_required"
+        return "01"
     return None
 
 

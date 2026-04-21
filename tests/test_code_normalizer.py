@@ -18,9 +18,9 @@ def test_infer_asset_type_variants() -> None:
 
 
 def test_resolve_review_flag_prefers_normalization_error() -> None:
-    assert resolve_review_flag("missing_code", None) == "missing_code"
-    assert resolve_review_flag(None, None) == "unknown_asset_type"
-    assert resolve_review_flag(None, "a_share", "叶子行存在数量但缺少市价") == "manual_review_required"
+    assert resolve_review_flag("missing_code", None) == "01"
+    assert resolve_review_flag(None, None) == "01"
+    assert resolve_review_flag(None, "a_share", "叶子行存在数量但缺少市价") == "01"
     assert resolve_review_flag(None, "a_share") is None
 
 

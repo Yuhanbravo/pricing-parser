@@ -99,7 +99,7 @@ class ConfigurableTabularAdapter(BaseValuationAdapter):
         )
         subjects = [enrich_subject_record(subject) for subject in subjects]
         subjects = annotate_subject_hierarchy(subjects)
-        positions, review_items = build_positions_and_review_items(subjects)
+        subjects, positions, review_items = build_positions_and_review_items(subjects)
         return ParseArtifacts(route=route, subjects=subjects, positions=positions, review_items=review_items)
 
 

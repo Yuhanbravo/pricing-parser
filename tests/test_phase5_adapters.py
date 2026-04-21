@@ -78,6 +78,10 @@ def test_csc_adapter_parses_sample_workbook() -> None:
     assert len(artifacts.positions) >= 4
     assert any(position.instrument_code_std == "00700.HK" for position in artifacts.positions)
     assert any(position.instrument_code_std == "002475.SZ" for position in artifacts.positions)
+    zijin_position = next(position for position in artifacts.positions if position.instrument_name == "紫金矿业")
+    zijin_subject = next(subject for subject in artifacts.subjects if subject.subject_name == "紫金矿业")
+    assert zijin_position.review_flag is None
+    assert zijin_subject.review_flag is None
 
 
 def test_xyzc_adapter_parses_csv_sample_workbook() -> None:

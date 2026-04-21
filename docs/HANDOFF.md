@@ -34,11 +34,6 @@ This file is the single source of truth for project handoff.
 
 ## Known Gaps
 
-- Workbook artifact naming is now aligned with the expected workbook filename and no longer carries the old Phase 3 label.
-- `asset_type` remains technically usable but is not yet fully aligned with the target workbook's preferred business terminology.
-- Review rules are broader now, but additional asset-class coverage and more edge-case regression fixtures are still needed.
-- `review_flag` still behaves mainly as a normalization signal, while most human-review workload continues to surface through `review_items.csv`.
-- The repository still has no `docs_readable/` derivative layer; if one is introduced, it must not become a second source of truth.
 
 ## Recommended Next Steps
 

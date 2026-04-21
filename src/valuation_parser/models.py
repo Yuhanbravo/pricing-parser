@@ -81,6 +81,7 @@ class SubjectRecord:
     market_value_pct_nav: float | None = None
     pnl: float | None = None
     suspension_info: str | None = None
+    review_flag: str | None = None
     raw_row_index: int | None = None
     raw_text: str | None = None
 

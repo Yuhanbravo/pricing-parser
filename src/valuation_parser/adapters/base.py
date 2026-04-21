@@ -42,11 +42,13 @@ def annotate_subject_hierarchy(subjects: list[SubjectRecord]) -> list[SubjectRec
     return annotated
 
 
-def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[list[PositionRecord], list[ReviewItem]]:
+def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[list[SubjectRecord], list[PositionRecord], list[ReviewItem]]:
+    flagged_subjects: list[SubjectRecord] = []
     positions: list[PositionRecord] = []
     review_items: list[ReviewItem] = []
     for subject in subjects:
         review_reason = _determine_review_reason(subject)
+        subject_review_flag = "01" if review_reason else None
         if review_reason:
             review_items.append(
                 ReviewItem(
@@ -64,11 +66,13 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
             )
 
         if not subject.is_position_candidate:
+            flagged_subjects.append(replace(subject, review_flag=subject_review_flag))
             continue
         instrument_code_raw = _extract_instrument_code(subject.subject_code)
         instrument_code_std, exchange, normalization_flag = normalize_security_code(instrument_code_raw)
         asset_type = infer_asset_type(instrument_code_raw, exchange)
         review_flag = resolve_review_flag(normalization_flag, asset_type, review_reason)
+        flagged_subjects.append(replace(subject, review_flag=review_flag))
         positions.append(
             PositionRecord(
                 source_file=subject.source_file,
@@ -100,7 +104,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 review_note=_build_review_note(review_flag, review_reason),
             )
         )
-    return positions, review_items
+    return flagged_subjects, positions, review_items
 
 
 def enrich_subject_record(subject: SubjectRecord) -> SubjectRecord:
@@ -175,13 +179,22 @@ def _extract_instrument_code(subject_code: str | None) -> str | None:
 def _determine_review_reason(subject: SubjectRecord) -> str | None:
     if _is_derivative_subject(subject.subject_code):
         return "衍生工具科目，需单独建模或排除"
-    if subject.subject_code and subject.subject_code.endswith("99"):
+    if _is_valuation_gain_summary(subject):
         return "估值增值汇总行，通常不作为持仓叶子"
     if subject.is_leaf and subject.quantity not in (None, 0) and subject.market_price is None:
         return "叶子行存在数量但缺少市价"
     if subject.is_leaf and subject.market_price is not None and subject.quantity in (None, 0):
         return "叶子行存在市价但缺少数量"
     return None
+
+
+def _is_valuation_gain_summary(subject: SubjectRecord) -> bool:
+    return bool(
+        subject.subject_code
+        and subject.subject_code.endswith("99")
+        and subject.quantity in (None, 0)
+        and "估值增值" in (subject.subject_name or "")
+    )
 
 
 def _is_derivative_subject(subject_code: str | None) -> bool:

@@ -49,6 +49,7 @@ SUBJECT_FIELDS = [
     "market_value_pct_nav",
     "pnl",
     "suspension_info",
+    "review_flag",
     "raw_text",
 ]
 
@@ -122,7 +123,7 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     manual_override_count = sum(1 for route in routes if route.route_source == "manual_override")
     review_count = sum(1 for position in positions if position.review_flag)
     review_item_count = len(review_items)
-    normalization_issue_count = sum(1 for position in positions if position.review_flag in {"missing_code", "unknown_exchange", "unknown_asset_type"})
+    normalization_issue_count = sum(1 for position in positions if _has_normalization_issue(position.review_note))
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
 
     content = "\n".join(
@@ -142,6 +143,19 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
         ]
     )
     path.write_text(content + "\n", encoding="utf-8")
+
+
+def _has_normalization_issue(review_note: str | None) -> bool:
+    if not review_note:
+        return False
+    return any(
+        marker in review_note
+        for marker in (
+            "缺少可标准化的证券代码",
+            "无法根据证券代码识别交易所",
+            "无法推断资产类型",
+        )
+    )
 
 
 def write_excel_workbook(
