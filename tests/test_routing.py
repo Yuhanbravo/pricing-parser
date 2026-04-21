@@ -46,6 +46,7 @@ def test_route_can_fallback_to_true_custodian_name_alias() -> None:
     assert route.route_status == "success"
     assert route.adapter_key == "gtja"
     assert route.route_source == "mapping(custodian_name_chinese)"
+    assert route.custodian_name_chinese == "国泰海通证券股份有限公司"
 
 
 def test_route_reports_attempted_strategies_when_mapping_is_missing() -> None:

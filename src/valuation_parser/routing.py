@@ -124,11 +124,12 @@ def _success_decision(
     mapping: MappingRecord,
     route_source: str,
 ) -> RouteDecision:
+    canonical_custodian_name_chinese = _normalize_custodian_name(mapping.true_custodian_name) or _normalize_custodian_name(identity.custodian_name_chinese)
     return RouteDecision(
         source_file=source_file,
         product_id=identity.product_id,
         association_code=identity.association_code,
-        custodian_name_chinese=identity.custodian_name_chinese,
+        custodian_name_chinese=canonical_custodian_name_chinese,
         custodian_id=mapping.custodian_id,
         custodian_name=mapping.custodian_name,
         adapter_key=mapping.adapter_key,

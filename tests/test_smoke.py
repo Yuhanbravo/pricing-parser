@@ -116,6 +116,7 @@ def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) ->
     assert "citics" in routing_content
     assert "orient" in routing_content
     assert "gtja" in routing_content
+    assert "国泰海通证券股份有限公司" in routing_content
     assert "600036.SH" in positions_content
     assert "00700.HK" in positions_content
     assert "000333.SZ" in positions_content
