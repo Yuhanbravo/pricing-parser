@@ -125,6 +125,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     review_item_count = len(review_items)
     normalization_issue_count = sum(1 for position in positions if _has_normalization_issue(position.review_note))
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
+    supported_asset_types = sorted({position.asset_type for position in positions if position.asset_type})
+    unsupported_asset_types = ["unknown_asset_type"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
 
     content = "\n".join(
         [
@@ -140,6 +142,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             f"- Review flagged positions: {review_count}",
             f"- Review items exported: {review_item_count}",
             f"- Normalization issues: {normalization_issue_count}",
+            f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
+            f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
         ]
     )
     path.write_text(content + "\n", encoding="utf-8")
@@ -156,6 +160,10 @@ def _has_normalization_issue(review_note: str | None) -> bool:
             "无法推断资产类型",
         )
     )
+
+
+def _has_unknown_asset_type(review_note: str | None) -> bool:
+    return bool(review_note and "无法推断资产类型" in review_note)
 
 
 def write_excel_workbook(

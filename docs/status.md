@@ -11,6 +11,7 @@
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
 - Latest validated outputs were generated under `output_phase6/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and workbook export `估值表解析_expected_output_2025-12-01.xlsx`.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
+- Latest parse summary now also reports supported and unsupported asset-type coverage for the current run.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
 - Subjects and positions exports now preserve the trace fields required for audit and downstream reconciliation: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - Routing results now normalize `custodian_name_chinese` to a canonical display name, so aliases like `国泰` are exported as `国泰海通证券股份有限公司`.

@@ -28,6 +28,7 @@ D:\intern_workspace\
 - 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
 - 支持 `.xls/.xlsx` 估值表输入
 - 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 Excel 工作簿 `估值表解析_expected_output_2025-12-01.xlsx`
+- `parse_summary.md` 当前会额外汇总本轮运行已支持 / 未支持资产类型，便于快速判断样本覆盖面与剩余缺口
 - `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
 - `routing_results.csv` 中的 `custodian_name_chinese` 会收敛为标准化名称，避免同一托管机构以简称和全称混用
 - 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`

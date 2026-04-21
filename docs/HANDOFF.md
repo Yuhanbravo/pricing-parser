@@ -28,6 +28,7 @@ This file is the single source of truth for project handoff.
 
 - Verified input coverage in code now spans the current 11-file fixture set under `data_samples/raw/`.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
+- The markdown summary now includes supported and unsupported asset-type coverage so handoff readers can quickly see whether the current run stayed within the parser's known asset scope.
 - Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
 - The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
