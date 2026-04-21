@@ -27,7 +27,7 @@ D:\intern_workspace\
 - 从文件名、Sheet 名、表头预览中提取 `product_id` 与 `association_code`
 - 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
 - 支持 `.xls/.xlsx` 估值表输入
-- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 Excel 工作簿 `phase3_outputs.xlsx`（当前仍保留该历史文件名）
+- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 Excel 工作簿 `估值表解析_expected_output_2025-12-01.xlsx`
 - `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
 - 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
 - 最新 `output_phase6/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
@@ -162,6 +162,6 @@ python -m valuation_parser.cli \
 
 ## 下一步建议
 
-1. 制定 `phase3_outputs.xlsx` 的兼容迁移方案，再决定是否切换到中性命名的工作簿文件名。
+1. 决定 `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` 是否要扩展为完整交付基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
 2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
 3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。

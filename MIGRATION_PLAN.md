@@ -15,7 +15,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 ## Current State After Phase 5
 
 - Verified adapters: `citics`, `cmsc`, `csc`, `generic`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Verified outputs: `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, `phase3_outputs.xlsx`.
+- Verified outputs: `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, `估值表解析_expected_output_2025-12-01.xlsx`.
 - Latest bounded evidence from `output_phase5/`: 11 processed files, 11 successful routes, 1113 subject rows, 202 position rows, 253 review items, and 0 normalization issues.
 - Remaining work is no longer about proving the pipeline exists; it is about contract stabilization, terminology convergence, and controlled fixture governance.
 
@@ -23,7 +23,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 
 ### Phase 6.1: Artifact Contract Stabilization
 
-- Decide whether to keep the legacy workbook name `phase3_outputs.xlsx` or migrate to a neutral filename with explicit compatibility handling.
+- Keep workbook export naming aligned with `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` and prevent regressions back to phase-labelled artifact names.
 - Expand regression tests around review-item detection, normalization, and workbook export naming so downstream consumers do not silently drift.
 - Keep documentation aligned with the actual bounded run outputs rather than with historical phase labels.
 
@@ -53,7 +53,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 
 ## Exit Criteria For The Next Migration Step
 
-- Workbook artifact naming is either intentionally frozen and documented or migrated with compatibility coverage.
+- Workbook artifact naming remains aligned with `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` and is covered by regression tests.
 - Review-item generation and workbook export have dedicated regression coverage beyond the current derivative-subject rule.
 - `asset_type` terminology has a documented target mapping and at least the currently verified samples conform to it.
 - Status and handoff documents are refreshed again after the next bounded phase completes.

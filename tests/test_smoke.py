@@ -36,7 +36,8 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert "CUSTODIAN_007" in content
     assert "guosen" in content
     assert outputs["parse_summary"].exists()
-    assert outputs["phase3_workbook"].exists()
+    assert outputs["expected_workbook"].exists()
+    assert outputs["expected_workbook"].name == "估值表解析_expected_output_2025-12-01.xlsx"
 
 
 def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:
@@ -62,7 +63,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
     assert "Review items exported:" in summary_content
-    assert outputs["phase3_workbook"].exists()
+    assert outputs["expected_workbook"].exists()
 
 
 def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> None:
@@ -90,7 +91,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert "review_reason" in review_content
     assert "Position rows exported: " in summary_content
     assert "Review items exported:" in summary_content
-    assert outputs["phase3_workbook"].exists()
+    assert outputs["expected_workbook"].exists()
 
 
 def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) -> None:

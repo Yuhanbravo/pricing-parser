@@ -11,6 +11,7 @@ from valuation_parser.product_identity import extract_product_identity, preview_
 from valuation_parser.routing import route_identity
 
 SUPPORTED_INPUT_EXTENSIONS = {".csv", ".xls", ".xlsx"}
+EXPECTED_WORKBOOK_FILENAME = "估值表解析_expected_output_2025-12-01.xlsx"
 
 
 def run_pipeline(
@@ -55,7 +56,7 @@ def run_pipeline(
     subjects_path = output_root / "valuation_subjects.csv"
     positions_path = output_root / "valuation_positions.csv"
     review_items_path = output_root / "review_items.csv"
-    workbook_path = output_root / "phase3_outputs.xlsx"
+    workbook_path = output_root / EXPECTED_WORKBOOK_FILENAME
     summary_output = Path(summary_path) if summary_path else output_root / "parse_summary.md"
 
     routes = [artifact.route for artifact in artifacts]
@@ -75,7 +76,7 @@ def run_pipeline(
         "valuation_subjects": subjects_path,
         "valuation_positions": positions_path,
         "review_items": review_items_path,
-        "phase3_workbook": workbook_path,
+        "expected_workbook": workbook_path,
         "parse_summary": summary_output,
     }
 

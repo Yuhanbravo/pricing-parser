@@ -7,14 +7,14 @@ This file is the single source of truth for project handoff.
 - Current phase: Phase 5 delivery with post-review contract alignment refresh.
 - Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, so unresolved files are no longer upgraded to successful generic fallback routes.
 - Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Latest validated outputs were generated under `output_phase6/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `phase3_outputs.xlsx`.
+- Latest validated outputs were generated under `output_phase6/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `估值表解析_expected_output_2025-12-01.xlsx`.
 
 ## What Was Refreshed In The Contract-Alignment Pass
 
 - Full-run validation continues to use all 11 controlled raw fixtures in `data_samples/raw/`.
 - `valuation_subjects` and `valuation_positions` exports now retain trace columns needed for handoff and audit: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
-- Output artifacts were regenerated under `output_phase6/`; the workbook export still uses the legacy filename `phase3_outputs.xlsx` for compatibility.
+- Output artifacts were regenerated under `output_phase6/`; the workbook export now uses the same filename as the expected workbook artifact: `估值表解析_expected_output_2025-12-01.xlsx`.
 
 ## Hard Boundaries
 
@@ -33,7 +33,7 @@ This file is the single source of truth for project handoff.
 
 ## Known Gaps
 
-- `phase3_outputs.xlsx` is still the workbook export name, so artifact naming remains historically coupled to an older phase label.
+- Workbook artifact naming is now aligned with the expected workbook filename and no longer carries the old Phase 3 label.
 - `asset_type` remains technically usable but is not yet fully aligned with the target workbook's preferred business terminology.
 - Review rules are broader now, but additional asset-class coverage and more edge-case regression fixtures are still needed.
 - `review_flag` still behaves mainly as a normalization signal, while most human-review workload continues to surface through `review_items.csv`.
@@ -41,7 +41,7 @@ This file is the single source of truth for project handoff.
 
 ## Recommended Next Steps
 
-1. Decide whether the workbook artifact should keep the legacy `phase3_outputs.xlsx` name or move to a neutral name with compatibility handling.
+1. Decide whether `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` should remain parser-scoped or be expanded into a fuller acceptance artifact.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
 4. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
