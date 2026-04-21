@@ -36,8 +36,8 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert "CUSTODIAN_007" in content
     assert "guosen" in content
     assert outputs["parse_summary"].exists()
-    assert outputs["expected_workbook"].exists()
-    assert outputs["expected_workbook"].name == "估值表解析_expected_output_2025-12-01.xlsx"
+    assert outputs["output_workbook"].exists()
+    assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
 
 def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:
@@ -68,7 +68,8 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "Review items exported:" in summary_content
     assert "Supported asset types: hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
-    assert outputs["expected_workbook"].exists()
+    assert outputs["output_workbook"].exists()
+    assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
 
 def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> None:
@@ -100,7 +101,8 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert "Review items exported:" in summary_content
     assert "Supported asset types:" in summary_content
     assert "Unsupported asset types:" in summary_content
-    assert outputs["expected_workbook"].exists()
+    assert outputs["output_workbook"].exists()
+    assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
 
 def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) -> None:
@@ -132,8 +134,8 @@ def test_pipeline_writes_non_empty_outputs_for_phase4_samples(tmp_path: Path) ->
     assert "Processed files: 3" in summary_content
 
 
-def test_pipeline_writes_non_empty_outputs_for_full_phase6_raw_set(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output_phase6"
+def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Path) -> None:
+    output_dir = tmp_path / "output"
 
     outputs = run_pipeline(Path("data_samples/raw"), Path("产品与托管机构映射表.csv"), output_dir)
 
@@ -156,7 +158,7 @@ def test_pipeline_writes_non_empty_outputs_for_full_phase6_raw_set(tmp_path: Pat
 
 
 def test_pipeline_can_enable_generic_layout_fallback_explicitly(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output_phase6"
+    output_dir = tmp_path / "output"
 
     outputs = run_pipeline(
         Path("data_samples/raw"),

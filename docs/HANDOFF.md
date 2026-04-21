@@ -7,7 +7,7 @@ This file is the single source of truth for project handoff.
 - Current phase: Phase 5 delivery with post-review contract alignment refresh.
 - Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, so unresolved files are no longer upgraded to successful generic fallback routes.
 - Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Latest validated outputs were generated under `output_phase6/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and `估值表解析_expected_output_2025-12-01.xlsx`.
+- Latest validated outputs were generated under `output/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`.
 
 ## What Was Refreshed In The Contract-Alignment Pass
 
@@ -16,7 +16,7 @@ This file is the single source of truth for project handoff.
 - `routing_results` now exports canonical `custodian_name_chinese` values, so alias forms such as `国泰` are normalized to `国泰海通证券股份有限公司` in downstream artifacts.
 - `valuation_positions` now normalizes the routine suspension marker to plain `正常交易`, so downstream consumers no longer need to strip bracketed variants.
 - Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
-- Output artifacts were regenerated under `output_phase6/`; the workbook export now uses the same filename as the expected workbook artifact: `估值表解析_expected_output_2025-12-01.xlsx`.
+- Output artifacts were regenerated under `output/`; the workbook export name is now derived from the input date as `估值表解析_output_<date>.xlsx`.
 
 ## Hard Boundaries
 
@@ -39,7 +39,7 @@ This file is the single source of truth for project handoff.
 
 ## Recommended Next Steps
 
-1. Decide whether `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` should remain parser-scoped or be expanded into a fuller acceptance artifact.
+1. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance artifact.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
 4. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
@@ -48,4 +48,4 @@ This file is the single source of truth for project handoff.
 
 - Start from `docs/status.md` when you need the current snapshot of phase, scope, and risks.
 - Use `MIGRATION_PLAN.md` for planned convergence work and deferred items; do not overload this handoff file with implementation scheduling.
-- If you change parser behavior, rerun `data_samples/raw/` and regenerate outputs in an ignored output directory such as `output_phase6/`, then verify that workbook and CSV artifacts remain mutually consistent.
+- If you change parser behavior, rerun `data_samples/raw/` and regenerate outputs in an ignored output directory such as `output/`, then verify that workbook and CSV artifacts remain mutually consistent.

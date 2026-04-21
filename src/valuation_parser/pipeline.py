@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from dataclasses import replace
+import re
 
 from valuation_parser.adapter_registry import build_registry, get_adapter
 from valuation_parser.exporters import write_excel_workbook, write_positions, write_review_items, write_routing_results, write_subjects, write_summary
@@ -11,7 +12,7 @@ from valuation_parser.product_identity import extract_product_identity, preview_
 from valuation_parser.routing import route_identity
 
 SUPPORTED_INPUT_EXTENSIONS = {".csv", ".xls", ".xlsx"}
-EXPECTED_WORKBOOK_FILENAME = "估值表解析_expected_output_2025-12-01.xlsx"
+DEFAULT_WORKBOOK_FILENAME = "估值表解析_output.xlsx"
 
 
 def run_pipeline(
@@ -56,7 +57,7 @@ def run_pipeline(
     subjects_path = output_root / "valuation_subjects.csv"
     positions_path = output_root / "valuation_positions.csv"
     review_items_path = output_root / "review_items.csv"
-    workbook_path = output_root / EXPECTED_WORKBOOK_FILENAME
+    workbook_path = output_root / _build_output_workbook_filename(source_files)
     summary_output = Path(summary_path) if summary_path else output_root / "parse_summary.md"
 
     routes = [artifact.route for artifact in artifacts]
@@ -76,9 +77,28 @@ def run_pipeline(
         "valuation_subjects": subjects_path,
         "valuation_positions": positions_path,
         "review_items": review_items_path,
-        "expected_workbook": workbook_path,
+        "output_workbook": workbook_path,
         "parse_summary": summary_output,
     }
+
+
+def _build_output_workbook_filename(source_files: list[Path]) -> str:
+    extracted_dates = sorted({date for source_file in source_files if (date := _extract_date_from_input_name(source_file))})
+    if not extracted_dates:
+        return DEFAULT_WORKBOOK_FILENAME
+    return f"估值表解析_output_{extracted_dates[0]}.xlsx"
+
+
+def _extract_date_from_input_name(source_file: Path) -> str | None:
+    source_name = source_file.stem
+    hyphen_match = re.search(r"(\d{4}-\d{2}-\d{2})", source_name)
+    if hyphen_match:
+        return hyphen_match.group(1)
+    compact_match = re.search(r"(\d{8})", source_name)
+    if compact_match:
+        digits = compact_match.group(1)
+        return f"{digits[:4]}-{digits[4:6]}-{digits[6:8]}"
+    return None
 
 
 def _build_generic_fallback_route(source_file: Path, route: RouteDecision, preview: WorkbookPreview) -> RouteDecision | None:

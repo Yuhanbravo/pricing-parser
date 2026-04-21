@@ -1,6 +1,6 @@
 # valuation-parser
 
-估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成一轮契约收口刷新：基于 `data_samples/raw/` 的全量 11 份受控样表重新生成了 `output_phase6/`，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出，以及 `3102*` 衍生工具科目 review 规则；默认严格路由口径下保留 1 个未命中 mapping 的失败样本。
+估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成一轮契约收口刷新：基于 `data_samples/raw/` 的全量 11 份受控样表重新生成了 `output/`，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出，以及 `3102*` 衍生工具科目 review 规则；默认严格路由口径下保留 1 个未命中 mapping 的失败样本。
 
 ## 工作区边界
 
@@ -27,13 +27,13 @@ D:\intern_workspace\
 - 从文件名、Sheet 名、表头预览中提取 `product_id` 与 `association_code`
 - 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
 - 支持 `.xls/.xlsx` 估值表输入
-- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 Excel 工作簿 `估值表解析_expected_output_2025-12-01.xlsx`
+- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及按输入日期自动命名的 Excel 工作簿 `估值表解析_output_<date>.xlsx`
 - `parse_summary.md` 当前会额外汇总本轮运行已支持 / 未支持资产类型，便于快速判断样本覆盖面与剩余缺口
 - `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
 - `routing_results.csv` 中的 `custodian_name_chinese` 会收敛为标准化名称，避免同一托管机构以简称和全称混用
 - `valuation_positions.csv` 中的 `suspension_info` 会将 `【正常交易】` 等包裹格式收敛为纯文本 `正常交易`
 - 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
-- 最新 `output_phase6/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
+- 最新 `output/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
 - 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
 - `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `01` 标记所有需要人工复核的记录；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身不再区分错误类型
@@ -165,6 +165,6 @@ python -m valuation_parser.cli \
 
 ## 下一步建议
 
-1. 决定 `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` 是否要扩展为完整交付基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
+1. 决定是否要为 `估值表解析_output_<date>.xlsx` 维护一份更完整的验收基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
 2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
 3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。

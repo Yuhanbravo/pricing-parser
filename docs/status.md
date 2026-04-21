@@ -9,7 +9,7 @@
 ## Current Snapshot
 
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
-- Latest validated outputs were generated under `output_phase6/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and workbook export `估值表解析_expected_output_2025-12-01.xlsx`.
+- Latest validated outputs were generated under `output/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook export `估值表解析_output_<date>.xlsx`.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
@@ -33,7 +33,7 @@
 
 ## Known Gaps
 
-- Workbook export naming is now aligned with the expected artifact name `估值表解析_expected_output_2025-12-01.xlsx`, removing the historical Phase 3 label from current outputs.
+- Workbook export naming is now derived from the input date as `估值表解析_output_<date>.xlsx`, removing both the historical Phase 3 label and the old expected-baseline filename from current outputs.
 - `asset_type` terminology still needs refinement to match downstream workbook language more closely.
 - Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
 - `review_flag` now uses the binary value `01` to mark every subject or position that requires manual review, while `review_items.csv` remains the detailed queue explaining why each record needs attention.
@@ -41,7 +41,7 @@
 
 ## Recommended Next Steps
 
-1. Decide whether `data_samples/expected/估值表解析_expected_output_2025-12-01.xlsx` should remain a parser-only baseline or be expanded into a fuller delivery contract.
+1. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
 2. Decide how to handle the remaining unmapped `PRODUCT_022` sample in the default path: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
 3. Tighten `asset_type` naming against the expected workbook vocabulary.
 4. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule.
