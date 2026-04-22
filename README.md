@@ -36,7 +36,7 @@ D:\intern_workspace\
 - 最新 `output/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、242 条 review items、0 个 normalization issues
 - 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
-- `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `01` 标记所有需要人工复核的记录；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身不再区分错误类型
+- `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `1` 标记所有需要人工复核的记录，未命中时保持空白；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身只承担“是否需要人工复核”的二值标记
 - 测试已覆盖身份提取、映射加载、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item 回归
 
 当前已验证的真实样表：

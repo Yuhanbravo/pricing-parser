@@ -121,7 +121,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     success_count = sum(1 for route in routes if route.route_status == "success")
     failure_count = sum(1 for route in routes if route.route_status != "success")
     manual_override_count = sum(1 for route in routes if route.route_source == "manual_override")
-    review_count = sum(1 for position in positions if position.review_flag)
+    flagged_subject_count = sum(1 for subject in subjects if subject.review_flag)
+    flagged_position_count = sum(1 for position in positions if position.review_flag)
     review_item_count = len(review_items)
     normalization_issue_count = sum(1 for position in positions if _has_normalization_issue(position.review_note))
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
@@ -139,7 +140,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             f"- Supported adapters in run: {', '.join(adapter_keys) if adapter_keys else 'none'}",
             f"- Subject rows exported: {len(subjects)}",
             f"- Position rows exported: {len(positions)}",
-            f"- Review flagged positions: {review_count}",
+            f"- Review flagged subjects: {flagged_subject_count}",
+            f"- Review flagged positions: {flagged_position_count}",
             f"- Review items exported: {review_item_count}",
             f"- Normalization issues: {normalization_issue_count}",
             f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",

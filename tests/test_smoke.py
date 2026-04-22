@@ -65,6 +65,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "review_reason" in review_content
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
+    assert "Review flagged subjects:" in summary_content
     assert "Review items exported:" in summary_content
     assert "Supported asset types: hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
@@ -97,6 +98,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert ",xyzc,mapping(product_id)" in positions_content
     assert "【正常交易】" not in positions_content
     assert "review_reason" in review_content
+    assert "Review flagged subjects:" in summary_content
     assert "Position rows exported: " in summary_content
     assert "Review items exported:" in summary_content
     assert "Supported asset types:" in summary_content
@@ -153,6 +155,7 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "002475.SZ" in positions_content
     assert "Processed files: 11" in summary_content
     assert "Routing failures: 1" in summary_content
+    assert "Review flagged subjects:" in summary_content
     assert "Supported asset types: a_share, fund_or_etf, hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
 

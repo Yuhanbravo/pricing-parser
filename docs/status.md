@@ -36,7 +36,7 @@
 - Workbook export naming is now derived from the input date as `估值表解析_output_<date>.xlsx`, removing both the historical Phase 3 label and the old expected-baseline filename from current outputs.
 - `asset_type` terminology still needs refinement to match downstream workbook language more closely.
 - Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
-- `review_flag` now uses the binary value `01` to mark every subject or position that requires manual review, while `review_items.csv` remains the detailed queue explaining why each record needs attention.
+- `review_flag` now uses the binary value `1` to mark every subject or position that requires manual review, leaving clean rows blank; `review_note` and `review_items.csv` remain the authoritative place for the concrete review reason.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
 
 ## Recommended Next Steps
