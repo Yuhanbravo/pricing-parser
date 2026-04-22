@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 
 from valuation_parser.models import ParseArtifacts, PositionRecord, ReviewItem, RouteDecision, SubjectRecord
-from valuation_parser.normalizers import derive_broker_name, infer_asset_type, normalize_security_code, resolve_review_flag
+from valuation_parser.normalizers import REVIEW_FLAG_VALUE, derive_broker_name, infer_asset_type, normalize_security_code, resolve_review_flag
 
 
 class BaseValuationAdapter(ABC):
@@ -48,7 +48,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
     review_items: list[ReviewItem] = []
     for subject in subjects:
         review_reason = _determine_review_reason(subject)
-        subject_review_flag = "01" if review_reason else None
+        subject_review_flag = REVIEW_FLAG_VALUE if review_reason else None
         if review_reason:
             review_items.append(
                 ReviewItem(

@@ -44,9 +44,9 @@ def test_build_positions_and_review_items_marks_derivative_subjects_for_review()
     derivative_position = next(position for position in positions if position.subject_code == "3102A101000002")
     non_derivative_position = next(position for position in positions if position.subject_code == "600000")
     derivative_subject_row = next(subject for subject in subjects if subject.subject_code == "3102A101000002")
-    assert derivative_position.review_flag == "01"
+    assert derivative_position.review_flag == "1"
     assert derivative_position.review_note == "衍生工具科目，需单独建模或排除"
-    assert derivative_subject_row.review_flag == "01"
+    assert derivative_subject_row.review_flag == "1"
     assert non_derivative_position.review_flag is None
 
 

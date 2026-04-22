@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+REVIEW_FLAG_VALUE = "1"
+
 
 def normalize_security_code(raw_code: str | None) -> tuple[str | None, str | None, str | None]:
     if raw_code is None:
@@ -43,11 +45,11 @@ def resolve_review_flag(
     review_reason: str | None = None,
 ) -> str | None:
     if normalization_flag:
-        return "01"
+        return REVIEW_FLAG_VALUE
     if asset_type is None:
-        return "01"
+        return REVIEW_FLAG_VALUE
     if review_reason:
-        return "01"
+        return REVIEW_FLAG_VALUE
     return None
 
 
