@@ -10,12 +10,13 @@
 
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
 - Latest validated outputs were generated under `output/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook export `估值表解析_output_<date>.xlsx`.
-- Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
+- Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
 - Subjects and positions exports now preserve the trace fields required for audit and downstream reconciliation: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - Routing results now normalize `custodian_name_chinese` to a canonical display name, so aliases like `国泰` are exported as `国泰海通证券股份有限公司`.
 - Position exports now normalize the routine suspension marker to plain `正常交易`, avoiding bracketed formatting drift in downstream sheets.
+- The strict-default acceptance baseline is maintained under `data_samples/expected/`, including workbook and summary evidence.
 
 ## Supported Scope
 
@@ -38,6 +39,7 @@
 - Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
 - `review_flag` now uses the binary value `1` to mark every subject or position that requires manual review, leaving clean rows blank; `review_note` and `review_items.csv` remain the authoritative place for the concrete review reason.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
+- Historical materials such as `output_phase1/` and `docs/documentation_governance_report.*` should be treated as legacy references rather than current contract artifacts.
 
 ## Recommended Next Steps
 
@@ -45,3 +47,4 @@
 2. Decide how to handle the remaining unmapped `PRODUCT_022` sample in the default path: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
 3. Tighten `asset_type` naming against the expected workbook vocabulary.
 4. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule.
+5. If this round closes the remaining evidence drift, prefer `review-round1-baseline`, `review-round2-candidate`, and `review-round3-evidence-closed` for milestone tagging.

@@ -18,6 +18,18 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         adapter_key="greatwall",
         route_message="",
     )
+    failed_route = RouteDecision(
+        source_file="unmapped.xlsx",
+        product_id="PRODUCT_022",
+        association_code="XXX022",
+        custodian_name_chinese=None,
+        custodian_id=None,
+        custodian_name=None,
+        route_status="failed",
+        route_source="mapping(product_id)",
+        adapter_key=None,
+        route_message="No active mapping record matched the extracted identity",
+    )
     flagged_subject = SubjectRecord(
         source_file="sample.xlsx",
         broker="测试券商",
@@ -58,8 +70,8 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
 
     write_summary(
         summary_path,
-        files_processed=1,
-        routes=[route],
+        files_processed=2,
+        routes=[route, failed_route],
         subjects=[flagged_subject, clean_subject],
         positions=[flagged_position],
         review_items=[review_item],
@@ -67,5 +79,11 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
 
     content = summary_path.read_text(encoding="utf-8")
 
+    assert "Processed files: 2" in content
+    assert "Routing failures: 1" in content
     assert "Review flagged subjects: 1" in content
     assert "Review flagged positions: 1" in content
+    assert "Unrouted files: unmapped.xlsx" in content
+    assert "Generic fallback routes used: 0" in content
+    assert "Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled." in content
+    assert "Review entrypoint: use review_flag for binary review markers and review_items.csv / review_note for concrete reasons." in content

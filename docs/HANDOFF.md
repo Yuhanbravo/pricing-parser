@@ -30,11 +30,14 @@ This file is the single source of truth for project handoff.
 - Verified input coverage in code now spans the current 11-file fixture set under `data_samples/raw/`.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
 - The markdown summary now includes supported and unsupported asset-type coverage so handoff readers can quickly see whether the current run stayed within the parser's known asset scope.
-- Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
+- Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
 - The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
+- The strict-default acceptance baseline now lives under `data_samples/expected/`, including the expected routing CSV, subject CSV, position CSV, review-item CSV, parse summary, and workbook artifact.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
 
 ## Known Gaps
+
+- Historical materials such as `output_phase1/` and `docs/documentation_governance_report.*` remain in the repository for audit traceability, but they are not the authoritative current contract.
 
 
 ## Recommended Next Steps
@@ -43,6 +46,7 @@ This file is the single source of truth for project handoff.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
 4. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
+5. If the evidence-chain closure diff remains aligned after validation, use `review-round1-baseline`, `review-round2-candidate`, and `review-round3-evidence-closed` as the preferred tag sequence.
 
 ## Practical Takeover Notes
 

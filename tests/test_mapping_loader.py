@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from openpyxl import Workbook
 import pytest
 
 from valuation_parser.mapping_loader import load_mapping
@@ -32,3 +33,22 @@ def test_load_mapping_rejects_unregistered_adapter_key(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="Unsupported adapter_key"):
         load_mapping(mapping_path)
+
+
+def test_load_canonical_mapping_xlsx(tmp_path: Path) -> None:
+    mapping_path = tmp_path / "mapping.xlsx"
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "mapping"
+    worksheet.append(["product_id", "association_code", "custodian_id", "custodian_name", "adapter_key", "is_active", "note"])
+    worksheet.append(["PRODUCT_023", "XXX023", "CUSTODIAN_023", "长城证券股份有限公司", "greatwall", "true", "xlsx regression"])
+    workbook.save(mapping_path)
+
+    records = load_mapping(mapping_path)
+
+    assert len(records) == 1
+    assert records[0].product_id == "PRODUCT_023"
+    assert records[0].association_code == "XXX023"
+    assert records[0].custodian_id == "CUSTODIAN_023"
+    assert records[0].adapter_key == "greatwall"
+    assert records[0].note == "xlsx regression"

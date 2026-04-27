@@ -1,5 +1,7 @@
 # Documentation Governance Report
 
+Historical note: this report records a 2026-04-16 audit snapshot. It is kept for traceability, but the current parser contract is defined by `README.md`, `docs/HANDOFF.md`, `docs/status.md`, `data_samples/expected/`, and the latest strict-default output evidence.
+
 - Date: 2026-04-16
 - Mode: `audit -> report -> fix`
 - Project root: `pricing_parser`

@@ -155,6 +155,9 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "002475.SZ" in positions_content
     assert "Processed files: 11" in summary_content
     assert "Routing failures: 1" in summary_content
+    assert "Unrouted files: 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx" in summary_content
+    assert "Generic fallback routes used: 0" in summary_content
+    assert "Review entrypoint: use review_flag for binary review markers and review_items.csv / review_note for concrete reasons." in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Supported asset types: a_share, fund_or_etf, hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
@@ -175,3 +178,5 @@ def test_pipeline_can_enable_generic_layout_fallback_explicitly(tmp_path: Path) 
 
     assert "layout_fallback(generic)" in routing_content
     assert "Routing failures: 0" in summary_content
+    assert "Generic fallback routes used: 1" in summary_content
+    assert "Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled." in summary_content

@@ -121,6 +121,7 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     success_count = sum(1 for route in routes if route.route_status == "success")
     failure_count = sum(1 for route in routes if route.route_status != "success")
     manual_override_count = sum(1 for route in routes if route.route_source == "manual_override")
+    generic_fallback_count = sum(1 for route in routes if route.route_source == "layout_fallback(generic)")
     flagged_subject_count = sum(1 for subject in subjects if subject.review_flag)
     flagged_position_count = sum(1 for position in positions if position.review_flag)
     review_item_count = len(review_items)
@@ -128,6 +129,7 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
     supported_asset_types = sorted({position.asset_type for position in positions if position.asset_type})
     unsupported_asset_types = ["unknown_asset_type"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
+    unrouted_files = [Path(route.source_file).name for route in routes if route.route_status != "success"]
 
     content = "\n".join(
         [
@@ -144,6 +146,10 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             f"- Review flagged positions: {flagged_position_count}",
             f"- Review items exported: {review_item_count}",
             f"- Normalization issues: {normalization_issue_count}",
+            f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
+            f"- Generic fallback routes used: {generic_fallback_count}",
+            "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
+            "- Review entrypoint: use review_flag for binary review markers and review_items.csv / review_note for concrete reasons.",
             f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
             f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
         ]
