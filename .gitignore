@@ -16,4 +16,5 @@ tmp/
 *.xls
 *.parquet
 *.csv
+*.bundle
 !data_samples/README.md
