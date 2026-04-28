@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+from collections import Counter
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -84,6 +85,7 @@ POSITION_FIELDS = [
 ]
 
 REVIEW_FIELDS = [
+    "source_file",
     "broker",
     "valuation_date",
     "raw_row_index",
@@ -129,7 +131,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
     supported_asset_types = sorted({position.asset_type for position in positions if position.asset_type})
     unsupported_asset_types = ["unknown_asset_type"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
-    unrouted_files = [Path(route.source_file).name for route in routes if route.route_status != "success"]
+    unrouted_files = sorted({Path(route.source_file).name for route in routes if route.route_status != "success"})
+    review_lines = _build_review_summary_lines(review_items=review_items, positions=positions)
 
     content = "\n".join(
         [
@@ -149,12 +152,63 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
             f"- Generic fallback routes used: {generic_fallback_count}",
             "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
-            "- Review entrypoint: use review_flag for binary review markers and review_items.csv / review_note for concrete reasons.",
+            "- Review entrypoint: first inspect valuation_subjects.csv / valuation_positions.csv rows with review_flag=1, then use review_items.csv.review_reason and valuation_positions.csv.review_note for concrete reasons.",
             f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
             f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
+            "",
+            "## Unrouted File Details",
+            *([f"- {source_file}" for source_file in unrouted_files] or ["- none"]),
+            "",
+            "## Review Queue By Source File",
+            *review_lines,
         ]
     )
     path.write_text(content + "\n", encoding="utf-8")
+
+
+def _build_review_summary_lines(*, review_items: list[ReviewItem], positions: list[PositionRecord]) -> list[str]:
+    review_entries: dict[tuple[str, int | None, str | None, str | None], set[str]] = {}
+
+    for review_item in review_items:
+        source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
+        key = (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+        reasons = review_entries.setdefault(key, set())
+        reasons.update(_split_review_reasons(review_item.review_reason))
+
+    for position in positions:
+        if not position.review_note:
+            continue
+        source_file = Path(position.source_file).name
+        key = (source_file, position.raw_row_index, position.subject_code, position.instrument_name)
+        reasons = review_entries.setdefault(key, set())
+        reasons.update(_split_review_reasons(position.review_note))
+
+    if not review_entries:
+        return ["- none"]
+
+    summary_lines: list[str] = []
+    source_files = sorted({entry_key[0] for entry_key in review_entries})
+    for source_file in source_files:
+        entries_for_file = [reasons for entry_key, reasons in review_entries.items() if entry_key[0] == source_file]
+        reason_counter: Counter[str] = Counter(
+            reason
+            for reasons in entries_for_file
+            for reason in reasons
+        )
+        top_reasons = ", ".join(
+            f"{reason} ({count})"
+            for reason, count in sorted(reason_counter.items(), key=lambda item: (-item[1], item[0]))[:3]
+        )
+        summary_lines.append(
+            f"- {source_file}: {len(entries_for_file)} review entries; top reasons: {top_reasons or 'none'}"
+        )
+    return summary_lines
+
+
+def _split_review_reasons(review_text: str | None) -> list[str]:
+    if not review_text:
+        return []
+    return [part.strip() for part in review_text.split("；") if part.strip()]
 
 
 def _has_normalization_issue(review_note: str | None) -> bool:

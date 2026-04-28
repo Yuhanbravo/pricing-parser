@@ -52,6 +52,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
         if review_reason:
             review_items.append(
                 ReviewItem(
+                    source_file=subject.source_file,
                     broker=subject.broker,
                     valuation_date=subject.valuation_date,
                     raw_row_index=subject.raw_row_index,

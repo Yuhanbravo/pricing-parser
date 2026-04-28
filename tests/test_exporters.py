@@ -60,6 +60,7 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         review_flag="1",
     )
     review_item = ReviewItem(
+        source_file="sample.xlsx",
         broker="测试券商",
         valuation_date="2025-03-27",
         raw_row_index=1,
@@ -67,13 +68,25 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         subject_name="场外期权",
         review_reason="衍生工具科目，需单独建模或排除",
     )
+    normalization_position = PositionRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        sheet_name="估值表",
+        valuation_date="2025-03-27",
+        instrument_name="无代码资产",
+        subject_code="1102A199000001",
+        subject_name="无代码资产",
+        raw_row_index=2,
+        review_flag="missing_code",
+        review_note="缺少可标准化的证券代码；叶子行存在数量但缺少市价",
+    )
 
     write_summary(
         summary_path,
         files_processed=2,
         routes=[route, failed_route],
         subjects=[flagged_subject, clean_subject],
-        positions=[flagged_position],
+        positions=[flagged_position, normalization_position],
         review_items=[review_item],
     )
 
@@ -82,8 +95,15 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
     assert "Processed files: 2" in content
     assert "Routing failures: 1" in content
     assert "Review flagged subjects: 1" in content
-    assert "Review flagged positions: 1" in content
+    assert "Review flagged positions: 2" in content
     assert "Unrouted files: unmapped.xlsx" in content
+    assert "## Unrouted File Details" in content
+    assert "- unmapped.xlsx" in content
     assert "Generic fallback routes used: 0" in content
     assert "Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled." in content
-    assert "Review entrypoint: use review_flag for binary review markers and review_items.csv / review_note for concrete reasons." in content
+    assert "Review entrypoint: first inspect valuation_subjects.csv / valuation_positions.csv rows with review_flag=1, then use review_items.csv.review_reason and valuation_positions.csv.review_note for concrete reasons." in content
+    assert "## Review Queue By Source File" in content
+    assert "- sample.xlsx: 2 review entries; top reasons:" in content
+    assert "缺少可标准化的证券代码 (1)" in content
+    assert "叶子行存在数量但缺少市价 (1)" in content
+    assert "衍生工具科目，需单独建模或排除 (1)" in content
