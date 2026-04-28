@@ -4,6 +4,7 @@ from openpyxl import Workbook
 import pytest
 
 from valuation_parser.mapping_loader import load_mapping
+from valuation_parser.pipeline import run_pipeline
 
 
 def test_load_compact_mapping_csv(tmp_path: Path) -> None:
@@ -52,3 +53,23 @@ def test_load_canonical_mapping_xlsx(tmp_path: Path) -> None:
     assert records[0].custodian_id == "CUSTODIAN_023"
     assert records[0].adapter_key == "greatwall"
     assert records[0].note == "xlsx regression"
+
+
+def test_pipeline_accepts_canonical_mapping_xlsx(tmp_path: Path) -> None:
+    mapping_path = tmp_path / "mapping.xlsx"
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "mapping"
+    worksheet.append(["product_id", "association_code", "custodian_id", "custodian_name", "adapter_key", "is_active", "note"])
+    worksheet.append(["PRODUCT_023", "XXX023", "CUSTODIAN_023", "长城证券股份有限公司", "greatwall", "true", "xlsx pipeline regression"])
+    workbook.save(mapping_path)
+
+    output_dir = tmp_path / "output"
+    outputs = run_pipeline(Path("data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx"), mapping_path, output_dir)
+
+    routing_content = outputs["routing_results"].read_text(encoding="utf-8-sig")
+    summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
+
+    assert "greatwall" in routing_content
+    assert "Routing failures: 0" in summary_content
+    assert "Unrouted files: none" in summary_content
