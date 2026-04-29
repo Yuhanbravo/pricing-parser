@@ -23,3 +23,5 @@ The expected workbook is checked as a full sheet-content baseline for the same s
 ## Scope Note
 
 This directory is the current baseline for evidence-chain verification. Historical outputs under `output_phase1/` are retained for traceability only and should not be treated as the active external contract.
+
+The paired markdown summary is also part of the active contract and is expected to expose both `Unrecognized Object Index` and `Review Entry Index` so reviewers can locate unresolved files and reviewable rows without rerunning the parser.

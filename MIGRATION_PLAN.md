@@ -18,6 +18,8 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 - Verified outputs: `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook `估值表解析_output_<date>.xlsx`.
 - Latest bounded evidence from the strict-default `output/` run: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
 - Current review contract keeps `3102*` derivative subjects in `valuation_subjects` and `review_items`; they are not promoted into `valuation_positions`.
+- Current summary contract now includes explicit indexes for unrouted objects and review entrypoints, and the strict-default baseline compares full workbook sheet contents.
+- Canonical `.xlsx` mapping and non-derivative position-review entrypoints both have repository regression coverage.
 - Remaining work is no longer about proving the pipeline exists; it is about contract stabilization, terminology convergence, and controlled fixture governance.
 
 ## Planned Next Phase
@@ -25,7 +27,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 ### Phase 6.1: Artifact Contract Stabilization
 
 - Keep workbook export naming aligned with the input date as `估值表解析_output_<date>.xlsx` and prevent regressions back to historical artifact names.
-- Expand regression tests around review-item detection, normalization, and workbook export naming so downstream consumers do not silently drift.
+- Expand regression tests around review-item detection, normalization, workbook export naming, and more asset-class-specific review paths so downstream consumers do not silently drift.
 - Keep documentation aligned with the actual bounded run outputs rather than with historical phase labels.
 
 ### Phase 6.2: Output Vocabulary Convergence
