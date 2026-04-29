@@ -1,5 +1,7 @@
 # Need Review: Evidence Chain Closure
 
+> Historical snapshot: this need-review note records the pre-closure assessment as of 2026-04-27. It may intentionally describe drift that has since been resolved; use the current project docs and baselines for live status.
+
 ## 1. 当前项目状态是什么？
 
 项目已经从“能跑但契约外漏”的第一轮状态，推进到“核心外部契约基本修正完成，但证据链仍未完全统一”的第二轮后状态。

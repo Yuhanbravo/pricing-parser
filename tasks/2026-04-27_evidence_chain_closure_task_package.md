@@ -1,5 +1,7 @@
 # Task Package: Evidence Chain Closure
 
+> Historical snapshot: this task package records the scoped plan as of 2026-04-27. It is not the current source of truth for repository state; use `README.md`, `docs/HANDOFF.md`, `docs/status.md`, `data_samples/expected/`, and the latest strict-default outputs for the active contract.
+
 ## Task Identification
 
 - Name: Round 3 / Evidence Chain Closure

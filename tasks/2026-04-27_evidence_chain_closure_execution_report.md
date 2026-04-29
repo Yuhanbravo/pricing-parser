@@ -1,5 +1,7 @@
 # Execution Report
 
+> Historical snapshot: this execution report records one bounded evidence-closure pass as of 2026-04-27. It should be read as process history, not as the current authoritative state of the repository.
+
 ## 1. Scope Restatement
 
 本轮严格按 `evidence chain closure` 任务包执行，只处理 docs / expected / outputs / tests / summary / tag 建议之间的证据链收口问题。
