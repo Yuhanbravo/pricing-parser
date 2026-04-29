@@ -99,9 +99,14 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
     assert "Unrouted files: unmapped.xlsx" in content
     assert "## Unrouted File Details" in content
     assert "- unmapped.xlsx" in content
+    assert "## Unrecognized Object Index" in content
+    assert "source_file=unmapped.xlsx; product_id=PRODUCT_022; association_code=XXX022; route_message=No active mapping record matched the extracted identity" in content
     assert "Generic fallback routes used: 0" in content
     assert "Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled." in content
-    assert "Review entrypoint: first inspect valuation_subjects.csv / valuation_positions.csv rows with review_flag=1, then use review_items.csv.review_reason and valuation_positions.csv.review_note for concrete reasons." in content
+    assert "Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons." in content
+    assert "## Review Entry Index" in content
+    assert "source_file=sample.xlsx; raw_row_index=1; subject_code=3102A101000002; subject_name=场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除" in content
+    assert "source_file=sample.xlsx; raw_row_index=2; subject_code=1102A199000001; subject_name=无代码资产; entrypoint=position; reasons=叶子行存在数量但缺少市价；缺少可标准化的证券代码" in content
     assert "## Review Queue By Source File" in content
     assert "- sample.xlsx: 2 review entries; top reasons:" in content
     assert "缺少可标准化的证券代码 (1)" in content

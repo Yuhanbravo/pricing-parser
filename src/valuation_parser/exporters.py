@@ -132,7 +132,9 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     supported_asset_types = sorted({position.asset_type for position in positions if position.asset_type})
     unsupported_asset_types = ["unknown_asset_type"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
     unrouted_files = sorted({Path(route.source_file).name for route in routes if route.route_status != "success"})
+    unrouted_lines = _build_unrecognized_object_lines(routes)
     review_lines = _build_review_summary_lines(review_items=review_items, positions=positions)
+    review_index_lines = _build_review_index_lines(review_items=review_items, positions=positions)
 
     content = "\n".join(
         [
@@ -152,18 +154,91 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
             f"- Generic fallback routes used: {generic_fallback_count}",
             "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
-            "- Review entrypoint: first inspect valuation_subjects.csv / valuation_positions.csv rows with review_flag=1, then use review_items.csv.review_reason and valuation_positions.csv.review_note for concrete reasons.",
+            "- Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.",
             f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
             f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
             "",
             "## Unrouted File Details",
             *([f"- {source_file}" for source_file in unrouted_files] or ["- none"]),
             "",
+            "## Unrecognized Object Index",
+            *unrouted_lines,
+            "",
+            "## Review Entry Index",
+            *review_index_lines,
+            "",
             "## Review Queue By Source File",
             *review_lines,
         ]
     )
     path.write_text(content + "\n", encoding="utf-8")
+
+
+def _build_unrecognized_object_lines(routes: list[RouteDecision]) -> list[str]:
+    failed_routes = [route for route in routes if route.route_status != "success"]
+    if not failed_routes:
+        return ["- none"]
+
+    lines: list[str] = []
+    for route in sorted(failed_routes, key=lambda item: Path(item.source_file).name):
+        lines.append(
+            "- "
+            f"source_file={Path(route.source_file).name}; "
+            f"product_id={route.product_id or 'none'}; "
+            f"association_code={route.association_code or 'none'}; "
+            f"route_message={route.route_message or 'none'}"
+        )
+    return lines
+
+
+def _build_review_index_lines(*, review_items: list[ReviewItem], positions: list[PositionRecord]) -> list[str]:
+    review_entries: dict[tuple[str, int | None, str | None, str | None], dict[str, object]] = {}
+
+    for review_item in review_items:
+        source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
+        key = (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+        entry = review_entries.setdefault(
+            key,
+            {
+                "entrypoints": set(),
+                "reasons": set(),
+            },
+        )
+        entry["entrypoints"].add("subject")
+        entry["reasons"].update(_split_review_reasons(review_item.review_reason))
+
+    for position in positions:
+        if not position.review_note:
+            continue
+        source_file = Path(position.source_file).name
+        key = (source_file, position.raw_row_index, position.subject_code, position.subject_name or position.instrument_name)
+        entry = review_entries.setdefault(
+            key,
+            {
+                "entrypoints": set(),
+                "reasons": set(),
+            },
+        )
+        entry["entrypoints"].add("position")
+        entry["reasons"].update(_split_review_reasons(position.review_note))
+
+    if not review_entries:
+        return ["- none"]
+
+    lines: list[str] = []
+    for (source_file, raw_row_index, subject_code, subject_name), payload in sorted(review_entries.items()):
+        entrypoints = "+".join(sorted(payload["entrypoints"]))
+        reasons = "；".join(sorted(payload["reasons"])) or "none"
+        lines.append(
+            "- "
+            f"source_file={source_file}; "
+            f"raw_row_index={raw_row_index if raw_row_index is not None else 'none'}; "
+            f"subject_code={subject_code or 'none'}; "
+            f"subject_name={subject_name or 'none'}; "
+            f"entrypoint={entrypoints}; "
+            f"reasons={reasons}"
+        )
+    return lines
 
 
 def _build_review_summary_lines(*, review_items: list[ReviewItem], positions: list[PositionRecord]) -> list[str]:
