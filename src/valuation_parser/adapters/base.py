@@ -102,7 +102,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 raw_row_index=subject.raw_row_index,
                 suspension_info=_normalize_position_suspension_info(subject.suspension_info),
                 review_flag=review_flag,
-                review_note=_build_review_note(review_flag, review_reason),
+                review_note=_build_review_note(normalization_flag, asset_type, review_reason),
             )
         )
     return flagged_subjects, positions, review_items
@@ -233,13 +233,18 @@ def _normalize_position_suspension_info(suspension_info: str | None) -> str | No
     return normalized
 
 
-def _build_review_note(review_flag: str | None, review_reason: str | None) -> str | None:
+def _build_review_note(
+    normalization_flag: str | None,
+    asset_type: str | None,
+    review_reason: str | None,
+) -> str | None:
     notes: list[str] = []
-    if review_flag == "missing_code":
+    if normalization_flag == "missing_code":
         notes.append("缺少可标准化的证券代码")
-    elif review_flag == "unknown_exchange":
+    elif normalization_flag == "unknown_exchange":
         notes.append("无法根据证券代码识别交易所")
-    elif review_flag == "unknown_asset_type":
+
+    if asset_type is None and normalization_flag is None:
         notes.append("无法推断资产类型")
 
     if review_reason:

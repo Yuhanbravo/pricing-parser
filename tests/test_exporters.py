@@ -77,7 +77,7 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         subject_code="1102A199000001",
         subject_name="无代码资产",
         raw_row_index=2,
-        review_flag="missing_code",
+        review_flag="1",
         review_note="缺少可标准化的证券代码；叶子行存在数量但缺少市价",
     )
 

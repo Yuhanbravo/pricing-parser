@@ -101,3 +101,26 @@ def test_build_positions_and_review_items_emits_review_candidate_as_position() -
     assert positions[0].review_flag == "1"
     assert positions[0].review_note == "叶子行存在市价但缺少数量"
     assert review_items[0].review_reason == "叶子行存在市价但缺少数量"
+
+
+def test_build_positions_and_review_items_preserves_normalization_reason_in_review_note() -> None:
+    subject = SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        subject_code="1102A1MISSING",
+        subject_name="无代码资产",
+        quantity=100.0,
+        unit_cost=1.0,
+        cost=100.0,
+        market_price=1.2,
+        market_value=120.0,
+        pnl=20.0,
+        is_leaf=True,
+        is_position_candidate=True,
+    )
+
+    _, positions, _ = build_positions_and_review_items([subject])
+
+    assert positions[0].review_flag == "1"
+    assert positions[0].review_note == "缺少可标准化的证券代码"
