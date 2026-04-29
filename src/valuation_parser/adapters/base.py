@@ -161,6 +161,9 @@ def _should_emit_position(
     review_reason: str | None,
     instrument_code_raw: str | None,
 ) -> bool:
+    if _is_derivative_subject(subject.subject_code):
+        return False
+
     if subject.is_position_candidate:
         return True
 
