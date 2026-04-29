@@ -124,3 +124,48 @@ def test_build_positions_and_review_items_preserves_normalization_reason_in_revi
 
     assert positions[0].review_flag == "1"
     assert positions[0].review_note == "缺少可标准化的证券代码"
+
+
+def test_build_positions_and_review_items_does_not_promote_cash_review_rows_into_positions() -> None:
+    subject = SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        subject_code="10020101",
+        subject_name="银行结算账户",
+        quantity=0.0,
+        cost=786526.32,
+        market_price=0.0,
+        market_value=786526.32,
+        pnl=0.0,
+        is_leaf=True,
+        is_position_candidate=False,
+    )
+
+    subjects, positions, review_items = build_positions_and_review_items([subject])
+
+    assert subjects[0].review_flag == "1"
+    assert positions == []
+    assert review_items[0].review_reason == "叶子行存在市价但缺少数量"
+
+
+def test_build_positions_and_review_items_keeps_estimated_gain_summary_out_of_positions() -> None:
+    subject = SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        subject_code="11028199",
+        subject_name="沪港通股票估增",
+        quantity=0.0,
+        cost=1198715.79,
+        market_value=1198715.79,
+        pnl=0.0,
+        is_leaf=True,
+        is_position_candidate=False,
+    )
+
+    subjects, positions, review_items = build_positions_and_review_items([subject])
+
+    assert subjects[0].review_flag == "1"
+    assert positions == []
+    assert review_items[0].review_reason == "估值增值汇总行，通常不作为持仓叶子"

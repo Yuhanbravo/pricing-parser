@@ -167,12 +167,20 @@ def _should_emit_position(
     if not review_reason or not subject.is_leaf or not subject.subject_code:
         return False
 
+    if review_reason == "估值增值汇总行，通常不作为持仓叶子":
+        return False
+
+    if not subject.subject_code.strip().upper().startswith(("1102", "3102")):
+        return False
+
     return bool(
         instrument_code_raw is not None
-        or subject.quantity not in (None, 0)
-        or subject.cost is not None
-        or subject.market_price is not None
-        or subject.market_value is not None
+        and (
+            subject.quantity not in (None, 0)
+            or subject.cost is not None
+            or subject.market_price is not None
+            or subject.market_value is not None
+        )
     )
 
 
@@ -214,7 +222,7 @@ def _is_valuation_gain_summary(subject: SubjectRecord) -> bool:
         subject.subject_code
         and subject.subject_code.endswith("99")
         and subject.quantity in (None, 0)
-        and "估值增值" in (subject.subject_name or "")
+        and any(keyword in (subject.subject_name or "") for keyword in ("估值增值", "估增"))
     )
 
 
