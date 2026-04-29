@@ -1,5 +1,26 @@
+import pytest
+
 from valuation_parser.adapters.base import build_positions_and_review_items
 from valuation_parser.models import SubjectRecord
+
+
+@pytest.fixture
+def non_derivative_position_review_subject() -> SubjectRecord:
+    return SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        subject_code="11028101H02899",
+        subject_name="紫金矿业",
+        quantity=None,
+        unit_cost=17.14,
+        cost=411464.85,
+        market_price=16.67,
+        market_value=400009.10,
+        pnl=-11455.75,
+        is_leaf=True,
+        is_position_candidate=False,
+    )
 
 
 def test_build_positions_and_review_items_marks_derivative_subjects_for_review() -> None:
@@ -74,24 +95,10 @@ def test_build_positions_and_review_items_does_not_flag_real_position_codes_endi
     assert review_items == []
 
 
-def test_build_positions_and_review_items_emits_review_candidate_as_position() -> None:
-    subject = SubjectRecord(
-        source_file="sample.xlsx",
-        broker="测试券商",
-        valuation_date="2025-03-27",
-        subject_code="11028101H02899",
-        subject_name="紫金矿业",
-        quantity=None,
-        unit_cost=17.14,
-        cost=411464.85,
-        market_price=16.67,
-        market_value=400009.10,
-        pnl=-11455.75,
-        is_leaf=True,
-        is_position_candidate=False,
-    )
-
-    subjects, positions, review_items = build_positions_and_review_items([subject])
+def test_build_positions_and_review_items_marks_non_derivative_review_position(
+    non_derivative_position_review_subject: SubjectRecord,
+) -> None:
+    subjects, positions, review_items = build_positions_and_review_items([non_derivative_position_review_subject])
 
     assert subjects[0].review_flag == "1"
     assert len(positions) == 1
