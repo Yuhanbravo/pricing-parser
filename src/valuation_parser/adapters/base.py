@@ -66,10 +66,10 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 )
             )
 
-        if not subject.is_position_candidate:
+        instrument_code_raw = _extract_instrument_code(subject.subject_code)
+        if not _should_emit_position(subject, review_reason, instrument_code_raw):
             flagged_subjects.append(replace(subject, review_flag=subject_review_flag))
             continue
-        instrument_code_raw = _extract_instrument_code(subject.subject_code)
         instrument_code_std, exchange, normalization_flag = normalize_security_code(instrument_code_raw)
         asset_type = infer_asset_type(instrument_code_raw, exchange)
         review_flag = resolve_review_flag(normalization_flag, asset_type, review_reason)
@@ -153,6 +153,26 @@ def _is_position_subject(subject: SubjectRecord, *, is_leaf: bool | None = None)
         and (subject.market_price is not None or subject.market_value is not None)
         and subject.subject_code
         and instrument_code is not None
+    )
+
+
+def _should_emit_position(
+    subject: SubjectRecord,
+    review_reason: str | None,
+    instrument_code_raw: str | None,
+) -> bool:
+    if subject.is_position_candidate:
+        return True
+
+    if not review_reason or not subject.is_leaf or not subject.subject_code:
+        return False
+
+    return bool(
+        instrument_code_raw is not None
+        or subject.quantity not in (None, 0)
+        or subject.cost is not None
+        or subject.market_price is not None
+        or subject.market_value is not None
     )
 
 

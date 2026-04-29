@@ -74,3 +74,30 @@ def test_build_positions_and_review_items_does_not_flag_real_position_codes_endi
     assert positions[0].review_flag is None
     assert positions[0].suspension_info == "正常交易"
     assert review_items == []
+
+
+def test_build_positions_and_review_items_emits_review_candidate_as_position() -> None:
+    subject = SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        subject_code="11028101H02899",
+        subject_name="紫金矿业",
+        quantity=None,
+        unit_cost=17.14,
+        cost=411464.85,
+        market_price=16.67,
+        market_value=400009.10,
+        pnl=-11455.75,
+        is_leaf=True,
+        is_position_candidate=False,
+    )
+
+    subjects, positions, review_items = build_positions_and_review_items([subject])
+
+    assert subjects[0].review_flag == "1"
+    assert len(positions) == 1
+    assert positions[0].instrument_code_raw == "02899"
+    assert positions[0].review_flag == "1"
+    assert positions[0].review_note == "叶子行存在市价但缺少数量"
+    assert review_items[0].review_reason == "叶子行存在市价但缺少数量"
