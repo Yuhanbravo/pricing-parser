@@ -64,10 +64,11 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "正常交易" in positions_content
     assert "review_reason" in review_content
     assert "Subject rows exported: 48" in summary_content
-    assert "Position rows exported: 2" in summary_content
+    assert "Position rows exported: 8" in summary_content
+    assert "Review flagged positions: 6" in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Review items exported:" in summary_content
-    assert "Supported asset types: hk_equity" in summary_content
+    assert "Supported asset types: a_share, hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
     assert outputs["output_workbook"].exists()
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
@@ -153,8 +154,13 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "688617.SH" in positions_content
     assert "600309.SH" in positions_content
     assert "002475.SZ" in positions_content
+    assert "3102A101000002" in positions_content
+    assert ",1,衍生工具科目，需单独建模或排除" in positions_content
     assert "Processed files: 11" in summary_content
+    assert "Position rows exported: 264" in summary_content
     assert "Routing failures: 1" in summary_content
+    assert "Review flagged positions: 82" in summary_content
+    assert "Normalization issues: 4" in summary_content
     assert "Unrouted files: 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx" in summary_content
     assert "Generic fallback routes used: 0" in summary_content
     assert "## Unrouted File Details" in summary_content
