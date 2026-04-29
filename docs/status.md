@@ -2,15 +2,16 @@
 
 ## Current Phase
 
-- Current milestone: Phase 5 delivery with post-review contract alignment refresh.
+- Current milestone: Phase 5 delivery with post-review derivative-exclusion refresh.
 - Latest bounded delivery verified the full `data_samples/raw/` set end to end under strict default routing, resulting in 1 retained routing failure instead of silent generic fallback success.
-- Latest review-rule update still forces `3102*` derivative subjects into `review_items`, and matching position rows now carry `review_flag` as the manual-review entrypoint.
+- Latest review-rule update still forces `3102*` derivative subjects into `review_items`, but those rows are no longer promoted into `valuation_positions`.
 
 ## Current Snapshot
 
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
 - Latest validated outputs were generated under `output/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook export `估值表解析_output_<date>.xlsx`.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
+- Current strict-default evidence has 0 `review_flag=1` rows in `valuation_positions`; active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items`.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
 - Subjects and positions exports now preserve the trace fields required for audit and downstream reconciliation: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
@@ -23,7 +24,7 @@
 - Supported routing inputs: filename, sheet preview, header preview, mapping-table lookup, and optional manual adapter override.
 - Supported workbook types in code: `.xls`, `.xlsx`, `.csv` for preview and routing; parsing is verified across the current 11-file raw fixture set.
 - Verified adapters in the current bounded path are `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, and `xyzc`; `generic` remains available only through explicit override or explicit fallback enablement.
-- Shared review logic includes derivative-subject handling for `3102*` codes in addition to the existing position-derived review flow.
+- Shared review logic includes derivative-subject handling for `3102*` codes, but derivative review stays at the subject/review-item layer rather than creating synthetic position rows.
 
 ## Repository Rules
 
@@ -39,7 +40,7 @@
 - Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
 - `review_flag` now uses the binary value `1` to mark every subject or position that requires manual review, leaving clean rows blank; `review_note` and `review_items.csv` remain the authoritative place for the concrete review reason.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
-- Historical materials such as `output_phase1/` and `docs/documentation_governance_report.*` should be treated as legacy references rather than current contract artifacts.
+- Historical materials such as `output_phase*` and `docs/documentation_governance_report.*` should be treated as legacy references rather than current contract artifacts and may be removed from the local workspace when no longer needed.
 
 ## Recommended Next Steps
 
