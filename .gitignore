@@ -17,4 +17,6 @@ tmp/
 *.parquet
 *.csv
 *.bundle
+docs\documentation_governance_report.md
+docs\documentation_governance_report.json
 !data_samples/README.md
