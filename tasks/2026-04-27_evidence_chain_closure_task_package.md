@@ -73,13 +73,13 @@
 
 ### Primary Docs
 
-- [README.md](d:\DUKE\hxhy\pricing_parser\README.md)
-- [docs/HANDOFF.md](d:\DUKE\hxhy\pricing_parser\docs\HANDOFF.md)
-- [docs/status.md](d:\DUKE\hxhy\pricing_parser\docs\status.md)
+- [README.md](../README.md)
+- [docs/HANDOFF.md](../docs/HANDOFF.md)
+- [docs/status.md](../docs/status.md)
 
 ### Expected Baseline And Historical Evidence
 
-- [data_samples/expected/parse_summary.md](d:\DUKE\hxhy\pricing_parser\data_samples\expected\parse_summary.md)
+- [data_samples/expected/parse_summary.md](../data_samples/expected/parse_summary.md)
 - `data_samples/expected/` 下与以下交付物对应的 baseline 文件：
   - `routing_results.csv`
   - `valuation_subjects.csv`
@@ -102,8 +102,8 @@
 
 ### Process Files
 
-- [tasks/2026-04-27_evidence_chain_closure_need_review.md](d:\DUKE\hxhy\pricing_parser\tasks\2026-04-27_evidence_chain_closure_need_review.md)
-- [tasks/2026-04-27_evidence_chain_closure_task_package.md](d:\DUKE\hxhy\pricing_parser\tasks\2026-04-27_evidence_chain_closure_task_package.md)
+- [tasks/2026-04-27_evidence_chain_closure_need_review.md](2026-04-27_evidence_chain_closure_need_review.md)
+- [tasks/2026-04-27_evidence_chain_closure_task_package.md](2026-04-27_evidence_chain_closure_task_package.md)
 - `tasks/2026-04-27_evidence_chain_closure_execution_report.md`
 - `tasks/2026-04-27_evidence_chain_closure_ai_review_report.md`
 
@@ -111,7 +111,7 @@
 
 本轮至少需要满足以下可验证标准：
 
-1. [README.md](d:\DUKE\hxhy\pricing_parser\README.md)、[docs/HANDOFF.md](d:\DUKE\hxhy\pricing_parser\docs\HANDOFF.md)、[docs/status.md](d:\DUKE\hxhy\pricing_parser\docs\status.md) 中的统计数字与当前 strict-default 实跑结果一致。
+1. [README.md](../README.md)、[docs/HANDOFF.md](../docs/HANDOFF.md)、[docs/status.md](../docs/status.md) 中的统计数字与当前 strict-default 实跑结果一致。
 2. `data_samples/expected/` 对当前关键交付物形成 acceptance baseline，至少覆盖：
    - `routing_results.csv`
    - `valuation_subjects.csv`
@@ -170,14 +170,14 @@ execution report 还必须满足以下要求：
 - 执行侧必须先复述本轮目标、边界、明确不做事项和预计修改文件，再开始施工。
 - 执行侧必须保持 bounded execution，不得把额外发现的问题混入本轮交付。
 - 当发现范围外问题时，只允许在 execution report 中记录为风险或待确认项。
-- 如需更新 handoff 文档，应继续遵守 [docs/HANDOFF.md](d:\DUKE\hxhy\pricing_parser\docs\HANDOFF.md) 作为 handoff 单一主文档的原则。
+- 如需更新 handoff 文档，应继续遵守 [docs/HANDOFF.md](../docs/HANDOFF.md) 作为 handoff 单一主文档的原则。
 
 ## Supporting Context
 
-- Project brief: [估值表解析器项目任务书.md](d:\DUKE\hxhy\pricing_parser\估值表解析器项目任务书.md)
-- Round 1 review summary: [任务书集合/pricing_parser第一轮审查结论摘要.md](d:\DUKE\hxhy\pricing_parser\任务书集合\pricing_parser第一轮审查结论摘要.md)
-- Round 2 review summary: [任务书集合/pricing_parser第二轮审查结论摘要.md](d:\DUKE\hxhy\pricing_parser\任务书集合\pricing_parser第二轮审查结论摘要.md)
-- Handoff pilot instructions: [任务书集合/估值表解析器第三轮证据链收口_Handoff流程试跑说明.md](d:\DUKE\hxhy\pricing_parser\任务书集合\估值表解析器第三轮证据链收口_Handoff流程试跑说明.md)
+- Project brief: [估值表解析器项目任务书.md](../估值表解析器项目任务书.md)
+- Round 1 review summary: [任务书集合/pricing_parser第一轮审查结论摘要.md](../任务书集合/pricing_parser第一轮审查结论摘要.md)
+- Round 2 review summary: [任务书集合/pricing_parser第二轮审查结论摘要.md](../任务书集合/pricing_parser第二轮审查结论摘要.md)
+- Handoff pilot instructions: [任务书集合/估值表解析器第三轮证据链收口_Handoff流程试跑说明.md](../任务书集合/估值表解析器第三轮证据链收口_Handoff流程试跑说明.md)
 
 ## Expected Output
 
