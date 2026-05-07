@@ -9,7 +9,6 @@ build/
 dist/
 output/
 output*/
-output_phase1/
 tmp/
 *.log
 *.xlsx
