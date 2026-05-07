@@ -195,8 +195,7 @@ def _build_review_index_lines(*, review_items: list[ReviewItem], positions: list
     review_entries: dict[tuple[str, int | None, str | None, str | None], dict[str, object]] = {}
 
     for review_item in review_items:
-        source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
-        key = (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+        key = _review_item_entry_key(review_item)
         entry = review_entries.setdefault(
             key,
             {
@@ -210,8 +209,7 @@ def _build_review_index_lines(*, review_items: list[ReviewItem], positions: list
     for position in positions:
         if not position.review_note:
             continue
-        source_file = Path(position.source_file).name
-        key = (source_file, position.raw_row_index, position.subject_code, position.subject_name or position.instrument_name)
+        key = _position_entry_key(position)
         entry = review_entries.setdefault(
             key,
             {
@@ -245,16 +243,14 @@ def _build_review_summary_lines(*, review_items: list[ReviewItem], positions: li
     review_entries: dict[tuple[str, int | None, str | None, str | None], set[str]] = {}
 
     for review_item in review_items:
-        source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
-        key = (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+        key = _review_item_entry_key(review_item)
         reasons = review_entries.setdefault(key, set())
         reasons.update(_split_review_reasons(review_item.review_reason))
 
     for position in positions:
         if not position.review_note:
             continue
-        source_file = Path(position.source_file).name
-        key = (source_file, position.raw_row_index, position.subject_code, position.instrument_name)
+        key = _position_entry_key(position)
         reasons = review_entries.setdefault(key, set())
         reasons.update(_split_review_reasons(position.review_note))
 
@@ -278,6 +274,16 @@ def _build_review_summary_lines(*, review_items: list[ReviewItem], positions: li
             f"- {source_file}: {len(entries_for_file)} review entries; top reasons: {top_reasons or 'none'}"
         )
     return summary_lines
+
+
+def _review_item_entry_key(review_item: ReviewItem) -> tuple[str, int | None, str | None, str | None]:
+    source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
+    return (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+
+
+def _position_entry_key(position: PositionRecord) -> tuple[str, int | None, str | None, str | None]:
+    source_file = Path(position.source_file).name
+    return (source_file, position.raw_row_index, position.subject_code, position.subject_name or position.instrument_name)
 
 
 def _split_review_reasons(review_text: str | None) -> list[str]:

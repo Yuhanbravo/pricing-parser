@@ -112,3 +112,60 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
     assert "缺少可标准化的证券代码 (1)" in content
     assert "叶子行存在数量但缺少市价 (1)" in content
     assert "衍生工具科目，需单独建模或排除 (1)" in content
+
+
+def test_write_summary_deduplicates_review_entries_when_subject_and_instrument_names_differ(tmp_path: Path) -> None:
+    summary_path = tmp_path / "parse_summary.md"
+    route = RouteDecision(
+        source_file="sample.xlsx",
+        product_id="PRODUCT_023",
+        association_code="XXX023",
+        custodian_name_chinese="长城证券",
+        custodian_id="CUSTODIAN_023",
+        custodian_name="长城证券股份有限公司",
+        route_status="success",
+        route_source="mapping(product_id)",
+        adapter_key="greatwall",
+        route_message="",
+    )
+    review_item = ReviewItem(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        raw_row_index=8,
+        subject_code="1102.05.01.600000",
+        subject_name="交易性金融资产",
+        review_reason="人工复核科目映射",
+    )
+    flagged_position = PositionRecord(
+        source_file="sample.xlsx",
+        broker="测试券商",
+        sheet_name="估值表",
+        valuation_date="2025-03-27",
+        instrument_name="浦发银行",
+        subject_code="1102.05.01.600000",
+        subject_name="交易性金融资产",
+        raw_row_index=8,
+        review_flag="1",
+        review_note="缺少可标准化的证券代码",
+    )
+
+    write_summary(
+        summary_path,
+        files_processed=1,
+        routes=[route],
+        subjects=[],
+        positions=[flagged_position],
+        review_items=[review_item],
+    )
+
+    content = summary_path.read_text(encoding="utf-8")
+
+    assert (
+        "source_file=sample.xlsx; raw_row_index=8; subject_code=1102.05.01.600000; "
+        "subject_name=交易性金融资产; entrypoint=position+subject; "
+        "reasons=人工复核科目映射；缺少可标准化的证券代码"
+    ) in content
+    assert "- sample.xlsx: 1 review entries; top reasons:" in content
+    assert "人工复核科目映射 (1)" in content
+    assert "缺少可标准化的证券代码 (1)" in content
