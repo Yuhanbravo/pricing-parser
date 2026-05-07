@@ -8,7 +8,7 @@
 - Phase: Phase 3 review closure
 - Submitted By: Copilot planner
 - Date: 2026-04-27
-- Upstream Need Review: [tasks/2026-04-27_evidence_chain_closure_need_review.md](d:\DUKE\hxhy\pricing_parser\tasks\2026-04-27_evidence_chain_closure_need_review.md)
+- Upstream Need Review: [tasks/2026-04-27_evidence_chain_closure_need_review.md](tasks/2026-04-27_evidence_chain_closure_need_review.md)
 
 ## 1. Background
 
