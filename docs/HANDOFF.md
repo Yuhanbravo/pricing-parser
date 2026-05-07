@@ -7,7 +7,7 @@ This file is the single source of truth for project handoff.
 - Current phase: Phase 5 delivery with post-review derivative-exclusion refresh.
 - Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, so unresolved files are no longer upgraded to successful generic fallback routes.
 - Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Latest validated outputs were generated under `output/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`.
+- Latest validated strict-default baseline is stored under `data_samples/expected/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`; local reruns may still export into ignored directories such as `output/`, but those artifacts are not part of the tracked contract.
 
 ## What Was Refreshed In The Contract-Alignment Pass
 
@@ -18,7 +18,7 @@ This file is the single source of truth for project handoff.
 - `3102*` derivative subjects continue to produce review entries, but they stay in `valuation_subjects` and `review_items` instead of being promoted into `valuation_positions`.
 - Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
 - Canonical `.xlsx` mapping loading is now covered by repository tests at both the loader layer and the pipeline layer.
-- Output artifacts were regenerated under `output/`; the workbook export name is now derived from the input date as `估值表解析_output_<date>.xlsx`.
+- The tracked acceptance baseline was refreshed under `data_samples/expected/`; the workbook artifact continues to use the input-date-derived name `估值表解析_output_<date>.xlsx`, while ad hoc reruns should write to ignored directories such as `output/`.
 
 ## Hard Boundaries
 
