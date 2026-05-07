@@ -26,6 +26,14 @@
   - 新增当前 strict-default 验收基线说明，列出权威 expected 文件和 workbook sheet 结构。
 - `src/valuation_parser/exporters.py`
   - 扩充 `write_summary()`，输出 unrouted file、generic fallback usage、fallback note 和 review entrypoint note。
+- `src/valuation_parser/adapters/base.py`
+  - 新增 `_should_emit_position()` gate 替换原有 `is_position_candidate` 检查，落实 derivative exclusion contract。
+  - `_build_review_note()` 签名改为分别接收 `normalization_flag` 和 `asset_type`，且 unknown asset type 检测从 `elif` 改为独立 `if` 分支，属于可能静默扩大 `review_note` 输出的行为变更。
+  - `_is_valuation_gain_summary()` 现在也将 `估增` 作为触发关键词之一。
+- `src/valuation_parser/models.py`
+  - 为 `ReviewItem` 新增 `source_file` 字段。
+- `src/valuation_parser/exporters.py`
+  - 同步 `ReviewItem.source_file` 的 CSV schema 导出列。
 - `tests/test_exporters.py`
   - 锁定 summary 新契约，覆盖 routing failure、unrouted file、fallback note 和 review entrypoint。
 - `tests/test_mapping_loader.py`
