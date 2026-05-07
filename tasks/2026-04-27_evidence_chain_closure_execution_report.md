@@ -36,6 +36,7 @@
   - 同步 `ReviewItem.source_file` 的 CSV schema 导出列。
 - `tests/test_exporters.py`
   - 锁定 summary 新契约，覆盖 routing failure、unrouted file、fallback note 和 review entrypoint。
+  - 新增 `subject_name` 与 `instrument_name` 不一致时的 review entry 去重回归，防止 `Review Entry Index` 与 `Review Queue By Source File` 分组口径漂移。
 - `tests/test_mapping_loader.py`
   - 新增 canonical `.xlsx` mapping 自动化回归测试。
 - `tests/test_smoke.py`
@@ -77,6 +78,11 @@
   - `Fallback note`
   - `Review entrypoint`
 - exporter unit test 与 smoke test 已同步锁定这些行。
+
+### Acceptance Criterion 4.1: review entry 去重口径在 index / summary 之间一致
+
+- 已完成。
+- 新增回归用例覆盖 `subject_name` 与 `instrument_name` 不一致时的同一 review 条目归组，确保 `Review Entry Index` 与 `Review Queue By Source File` 使用同一去重口径。
 
 ### Acceptance Criterion 5: 历史产物不再与当前契约混淆
 

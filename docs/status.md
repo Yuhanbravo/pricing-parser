@@ -13,6 +13,7 @@
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
 - Current strict-default evidence has 0 `review_flag=1` rows in `valuation_positions`; active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items`, while the position-review path itself is locked by a dedicated non-derivative regression fixture.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run, plus explicit `Unrecognized Object Index` and `Review Entry Index` sections.
+- Review entry grouping is regression-covered when `subject_name` and `instrument_name` differ, so `Review Entry Index` and `Review Queue By Source File` stay aligned for the same logical item.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
 - Subjects and positions exports now preserve the trace fields required for audit and downstream reconciliation: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - Routing results now normalize `custodian_name_chinese` to a canonical display name, so aliases like `国泰` are exported as `国泰海通证券股份有限公司`.
@@ -26,6 +27,7 @@
 - Supported workbook types in code: `.xls`, `.xlsx`, `.csv` for preview and routing; parsing is verified across the current 11-file raw fixture set.
 - Verified adapters in the current bounded path are `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, and `xyzc`; `generic` remains available only through explicit override or explicit fallback enablement.
 - Shared review logic includes derivative-subject handling for `3102*` codes, but derivative review stays at the subject/review-item layer rather than creating synthetic position rows.
+- Review-entry deduplication now treats the position display name consistently across the index and summary views, preventing accidental split groups when a row's `subject_name` and `instrument_name` differ.
 
 ## Repository Rules
 
