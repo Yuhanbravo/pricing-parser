@@ -19,7 +19,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 - Latest bounded evidence from the strict-default `output/` run: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
 - Current review contract keeps `3102*` derivative subjects in `valuation_subjects` and `review_items`; they are not promoted into `valuation_positions`.
 - Current summary contract now includes explicit indexes for unrouted objects and review entrypoints, and the strict-default baseline compares full workbook sheet contents.
-- Canonical `.xlsx` mapping and non-derivative position-review entrypoints both have repository regression coverage.
+- Canonical `.xlsx` mapping and core non-derivative position-review entrypoints both have repository regression coverage, with dedicated fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
 - Remaining work is no longer about proving the pipeline exists; it is about contract stabilization, terminology convergence, and controlled fixture governance.
 
 ## Planned Next Phase
@@ -27,7 +27,7 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 ### Phase 6.1: Artifact Contract Stabilization
 
 - Keep workbook export naming aligned with the input date as `估值表解析_output_<date>.xlsx` and prevent regressions back to historical artifact names.
-- Expand regression tests around review-item detection, normalization, workbook export naming, and more asset-class-specific review paths so downstream consumers do not silently drift.
+- Keep regression tests around review-item detection, normalization, workbook export naming, and add new asset-class-specific review paths only when they go beyond the currently covered `hk_equity`, `a_share`, and `fund_or_etf` fixtures.
 - Keep documentation aligned with the actual bounded run outputs rather than with historical phase labels.
 
 ### Phase 6.2: Output Vocabulary Convergence
@@ -57,6 +57,6 @@ Keep the valuation parser on a controlled migration path from adapter-specific p
 ## Exit Criteria For The Next Migration Step
 
 - Workbook artifact naming remains aligned with the input date as `估值表解析_output_<date>.xlsx` and is covered by regression tests.
-- Review-item generation and workbook export have dedicated regression coverage beyond the current derivative-subject rule.
+- Review-item generation keeps dedicated regression coverage beyond the current derivative-subject rule, including core non-derivative review paths for `hk_equity`, `a_share`, and `fund_or_etf`.
 - `asset_type` terminology has a documented target mapping and at least the currently verified samples conform to it.
 - Status and handoff documents are refreshed again after the next bounded phase completes.

@@ -11,7 +11,7 @@
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
 - Latest validated outputs were generated under `output/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook export `估值表解析_output_<date>.xlsx`.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
-- Current strict-default evidence has 0 `review_flag=1` rows in `valuation_positions`; active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items`, while the position-review path itself is locked by a dedicated non-derivative regression fixture.
+- Current strict-default evidence has 0 `review_flag=1` rows in `valuation_positions`; active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items`, while the position-review path itself is locked by dedicated non-derivative regression fixtures covering `hk_equity`, `a_share`, and `fund_or_etf`.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run, plus explicit `Unrecognized Object Index` and `Review Entry Index` sections.
 - Review entry grouping is regression-covered when `subject_name` and `instrument_name` differ, so `Review Entry Index` and `Review Queue By Source File` stay aligned for the same logical item.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
@@ -40,7 +40,7 @@
 
 - Workbook export naming is now derived from the input date as `估值表解析_output_<date>.xlsx`, removing both the historical Phase 3 label and the old expected-baseline filename from current outputs.
 - `asset_type` terminology still needs refinement to match downstream workbook language more closely.
-- Shared review logic is broader now, but more regression coverage is still needed for additional asset classes and review reasons beyond the current fixture set.
+- Shared review logic now has dedicated non-derivative regression coverage for the core supported asset classes `hk_equity`, `a_share`, and `fund_or_etf`; future fixture growth should track genuinely new asset classes or review reasons rather than duplicate the existing path.
 - `review_flag` now uses the binary value `1` to mark every subject or position that requires manual review, leaving clean rows blank; `review_note` and `review_items.csv` remain the authoritative place for the concrete review reason.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
 - Historical materials such as `output_phase*` and `docs/documentation_governance_report.*` should be treated as legacy references rather than current contract artifacts and may be removed from the local workspace when no longer needed.
@@ -50,5 +50,5 @@
 1. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
 2. Decide how to handle the remaining unmapped `PRODUCT_022` sample in the default path: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
 3. Tighten `asset_type` naming against the expected workbook vocabulary.
-4. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule.
+4. Keep extending review-item and workbook-export regression checks only when new review reasons or asset-class paths appear beyond the current `3102*` rule plus the covered `hk_equity` / `a_share` / `fund_or_etf` non-derivative fixtures.
 5. If this round closes the remaining evidence drift, prefer `review-round1-baseline`, `review-round2-candidate`, and `review-round3-evidence-closed` for milestone tagging.

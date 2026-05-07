@@ -40,7 +40,7 @@ D:\intern_workspace\
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `valuation_subjects.csv` 与 `review_items.csv`，但不会单独提升为 `valuation_positions.csv` 持仓行
 - `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `1` 标记所有需要人工复核的记录，未命中时保持空白；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身只承担“是否需要人工复核”的二值标记。当前 strict-default 受控样本中 `review_flag=1` 的入口实际全部落在 `valuation_subjects.csv` / `review_items.csv`，`valuation_positions.csv` 中为 0 条；但 `valuation_positions.review_flag=1` 路径已由非衍生品专用回归夹具锁定
 - `parse_summary.md` 现已同时输出 `Unrecognized Object Index` 与 `Review Entry Index`，能直接定位未路由对象和待人工复核入口，而不只报总数
-- 测试已覆盖身份提取、映射加载、canonical `.xlsx` mapping 自动化回归、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item / position-review 回归；其中还包含 `subject_name` 与 `instrument_name` 不一致时的 review entry 去重回归，防止 `Review Entry Index` 与 `Review Queue By Source File` 分组漂移
+- 测试已覆盖身份提取、映射加载、canonical `.xlsx` mapping 自动化回归、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item / position-review 回归；当前非衍生品 review path 已对 `hk_equity`、`a_share`、`fund_or_etf` 三类核心资产补齐专用夹具，其中还包含 `subject_name` 与 `instrument_name` 不一致时的 review entry 去重回归，防止 `Review Entry Index` 与 `Review Queue By Source File` 分组漂移
 
 当前已验证的真实样表：
 
@@ -170,5 +170,5 @@ python -m valuation_parser.cli \
 
 1. 决定是否要为 `估值表解析_output_<date>.xlsx` 维护一份更完整的验收基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
 2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
-3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。
+3. 当新增资产类型或新的 review reason 进入共享规则时，再继续补充增量回归夹具；当前 `hk_equity`、`a_share`、`fund_or_etf` 的核心非衍生品 review path 已有专用覆盖。
 4. 若本轮 evidence-chain diff 与自动化验证保持一致，再按 `review-round1-baseline`、`review-round2-candidate`、`review-round3-evidence-closed` 方案评估打 tag。

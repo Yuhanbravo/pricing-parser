@@ -33,7 +33,7 @@ This file is the single source of truth for project handoff.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
 - The markdown summary now includes supported and unsupported asset-type coverage plus explicit `Unrecognized Object Index` and `Review Entry Index` sections, so handoff readers can move from counts to actionable review rows without reopening the parser logic.
 - Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
-- Under the current strict-default evidence, `review_flag=1` remains a binary manual-review marker, but all live review entrypoints in the bounded sample come from `valuation_subjects` and `review_items`; `valuation_positions` currently has 0 flagged rows even though the position-review path itself is covered by a dedicated non-derivative regression fixture.
+- Under the current strict-default evidence, `review_flag=1` remains a binary manual-review marker, but all live review entrypoints in the bounded sample come from `valuation_subjects` and `review_items`; `valuation_positions` currently has 0 flagged rows even though the position-review path itself is covered by dedicated non-derivative regression fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
 - The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
 - The strict-default acceptance baseline now lives under `data_samples/expected/`, including the expected routing CSV, subject CSV, position CSV, review-item CSV, parse summary, and workbook artifact; workbook validation now compares full sheet contents rather than only sheet headers.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
@@ -48,7 +48,7 @@ This file is the single source of truth for project handoff.
 1. Decide whether workbook acceptance should remain a full-content baseline only, or whether a second business-readable workbook diff artifact is also needed for review handoff.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
-4. Add broader regression tests for review-item generation and workbook-export consistency beyond the current derivative-subject rule, `.xlsx` mapping path, and dedicated non-derivative position-review fixture.
+4. Extend regression tests only when new review-item rules or workbook-export behaviors appear beyond the current derivative-subject rule, `.xlsx` mapping path, and the dedicated non-derivative asset-class fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
 5. If the evidence-chain closure diff remains aligned after validation, use `review-round1-baseline`, `review-round2-candidate`, and `review-round3-evidence-closed` as the preferred tag sequence.
 
 ## Practical Takeover Notes

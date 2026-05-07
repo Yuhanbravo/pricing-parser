@@ -4,23 +4,76 @@ from valuation_parser.adapters.base import build_positions_and_review_items
 from valuation_parser.models import SubjectRecord
 
 
-@pytest.fixture
-def non_derivative_position_review_subject() -> SubjectRecord:
-    return SubjectRecord(
-        source_file="sample.xlsx",
-        broker="测试券商",
-        valuation_date="2025-03-27",
-        subject_code="11028101H02899",
-        subject_name="紫金矿业",
-        quantity=None,
-        unit_cost=17.14,
-        cost=411464.85,
-        market_price=16.67,
-        market_value=400009.10,
-        pnl=-11455.75,
-        is_leaf=True,
-        is_position_candidate=False,
-    )
+@pytest.fixture(params=[
+    {
+        "subject": SubjectRecord(
+            source_file="sample.xlsx",
+            broker="测试券商",
+            valuation_date="2025-03-27",
+            subject_code="11028101H02899",
+            subject_name="紫金矿业",
+            quantity=None,
+            unit_cost=17.14,
+            cost=411464.85,
+            market_price=16.67,
+            market_value=400009.10,
+            pnl=-11455.75,
+            is_leaf=True,
+            is_position_candidate=False,
+        ),
+        "asset_type": "hk_equity",
+        "instrument_code_raw": "02899",
+        "instrument_code_std": "02899.HK",
+        "exchange": "HK",
+        "review_reason": "叶子行存在市价但缺少数量",
+    },
+    {
+        "subject": SubjectRecord(
+            source_file="sample.xlsx",
+            broker="测试券商",
+            valuation_date="2025-03-27",
+            subject_code="11020101600309",
+            subject_name="万华化学",
+            quantity=None,
+            unit_cost=68.53,
+            cost=1117039.0,
+            market_price=75.04,
+            market_value=1223155.0,
+            pnl=-106116.0,
+            is_leaf=True,
+            is_position_candidate=False,
+        ),
+        "asset_type": "a_share",
+        "instrument_code_raw": "600309",
+        "instrument_code_std": "600309.SH",
+        "exchange": "SH",
+        "review_reason": "叶子行存在市价但缺少数量",
+    },
+    {
+        "subject": SubjectRecord(
+            source_file="sample.xlsx",
+            broker="测试券商",
+            valuation_date="2025-03-27",
+            subject_code="11050201512000",
+            subject_name="华宝中证全指证券公司ETF",
+            quantity=70000.0,
+            unit_cost=1.09,
+            cost=76080.0,
+            market_price=None,
+            market_value=74130.0,
+            pnl=-1950.0,
+            is_leaf=True,
+            is_position_candidate=True,
+        ),
+        "asset_type": "fund_or_etf",
+        "instrument_code_raw": "512000",
+        "instrument_code_std": "512000.SH",
+        "exchange": "SH",
+        "review_reason": "叶子行存在数量但缺少市价",
+    },
+])
+def non_derivative_position_review_subject(request: pytest.FixtureRequest) -> dict[str, object]:
+    return request.param
 
 
 def test_build_positions_and_review_items_marks_derivative_subjects_for_review() -> None:
@@ -96,16 +149,28 @@ def test_build_positions_and_review_items_does_not_flag_real_position_codes_endi
 
 
 def test_build_positions_and_review_items_marks_non_derivative_review_position(
-    non_derivative_position_review_subject: SubjectRecord,
+    non_derivative_position_review_subject: dict[str, object],
 ) -> None:
-    subjects, positions, review_items = build_positions_and_review_items([non_derivative_position_review_subject])
+    subject = non_derivative_position_review_subject["subject"]
+    asset_type = non_derivative_position_review_subject["asset_type"]
+    instrument_code_raw = non_derivative_position_review_subject["instrument_code_raw"]
+    instrument_code_std = non_derivative_position_review_subject["instrument_code_std"]
+    exchange = non_derivative_position_review_subject["exchange"]
+    review_reason = non_derivative_position_review_subject["review_reason"]
+
+    assert isinstance(subject, SubjectRecord)
+
+    subjects, positions, review_items = build_positions_and_review_items([subject])
 
     assert subjects[0].review_flag == "1"
     assert len(positions) == 1
-    assert positions[0].instrument_code_raw == "02899"
+    assert positions[0].asset_type == asset_type
+    assert positions[0].instrument_code_raw == instrument_code_raw
+    assert positions[0].instrument_code_std == instrument_code_std
+    assert positions[0].exchange == exchange
     assert positions[0].review_flag == "1"
-    assert positions[0].review_note == "叶子行存在市价但缺少数量"
-    assert review_items[0].review_reason == "叶子行存在市价但缺少数量"
+    assert positions[0].review_note == review_reason
+    assert review_items[0].review_reason == review_reason
 
 
 def test_build_positions_and_review_items_preserves_normalization_reason_in_review_note() -> None:
