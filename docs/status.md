@@ -9,9 +9,9 @@
 ## Current Snapshot
 
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
-- Latest validated outputs were generated under `output/` and include `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and a date-derived workbook export `估值表解析_output_<date>.xlsx`.
+- The authoritative strict-default baseline lives under `data_samples/expected/`; ad hoc reruns may still be generated under ignored directories such as `output/`, with the same artifact set: `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook export `估值表解析_output_<date>.xlsx`.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
-- Current strict-default evidence has 0 `review_flag=1` rows in `valuation_positions`; active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items`, while the position-review path itself is locked by dedicated non-derivative regression fixtures covering `hk_equity`, `a_share`, and `fund_or_etf`.
+- `review_flag` only marks whether a subject or position needs manual review, `review_note` carries the row-level reason, and `review_items.csv` is the run-level review queue export; under the current strict-default evidence, `valuation_positions` has 0 `review_flag=1` rows, while active manual-review entrypoints in the bounded sample are `valuation_subjects` plus `review_items` and the position-review path itself is locked by dedicated non-derivative regression fixtures covering `hk_equity`, `a_share`, and `fund_or_etf`.
 - Latest parse summary now also reports supported and unsupported asset-type coverage for the current run, plus explicit `Unrecognized Object Index` and `Review Entry Index` sections.
 - Review entry grouping is regression-covered when `subject_name` and `instrument_name` differ, so `Review Entry Index` and `Review Queue By Source File` stay aligned for the same logical item.
 - Adapters hit in the latest run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
@@ -43,7 +43,7 @@
 - Shared review logic now has dedicated non-derivative regression coverage for the core supported asset classes `hk_equity`, `a_share`, and `fund_or_etf`; future fixture growth should track genuinely new asset classes or review reasons rather than duplicate the existing path.
 - `review_flag` now uses the binary value `1` to mark every subject or position that requires manual review, leaving clean rows blank; `review_note` and `review_items.csv` remain the authoritative place for the concrete review reason.
 - The repository does not currently use a `docs_readable/` derivative layer; if one is added later, it must remain non-authoritative.
-- Historical materials such as `output_phase*` and `docs/documentation_governance_report.*` should be treated as legacy references rather than current contract artifacts and may be removed from the local workspace when no longer needed.
+- Historical materials referenced by older review notes, such as `output_phase*` and `docs/documentation_governance_report.*`, should be treated as legacy snapshots rather than current contract artifacts and should only be retained with an explicit historical label.
 
 ## Recommended Next Steps
 

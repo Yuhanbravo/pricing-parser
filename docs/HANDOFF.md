@@ -33,14 +33,14 @@ This file is the single source of truth for project handoff.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
 - The markdown summary now includes supported and unsupported asset-type coverage plus explicit `Unrecognized Object Index` and `Review Entry Index` sections, so handoff readers can move from counts to actionable review rows without reopening the parser logic.
 - Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
-- Under the current strict-default evidence, `review_flag=1` remains a binary manual-review marker, but all live review entrypoints in the bounded sample come from `valuation_subjects` and `review_items`; `valuation_positions` currently has 0 flagged rows even though the position-review path itself is covered by dedicated non-derivative regression fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
+- `review_flag` only marks whether a subject or position needs manual review, `review_note` carries the row-level reason, and `review_items.csv` is the run-level review queue export; under the current strict-default evidence, all live review entrypoints in the bounded sample come from `valuation_subjects` and `review_items`, while `valuation_positions` currently has 0 flagged rows even though the position-review path itself is covered by dedicated non-derivative regression fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
 - The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
 - The strict-default acceptance baseline now lives under `data_samples/expected/`, including the expected routing CSV, subject CSV, position CSV, review-item CSV, parse summary, and workbook artifact; workbook validation now compares full sheet contents rather than only sheet headers.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
 
 ## Known Gaps
 
-- Historical materials such as `output_phase*` and `docs/documentation_governance_report.*` are not the authoritative current contract and can be removed from the local workspace once no longer needed for audit traceability.
+- Historical materials referenced by older review notes, such as `output_phase*` and `docs/documentation_governance_report.*`, are not the authoritative current contract and should remain clearly treated as historical snapshots if retained locally for audit traceability.
 
 
 ## Recommended Next Steps
