@@ -13,6 +13,32 @@ TRACE_POSITION_HEADER = (
     "custodian_id,custodian_name,adapter_key,route_source"
 )
 
+ROUTING_HEADER = (
+    "source_file,product_id,association_code,custodian_name_chinese,custodian_id,"
+    "custodian_name,adapter_key,route_source,route_status,route_message"
+)
+
+SUBJECT_HEADER = (
+    "source_file,broker,sheet_name,valuation_date,product_id,association_code,"
+    "custodian_id,custodian_name,adapter_key,route_source,raw_row_index,subject_code,"
+    "subject_name,parent_subject_code,subject_level,root_subject_code,root_subject_name,"
+    "is_leaf,is_position_candidate,quantity,unit_cost,cost,cost_pct_nav,market_price,"
+    "market_value,market_value_pct_nav,pnl,suspension_info,review_flag,raw_text"
+)
+
+POSITION_HEADER = (
+    "source_file,broker,sheet_name,valuation_date,product_id,association_code,"
+    "custodian_id,custodian_name,adapter_key,route_source,raw_row_index,instrument_name,"
+    "instrument_code_raw,instrument_code_std,exchange,asset_type,quantity,unit_cost,cost,"
+    "market_price,market_value,unrealized_pnl,subject_code,subject_name,suspension_info,"
+    "review_flag,review_note"
+)
+
+REVIEW_HEADER = (
+    "source_file,broker,valuation_date,raw_row_index,subject_code,subject_name,"
+    "quantity,cost,market_value,pnl,review_reason"
+)
+
 
 def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     raw_dir = tmp_path / "raw"
@@ -38,6 +64,23 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert outputs["parse_summary"].exists()
     assert outputs["output_workbook"].exists()
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
+
+
+def test_pipeline_locks_export_header_contracts_for_current_baseline(tmp_path: Path) -> None:
+    sample_file = Path("data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx")
+    output_dir = tmp_path / "output"
+
+    outputs = run_pipeline(sample_file, Path("产品与托管机构映射表.csv"), output_dir)
+
+    routing_header = outputs["routing_results"].read_text(encoding="utf-8-sig").splitlines()[0]
+    subjects_header = outputs["valuation_subjects"].read_text(encoding="utf-8-sig").splitlines()[0]
+    positions_header = outputs["valuation_positions"].read_text(encoding="utf-8-sig").splitlines()[0]
+    review_header = outputs["review_items"].read_text(encoding="utf-8-sig").splitlines()[0]
+
+    assert routing_header == ROUTING_HEADER
+    assert subjects_header == SUBJECT_HEADER
+    assert positions_header == POSITION_HEADER
+    assert review_header == REVIEW_HEADER
 
 
 def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:

@@ -9,6 +9,7 @@ def route_identity(
     mappings: list[MappingRecord],
     adapter_override: str | None = None,
 ) -> RouteDecision:
+    source_file = _normalize_source_file(source_file)
     attempts: list[str] = []
     if adapter_override:
         return RouteDecision(
@@ -116,6 +117,10 @@ def _normalize_custodian_name(name: str | None) -> str | None:
     if "国泰" in name:
         return "国泰海通证券股份有限公司"
     return name.strip()
+
+
+def _normalize_source_file(source_file: str) -> str:
+    return source_file.replace("\\", "/")
 
 
 def _success_decision(
