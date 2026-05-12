@@ -13,6 +13,32 @@ TRACE_POSITION_HEADER = (
     "custodian_id,custodian_name,adapter_key,route_source"
 )
 
+ROUTING_HEADER = (
+    "source_file,product_id,association_code,custodian_name_chinese,custodian_id,"
+    "custodian_name,adapter_key,route_source,route_status,route_message"
+)
+
+SUBJECT_HEADER = (
+    "source_file,broker,sheet_name,valuation_date,product_id,association_code,"
+    "custodian_id,custodian_name,adapter_key,route_source,raw_row_index,subject_code,"
+    "subject_name,parent_subject_code,subject_level,root_subject_code,root_subject_name,"
+    "is_leaf,is_position_candidate,quantity,unit_cost,cost,cost_pct_nav,market_price,"
+    "market_value,market_value_pct_nav,pnl,suspension_info,review_flag,raw_text"
+)
+
+POSITION_HEADER = (
+    "source_file,broker,sheet_name,valuation_date,product_id,association_code,"
+    "custodian_id,custodian_name,adapter_key,route_source,raw_row_index,instrument_name,"
+    "instrument_code_raw,instrument_code_std,exchange,asset_type,quantity,unit_cost,cost,"
+    "market_price,market_value,unrealized_pnl,subject_code,subject_name,suspension_info,"
+    "review_flag,review_note"
+)
+
+REVIEW_HEADER = (
+    "source_file,broker,valuation_date,raw_row_index,subject_code,subject_name,"
+    "quantity,cost,market_value,pnl,review_reason"
+)
+
 
 def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     raw_dir = tmp_path / "raw"
@@ -40,6 +66,23 @@ def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
 
+def test_pipeline_locks_export_header_contracts_for_current_baseline(tmp_path: Path) -> None:
+    sample_file = Path("data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx")
+    output_dir = tmp_path / "output"
+
+    outputs = run_pipeline(sample_file, Path("产品与托管机构映射表.csv"), output_dir)
+
+    routing_header = outputs["routing_results"].read_text(encoding="utf-8-sig").splitlines()[0]
+    subjects_header = outputs["valuation_subjects"].read_text(encoding="utf-8-sig").splitlines()[0]
+    positions_header = outputs["valuation_positions"].read_text(encoding="utf-8-sig").splitlines()[0]
+    review_header = outputs["review_items"].read_text(encoding="utf-8-sig").splitlines()[0]
+
+    assert routing_header == ROUTING_HEADER
+    assert subjects_header == SUBJECT_HEADER
+    assert positions_header == POSITION_HEADER
+    assert review_header == REVIEW_HEADER
+
+
 def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) -> None:
     sample_file = Path("data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx")
     output_dir = tmp_path / "output"
@@ -65,6 +108,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "review_reason" in review_content
     assert "Subject rows exported: 48" in summary_content
     assert "Position rows exported: 2" in summary_content
+    assert "Review flagged positions: 0" in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Review items exported:" in summary_content
     assert "Supported asset types: hk_equity" in summary_content
@@ -154,7 +198,19 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "600309.SH" in positions_content
     assert "002475.SZ" in positions_content
     assert "Processed files: 11" in summary_content
+    assert "Position rows exported: 182" in summary_content
     assert "Routing failures: 1" in summary_content
+    assert "Review flagged positions: 0" in summary_content
+    assert "Normalization issues: 0" in summary_content
+    assert "Unrouted files: 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx" in summary_content
+    assert "Generic fallback routes used: 0" in summary_content
+    assert "## Unrouted File Details" in summary_content
+    assert "## Unrecognized Object Index" in summary_content
+    assert "source_file=估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx; product_id=PRODUCT_022; association_code=XXX022;" in summary_content
+    assert "## Review Entry Index" in summary_content
+    assert "source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=6; subject_code=10020101; subject_name=银行结算账户; entrypoint=subject; reasons=叶子行存在市价但缺少数量" in summary_content
+    assert "## Review Queue By Source File" in summary_content
+    assert "Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons." in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Supported asset types: a_share, fund_or_etf, hk_equity" in summary_content
     assert "Unsupported asset types: none" in summary_content
@@ -175,3 +231,5 @@ def test_pipeline_can_enable_generic_layout_fallback_explicitly(tmp_path: Path) 
 
     assert "layout_fallback(generic)" in routing_content
     assert "Routing failures: 0" in summary_content
+    assert "Generic fallback routes used: 1" in summary_content
+    assert "Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled." in summary_content

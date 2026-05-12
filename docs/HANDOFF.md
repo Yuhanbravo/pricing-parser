@@ -4,10 +4,10 @@ This file is the single source of truth for project handoff.
 
 ## Current Status
 
-- Current phase: Phase 5 delivery with post-review contract alignment refresh.
+- Current phase: Phase 5 delivery with post-review derivative-exclusion refresh.
 - Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, so unresolved files are no longer upgraded to successful generic fallback routes.
 - Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
-- Latest validated outputs were generated under `output/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`.
+- Latest validated strict-default baseline is stored under `data_samples/expected/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`; local reruns may still export into ignored directories such as `output/`, but those artifacts are not part of the tracked contract.
 
 ## What Was Refreshed In The Contract-Alignment Pass
 
@@ -15,8 +15,10 @@ This file is the single source of truth for project handoff.
 - `valuation_subjects` and `valuation_positions` exports now retain trace columns needed for handoff and audit: `source_file`, `product_id`, `association_code`, `custodian_id`, `custodian_name`, `adapter_key`, and `route_source`.
 - `routing_results` now exports canonical `custodian_name_chinese` values, so alias forms such as `国泰` are normalized to `国泰海通证券股份有限公司` in downstream artifacts.
 - `valuation_positions` now normalizes the routine suspension marker to plain `正常交易`, so downstream consumers no longer need to strip bracketed variants.
+- `3102*` derivative subjects continue to produce review entries, but they stay in `valuation_subjects` and `review_items` instead of being promoted into `valuation_positions`.
 - Mapping validation now rejects unknown `adapter_key` values at load time instead of deferring the error to runtime routing.
-- Output artifacts were regenerated under `output/`; the workbook export name is now derived from the input date as `估值表解析_output_<date>.xlsx`.
+- Canonical `.xlsx` mapping loading is now covered by repository tests at both the loader layer and the pipeline layer.
+- The tracked acceptance baseline was refreshed under `data_samples/expected/`; the workbook artifact continues to use the input-date-derived name `估值表解析_output_<date>.xlsx`, while ad hoc reruns should write to ignored directories such as `output/`.
 
 ## Hard Boundaries
 
@@ -29,20 +31,25 @@ This file is the single source of truth for project handoff.
 
 - Verified input coverage in code now spans the current 11-file fixture set under `data_samples/raw/`.
 - Verified output artifacts for the latest run cover routing results, standardized subjects, standardized positions, review items, markdown summary, and workbook export.
-- The markdown summary now includes supported and unsupported asset-type coverage so handoff readers can quickly see whether the current run stayed within the parser's known asset scope.
-- Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 242 review items, and 0 normalization issues.
+- The markdown summary now includes supported and unsupported asset-type coverage plus explicit `Unrecognized Object Index` and `Review Entry Index` sections, so handoff readers can move from counts to actionable review rows without reopening the parser logic.
+- Latest parse summary numbers: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 238 review items, and 0 normalization issues.
+- `review_flag` only marks whether a subject or position needs manual review, `review_note` carries the row-level reason, and `review_items.csv` is the run-level review queue export; under the current strict-default evidence, all live review entrypoints in the bounded sample come from `valuation_subjects` and `review_items`, while `valuation_positions` currently has 0 flagged rows even though the position-review path itself is covered by dedicated non-derivative regression fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
 - The unresolved sample is `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx`; it only routes through `generic` when `--allow-generic-fallback` is explicitly enabled.
+- The strict-default acceptance baseline now lives under `data_samples/expected/`, including the expected routing CSV, subject CSV, position CSV, review-item CSV, parse summary, and workbook artifact; workbook validation now compares full sheet contents rather than only sheet headers.
 - Current project dependencies remain minimal: `openpyxl`, `xlrd`, and `PyYAML`, with `pytest` for development validation.
 
 ## Known Gaps
 
+- Historical materials referenced by older review notes, such as `output_phase*` and `docs/documentation_governance_report.*`, are not the authoritative current contract and should remain clearly treated as historical snapshots if retained locally for audit traceability.
+
 
 ## Recommended Next Steps
 
-1. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance artifact.
+1. Decide whether workbook acceptance should remain a full-content baseline only, or whether a second business-readable workbook diff artifact is also needed for review handoff.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Refine `asset_type` vocabulary to match the expected workbook's business-facing terminology.
-4. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule.
+4. Extend regression tests only when new review-item rules or workbook-export behaviors appear beyond the current derivative-subject rule, `.xlsx` mapping path, and the dedicated non-derivative asset-class fixtures for `hk_equity`, `a_share`, and `fund_or_etf`.
+5. If the evidence-chain closure diff remains aligned after validation, use `review-round1-baseline`, `review-round2-candidate`, and `review-round3-evidence-closed` as the preferred tag sequence.
 
 ## Practical Takeover Notes
 

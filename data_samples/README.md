@@ -12,7 +12,7 @@
 
 - `raw/`: historical or explicitly retained minimal fixtures only.
 - `mapping/`: mapping format examples and README-style guidance.
-- `expected/`: expected output artifacts used to converge schema or regression behavior.
+- `expected/`: strict-default acceptance artifacts used to lock routing, CSV exports, markdown summary, and workbook-content regression behavior.
 
 ## Maintenance Rule
 

@@ -52,6 +52,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
         if review_reason:
             review_items.append(
                 ReviewItem(
+                    source_file=subject.source_file,
                     broker=subject.broker,
                     valuation_date=subject.valuation_date,
                     raw_row_index=subject.raw_row_index,
@@ -65,10 +66,10 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 )
             )
 
-        if not subject.is_position_candidate:
+        instrument_code_raw = _extract_instrument_code(subject.subject_code)
+        if not _should_emit_position(subject, review_reason, instrument_code_raw):
             flagged_subjects.append(replace(subject, review_flag=subject_review_flag))
             continue
-        instrument_code_raw = _extract_instrument_code(subject.subject_code)
         instrument_code_std, exchange, normalization_flag = normalize_security_code(instrument_code_raw)
         asset_type = infer_asset_type(instrument_code_raw, exchange)
         review_flag = resolve_review_flag(normalization_flag, asset_type, review_reason)
@@ -101,7 +102,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 raw_row_index=subject.raw_row_index,
                 suspension_info=_normalize_position_suspension_info(subject.suspension_info),
                 review_flag=review_flag,
-                review_note=_build_review_note(review_flag, review_reason),
+                review_note=_build_review_note(normalization_flag, asset_type, review_reason),
             )
         )
     return flagged_subjects, positions, review_items
@@ -155,6 +156,37 @@ def _is_position_subject(subject: SubjectRecord, *, is_leaf: bool | None = None)
     )
 
 
+def _should_emit_position(
+    subject: SubjectRecord,
+    review_reason: str | None,
+    instrument_code_raw: str | None,
+) -> bool:
+    if _is_derivative_subject(subject.subject_code):
+        return False
+
+    if subject.is_position_candidate:
+        return True
+
+    if not review_reason or not subject.is_leaf or not subject.subject_code:
+        return False
+
+    if review_reason == "估值增值汇总行，通常不作为持仓叶子":
+        return False
+
+    if not subject.subject_code.strip().upper().startswith(("1102", "3102")):
+        return False
+
+    return bool(
+        instrument_code_raw is not None
+        and (
+            subject.quantity not in (None, 0)
+            or subject.cost is not None
+            or subject.market_price is not None
+            or subject.market_value is not None
+        )
+    )
+
+
 def _extract_instrument_code(subject_code: str | None) -> str | None:
     if not subject_code:
         return None
@@ -193,7 +225,7 @@ def _is_valuation_gain_summary(subject: SubjectRecord) -> bool:
         subject.subject_code
         and subject.subject_code.endswith("99")
         and subject.quantity in (None, 0)
-        and "估值增值" in (subject.subject_name or "")
+        and any(keyword in (subject.subject_name or "") for keyword in ("估值增值", "估增"))
     )
 
 
@@ -212,13 +244,18 @@ def _normalize_position_suspension_info(suspension_info: str | None) -> str | No
     return normalized
 
 
-def _build_review_note(review_flag: str | None, review_reason: str | None) -> str | None:
+def _build_review_note(
+    normalization_flag: str | None,
+    asset_type: str | None,
+    review_reason: str | None,
+) -> str | None:
     notes: list[str] = []
-    if review_flag == "missing_code":
+    if normalization_flag == "missing_code":
         notes.append("缺少可标准化的证券代码")
-    elif review_flag == "unknown_exchange":
+    elif normalization_flag == "unknown_exchange":
         notes.append("无法根据证券代码识别交易所")
-    elif review_flag == "unknown_asset_type":
+
+    if asset_type is None and normalization_flag is None:
         notes.append("无法推断资产类型")
 
     if review_reason:

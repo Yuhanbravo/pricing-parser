@@ -1,0 +1,12 @@
+﻿source_file,product_id,association_code,custodian_name_chinese,custodian_id,custodian_name,adapter_key,route_source,route_status,route_message
+data_samples/raw/2025-03-27_PRODUCT_001估值表.xlsx,PRODUCT_001,,国信证券股份有限公司,CUSTODIAN_007,CUSTODIAN_GROUP_007,guosen,mapping(product_id),success,matched CUSTODIAN_007 via mapping(product_id)
+data_samples/raw/20250327_PRODUCT_002_证券投资基金估值表.csv,PRODUCT_002,,兴业证券股份有限公司,CUSTODIAN_001,CUSTODIAN_GROUP_001,xyzc,mapping(product_id),success,matched CUSTODIAN_001 via mapping(product_id)
+data_samples/raw/20250327_PRODUCT_002_证券投资基金估值表.xls,PRODUCT_002,,兴业证券股份有限公司,CUSTODIAN_001,CUSTODIAN_GROUP_001,xyzc,mapping(product_id),success,matched CUSTODIAN_001 via mapping(product_id)
+data_samples/raw/PRODUCT_006_资产估值表_20250327.xls,PRODUCT_006,,中信证券股份有限公司,CUSTODIAN_003,CUSTODIAN_GROUP_003,citics,mapping(product_id),success,matched CUSTODIAN_003 via mapping(product_id)
+data_samples/raw/PRODUCT_008委托资产资产估值表20250327.xls,PRODUCT_008,,招商证券股份有限公司,CUSTODIAN_002,CUSTODIAN_GROUP_002,cmsc,mapping(product_id),success,matched CUSTODIAN_002 via mapping(product_id)
+data_samples/raw/PRODUCT_010_证券投资基金估值表_2025-03-27.xls,PRODUCT_010,,东方证券股份有限公司,CUSTODIAN_004,CUSTODIAN_GROUP_004,orient,mapping(product_id),success,matched CUSTODIAN_004 via mapping(product_id)
+data_samples/raw/PRODUCT_012_估值表_20250327.xls,PRODUCT_012,,国泰海通证券股份有限公司,CUSTODIAN_006,CUSTODIAN_GROUP_006,gtja,mapping(product_id),success,matched CUSTODIAN_006 via mapping(product_id)
+data_samples/raw/XXX007_PRODUCT_007_估值表_20250327.xls,PRODUCT_007,XXX007,国泰海通证券股份有限公司,CUSTODIAN_006,CUSTODIAN_GROUP_006,gtja,mapping(custodian_name_chinese),success,matched CUSTODIAN_006 via mapping(custodian_name_chinese)
+data_samples/raw/估值表_PRODUCT_021_20250327.xls,PRODUCT_021,,中信建投证券股份有限公司,CUSTODIAN_005,CUSTODIAN_GROUP_005,csc,mapping(product_id),success,matched CUSTODIAN_005 via mapping(product_id)
+data_samples/raw/估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx,PRODUCT_022,XXX022,,,,,unresolved,failed,"identity resolved (product_id=PRODUCT_022, association_code=XXX022) but no active mapping matched; tried mapping(product_id+association_code), mapping(product_id), mapping(association_code)"
+data_samples/raw/证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx,PRODUCT_023,,长城证券股份有限公司,CUSTODIAN_008,CUSTODIAN_GROUP_008,greatwall,mapping(product_id),success,matched CUSTODIAN_008 via mapping(product_id)
