@@ -139,6 +139,12 @@ class ReviewItem:
     raw_row_index: int | None = None
     subject_code: str | None = None
     subject_name: str | None = None
+    asset_type_internal: str | None = None
+    asset_type_display: str | None = None
+    asset_class_l1: str | None = None
+    asset_class_l2: str | None = None
+    review_category: str | None = None
+    review_note: str | None = None
     quantity: float | None = None
     cost: float | None = None
     market_value: float | None = None

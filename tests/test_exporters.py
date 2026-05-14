@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from valuation_parser.exporters import write_positions, write_subjects, write_summary
+from valuation_parser.exporters import write_positions, write_review_items, write_subjects, write_summary
 from valuation_parser.models import PositionRecord, ReviewItem, RouteDecision, SubjectRecord
 
 
@@ -113,3 +113,28 @@ def test_write_subjects_and_positions_include_taxonomy_columns(tmp_path: Path) -
     assert "cash_deposit,现金及存款,现金类,银行存款," in subjects_content
     assert "asset_type,asset_type_internal,asset_type_display,asset_class_l1,asset_class_l2" in positions_content
     assert "hk_equity,equity_hk,港股,权益类,港股" in positions_content
+
+
+def test_write_review_items_includes_taxonomy_and_review_columns(tmp_path: Path) -> None:
+    review_path = tmp_path / "review_items.csv"
+    review_item = ReviewItem(
+        broker="测试券商",
+        valuation_date="2025-03-27",
+        raw_row_index=1,
+        subject_code="3102A101000002",
+        subject_name="收益互换",
+        asset_type_internal="derivative_swap",
+        asset_type_display="收益互换",
+        asset_class_l1="衍生品类",
+        asset_class_l2="收益互换",
+        review_category="derivative_review",
+        review_note="衍生工具科目，需单独建模或排除",
+        review_reason="衍生工具科目，需单独建模或排除",
+    )
+
+    write_review_items(review_path, [review_item])
+
+    content = review_path.read_text(encoding="utf-8-sig")
+
+    assert "asset_type_internal,asset_type_display,asset_class_l1,asset_class_l2,review_category,review_note" in content
+    assert "derivative_swap,收益互换,衍生品类,收益互换,derivative_review,衍生工具科目，需单独建模或排除" in content
