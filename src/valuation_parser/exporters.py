@@ -50,6 +50,11 @@ SUBJECT_FIELDS = [
     "pnl",
     "suspension_info",
     "review_flag",
+    "asset_type_internal",
+    "asset_type_display",
+    "asset_class_l1",
+    "asset_class_l2",
+    "review_category",
     "raw_text",
 ]
 
@@ -70,6 +75,10 @@ POSITION_FIELDS = [
     "instrument_code_std",
     "exchange",
     "asset_type",
+    "asset_type_internal",
+    "asset_type_display",
+    "asset_class_l1",
+    "asset_class_l2",
     "quantity",
     "unit_cost",
     "cost",
