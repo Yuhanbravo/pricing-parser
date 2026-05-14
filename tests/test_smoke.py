@@ -13,6 +13,11 @@ TRACE_POSITION_HEADER = (
     "custodian_id,custodian_name,adapter_key,route_source"
 )
 
+TRACE_SUBJECT_SUFFIX = (
+    "suspension_info,review_flag,asset_type_internal,asset_type_display,"
+    "asset_class_l1,asset_class_l2,review_category,raw_text"
+)
+
 
 def test_pipeline_writes_phase0_outputs(tmp_path: Path) -> None:
     raw_dir = tmp_path / "raw"
@@ -52,7 +57,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     summary_content = outputs["parse_summary"].read_text(encoding="utf-8")
 
     assert TRACE_SUBJECT_HEADER in subjects_content
-    assert "suspension_info,review_flag,raw_text" in subjects_content
+    assert TRACE_SUBJECT_SUFFIX in subjects_content
     assert "11028101H02208" in subjects_content
     assert ",PRODUCT_023," in subjects_content
     assert ",greatwall,mapping(product_id)" in subjects_content
@@ -67,8 +72,9 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "Position rows exported: 2" in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Review items exported:" in summary_content
-    assert "Supported asset types: hk_equity" in summary_content
+    assert "Supported asset types: 港股" in summary_content
     assert "Unsupported asset types: none" in summary_content
+    assert "## Asset Type Coverage" in summary_content
     assert outputs["output_workbook"].exists()
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
@@ -87,7 +93,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
 
     assert "xyzc" in routing_content
     assert TRACE_SUBJECT_HEADER in subjects_content
-    assert "suspension_info,review_flag,raw_text" in subjects_content
+    assert TRACE_SUBJECT_SUFFIX in subjects_content
     assert "11020101600309" in subjects_content
     assert ",PRODUCT_002," in subjects_content
     assert ",xyzc,mapping(product_id)" in subjects_content
@@ -103,6 +109,7 @@ def test_pipeline_writes_non_empty_outputs_for_xyzc_sample(tmp_path: Path) -> No
     assert "Review items exported:" in summary_content
     assert "Supported asset types:" in summary_content
     assert "Unsupported asset types:" in summary_content
+    assert "## Asset Type Coverage" in summary_content
     assert outputs["output_workbook"].exists()
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
 
@@ -156,8 +163,9 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "Processed files: 11" in summary_content
     assert "Routing failures: 1" in summary_content
     assert "Review flagged subjects:" in summary_content
-    assert "Supported asset types: a_share, fund_or_etf, hk_equity" in summary_content
+    assert "Supported asset types: A股股票, 场内基金/ETF, 存托凭证, 港股, 科创板股票" in summary_content
     assert "Unsupported asset types: none" in summary_content
+    assert "## Asset Type Coverage" in summary_content
 
 
 def test_pipeline_can_enable_generic_layout_fallback_explicitly(tmp_path: Path) -> None:
