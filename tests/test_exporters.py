@@ -28,6 +28,7 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         is_leaf=True,
         is_position_candidate=True,
         review_flag="1",
+        asset_type_display="收益互换",
     )
     clean_subject = SubjectRecord(
         source_file="sample.xlsx",
@@ -36,6 +37,7 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         valuation_date="2025-03-27",
         subject_code="1102",
         subject_name="股票投资",
+        asset_type_display="A股股票",
     )
     flagged_position = PositionRecord(
         source_file="sample.xlsx",
@@ -46,6 +48,7 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
         subject_code="3102A101000002",
         subject_name="场外期权",
         review_flag="1",
+        asset_type_display="收益互换",
     )
     review_item = ReviewItem(
         broker="测试券商",
@@ -69,6 +72,10 @@ def test_write_summary_reports_flagged_subjects_and_positions_separately(tmp_pat
 
     assert "Review flagged subjects: 1" in content
     assert "Review flagged positions: 1" in content
+    assert "Supported asset types: 收益互换" in content
+    assert "## Asset Type Coverage" in content
+    assert "| 收益互换 | 1 |" in content
+    assert "| A股股票 | 1 |" in content
 
 
 def test_write_subjects_and_positions_include_taxonomy_columns(tmp_path: Path) -> None:
