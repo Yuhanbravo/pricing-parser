@@ -1,0 +1,88 @@
+version: 1
+
+asset_types:
+  equity_a_share:
+    display_name: A股股票
+    asset_class_l1: 权益类
+    asset_class_l2: A股
+    include_in_positions: true
+    default_review_flag: 0
+
+  equity_hk:
+    display_name: 港股
+    asset_class_l1: 权益类
+    asset_class_l2: 港股
+    include_in_positions: true
+    default_review_flag: 0
+
+  equity_star:
+    display_name: 科创板股票
+    asset_class_l1: 权益类
+    asset_class_l2: 科创板
+    include_in_positions: true
+    default_review_flag: 0
+
+  cdr:
+    display_name: 存托凭证
+    asset_class_l1: 权益类
+    asset_class_l2: 存托凭证
+    include_in_positions: true
+    default_review_flag: 0
+
+  fund_exchange_traded:
+    display_name: 场内基金/ETF
+    asset_class_l1: 基金类
+    asset_class_l2: 场内基金
+    include_in_positions: true
+    default_review_flag: 0
+
+  cash_deposit:
+    display_name: 现金及存款
+    asset_class_l1: 现金类
+    asset_class_l2: 银行存款
+    include_in_positions: false
+    default_review_flag: 0
+
+  margin_deposit:
+    display_name: 保证金
+    asset_class_l1: 保证金类
+    asset_class_l2: 存出保证金
+    include_in_positions: false
+    default_review_flag: 0
+
+  clearing_balance:
+    display_name: 证券清算款
+    asset_class_l1: 清算款类
+    asset_class_l2: 证券清算款
+    include_in_positions: false
+    default_review_flag: 0
+
+  derivative_swap:
+    display_name: 收益互换
+    asset_class_l1: 衍生品类
+    asset_class_l2: 收益互换
+    include_in_positions: false
+    default_review_flag: 1
+    default_review_category: derivative_review
+
+  payable:
+    display_name: 应付款项
+    asset_class_l1: 负债类
+    asset_class_l2: 应付款项
+    include_in_positions: false
+    default_review_flag: 0
+
+  tax_payable:
+    display_name: 应交税费
+    asset_class_l1: 负债类
+    asset_class_l2: 税费
+    include_in_positions: false
+    default_review_flag: 0
+
+  unknown:
+    display_name: 未识别
+    asset_class_l1: 未识别
+    asset_class_l2: 未识别
+    include_in_positions: false
+    default_review_flag: 1
+    default_review_category: unknown_subject
