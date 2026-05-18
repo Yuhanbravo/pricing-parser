@@ -77,12 +77,15 @@ def test_classify_subject_taxonomy_marks_derivative_and_unknown() -> None:
 def test_classify_subject_taxonomy_marks_balance_sheet_items() -> None:
     cash = classify_subject_taxonomy(subject_code="100201", subject_name="银行存款")
     margin = classify_subject_taxonomy(subject_code="103103", subject_name="存出保证金")
+    swap_margin = classify_subject_taxonomy(subject_code="103132", subject_name="收益互换协议履约保证金")
     clearing = classify_subject_taxonomy(subject_code="102101", subject_name="证券清算款")
     payable = classify_subject_taxonomy(subject_code="220201", subject_name="应付款项")
     tax = classify_subject_taxonomy(subject_code="222101", subject_name="应交税费")
 
     assert cash.asset_type_internal == "cash_deposit"
     assert margin.asset_type_internal == "margin_deposit"
+    assert swap_margin.asset_type_internal == "margin_deposit"
+    assert swap_margin.default_review_flag == "0"
     assert clearing.asset_type_internal == "clearing_balance"
     assert payable.asset_type_internal == "payable"
     assert tax.asset_type_internal == "tax_payable"

@@ -142,8 +142,13 @@ def _select_taxonomy_key(
     normalized_subject_name = (subject_name or "").strip()
     normalized_review_reason = (review_reason or "").strip()
     digits = re.sub(r"\D", "", instrument_code_raw or "")
+    has_swap_name = "收益互换" in normalized_subject_name
+    has_margin_name = "保证金" in normalized_subject_name
 
-    if normalized_subject_code.startswith("3102") or "衍生工具" in normalized_review_reason or "收益互换" in normalized_subject_name:
+    if has_swap_name and has_margin_name and not normalized_subject_code.startswith("3102"):
+        return "margin_deposit"
+
+    if normalized_subject_code.startswith("3102") or "衍生工具" in normalized_review_reason or has_swap_name:
         return "derivative_swap"
 
     if asset_type == "a_share" and exchange == "SH" and digits.startswith("689"):
@@ -157,7 +162,7 @@ def _select_taxonomy_key(
 
     if normalized_subject_code.startswith("1002") or any(token in normalized_subject_name for token in ("银行存款", "存款", "活期存款", "定期存款")):
         return "cash_deposit"
-    if normalized_subject_code.startswith("1031") or "保证金" in normalized_subject_name:
+    if normalized_subject_code.startswith("1031") or has_margin_name:
         return "margin_deposit"
     if normalized_subject_code.startswith("1021") or "清算款" in normalized_subject_name:
         return "clearing_balance"
