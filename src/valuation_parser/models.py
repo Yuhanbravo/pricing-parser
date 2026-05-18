@@ -134,6 +134,7 @@ class PositionRecord:
 
 @dataclass(frozen=True)
 class ReviewItem:
+    source_file: str | None = None
     broker: str | None = None
     valuation_date: str | None = None
     raw_row_index: int | None = None

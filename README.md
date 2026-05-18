@@ -34,7 +34,7 @@ D:\intern_workspace\
 - `routing_results.csv` 中的 `custodian_name_chinese` 会收敛为标准化名称，避免同一托管机构以简称和全称混用
 - `valuation_positions.csv` 中的 `suspension_info` 会将 `【正常交易】` 等包裹格式收敛为纯文本 `正常交易`
 - 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
-- 最新 `output/` / `data_samples/expected/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、525 条 review-flagged subjects、238 条 review items、0 个 normalization issues
+- 最新 `output/` / `data_samples/expected/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、508 条 review-flagged subjects、238 条 review items、0 个 normalization issues
 - 当前支持的 taxonomy 展示类型为：`A股股票`、`场内基金/ETF`、`存托凭证`、`港股`、`科创板股票`；收益互换、保证金、清算款、负债等非证券持仓仅保留在 subjects / review / summary 口径中，不进入 `valuation_positions.csv`
 - 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
 - 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
@@ -178,4 +178,5 @@ python -m valuation_parser.cli \
 
 1. 决定是否要为 `估值表解析_output_<date>.xlsx` 维护一份更完整的验收基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
 2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
-3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。
+3. 当新增资产类型或新的 review reason 进入共享规则时，再继续补充增量回归夹具；当前 `hk_equity`、`a_share`、`fund_or_etf` 的核心非衍生品 review path 已有专用覆盖。
+4. 若本轮 evidence-chain diff 与自动化验证保持一致，再按 `review-round1-baseline`、`review-round2-candidate`、`review-round3-evidence-closed` 方案评估打 tag。

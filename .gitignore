@@ -15,6 +15,10 @@ tmp/
 *.xls
 *.parquet
 *.csv
+*.bundle
+docs/documentation_governance_report.md
+docs/documentation_governance_report.json
 !data_samples/README.md
 !data_samples/expected/*.csv
 !data_samples/expected/*.xlsx
+pricing_parser.code-workspace

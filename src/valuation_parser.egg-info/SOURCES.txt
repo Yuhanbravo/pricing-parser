@@ -30,6 +30,7 @@ src/valuation_parser/adapters/orient.py
 src/valuation_parser/adapters/placeholder.py
 src/valuation_parser/adapters/tabular.py
 src/valuation_parser/adapters/xyzc.py
+tests/test_acceptance_baseline.py
 tests/test_adapter_sample.py
 tests/test_asset_taxonomy.py
 tests/test_code_normalizer.py

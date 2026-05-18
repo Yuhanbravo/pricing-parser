@@ -1,2 +1,0 @@
-﻿source_file,product_id,association_code,custodian_name_chinese,custodian_id,custodian_name,adapter_key,route_source,route_status,route_message
-data_samples\raw\证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx,PRODUCT_023,,,CUSTODIAN_008,CUSTODIAN_GROUP_008,greatwall,mapping(product_id),success,matched CUSTODIAN_008 via mapping(product_id)

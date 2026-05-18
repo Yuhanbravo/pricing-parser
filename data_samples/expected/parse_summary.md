@@ -11,6 +11,10 @@
 - Review flagged positions: 0
 - Review items exported: 238
 - Normalization issues: 0
+- Unrouted files: 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx
+- Generic fallback routes used: 0
+- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.
+- Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.
 - Supported asset types: A股股票, 场内基金/ETF, 存托凭证, 港股, 科创板股票
 - Unsupported asset types: none
 
@@ -30,3 +34,261 @@
 | 科创板股票 | 10 |
 | 场内基金/ETF | 3 |
 | 存托凭证 | 1 |
+
+## Unrouted File Details
+- 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx
+
+## Unrecognized Object Index
+- source_file=估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx; product_id=PRODUCT_022; association_code=XXX022; route_message=identity resolved (product_id=PRODUCT_022, association_code=XXX022) but no active mapping matched; tried mapping(product_id+association_code), mapping(product_id), mapping(association_code)
+
+## Review Entry Index
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=6; subject_code=10020101; subject_name=银行结算账户; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=9; subject_code=10020601000001; subject_name=应计活期存款利息; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=12; subject_code=10211354; subject_name=东证期货; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=15; subject_code=103106G5; subject_name=国联证券; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=17; subject_code=10313205; subject_name=中信证券-EQSWAP; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=18; subject_code=10313210; subject_name=中金跨境; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=21; subject_code=103173020000G5; subject_name=国联证券; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=28; subject_code=11020199; subject_name=上交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=36; subject_code=11023199; subject_name=深交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=40; subject_code=11024199; subject_name=深交所A股估值增值_创业板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=51; subject_code=11028199; subject_name=沪港通股票估增; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=55; subject_code=1102A199; subject_name=存托凭证估值增值_上交所; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=59; subject_code=1102C199; subject_name=股票估值增值_上交所_科创板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=62; subject_code=22060103; subject_name=C类应付基金管理费; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=64; subject_code=220701; subject_name=应付托管费; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=68; subject_code=220904G5021509; subject_name=21509; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=70; subject_code=221401; subject_name=应付外包服务费; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=73; subject_code=22210502; subject_name=应交税费-应交增值税-金融商品转让销项税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=74; subject_code=222106; subject_name=应交税费-暂估增值税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=76; subject_code=22210701; subject_name=城市维护建设税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=77; subject_code=22210702; subject_name=教育费附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=78; subject_code=22210703; subject_name=地方教育附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=80; subject_code=22210801; subject_name=城市维护建设税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=81; subject_code=22210802; subject_name=教育费附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=82; subject_code=22210803; subject_name=地方教育附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=86; subject_code=300324010000G5; subject_name=国联证券; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=87; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=88; subject_code=3102C1; subject_name=场外衍生品_收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=89; subject_code=3102C199; subject_name=衍生工具_收益互换_公允价值变动; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=90; subject_code=3102C199000001; subject_name=中信证券-USD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=91; subject_code=3102C199000003; subject_name=中信证券-HKD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=92; subject_code=3102C199000005; subject_name=中信证券-EQSWAP; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=93; subject_code=3102C199000006; subject_name=中信证券-USD-HYCNHC; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=94; subject_code=3102C199000008; subject_name=中信证券--HKD--EQ_HYCNHC估增; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=2025-03-27_PRODUCT_001估值表.xlsx; raw_row_index=95; subject_code=3102C199000010; subject_name=中金跨境; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=47; subject_code=11020199; subject_name=上交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=60; subject_code=11023199; subject_name=深交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=74; subject_code=11028199; subject_name=股票估值增值_港股通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=84; subject_code=1102C199; subject_name=股票估值增值_上交所_科创板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=108; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=109; subject_code=3102A1; subject_name=场外指数期权_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=110; subject_code=3102A101; subject_name=衍生工具_场外指数期权初始合约价值_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=111; subject_code=3102A101000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=112; subject_code=3102A101000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=113; subject_code=3102A101000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=114; subject_code=3102A101000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=115; subject_code=3102A102; subject_name=衍生工具_场外指数期权冲销初始合约价值_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=116; subject_code=3102A102000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=117; subject_code=3102A102000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=118; subject_code=3102A102000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=119; subject_code=3102A102000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=120; subject_code=3102A103; subject_name=衍生工具_场外指数期权成本_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=121; subject_code=3102A103000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=122; subject_code=3102A103000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=123; subject_code=3102A103000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=124; subject_code=3102A199; subject_name=衍生工具_场外指数期权成本_权利方_估值增值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=125; subject_code=3102A199000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=126; subject_code=3102A199000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=127; subject_code=3102A199000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=128; subject_code=3102A199000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=129; subject_code=3102C1; subject_name=收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=130; subject_code=3102C101; subject_name=初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=131; subject_code=3102C101000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=132; subject_code=3102C101000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=133; subject_code=3102C102; subject_name=冲抵初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=134; subject_code=3102C102000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=135; subject_code=3102C102000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=136; subject_code=3102C199; subject_name=公允价值变动; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=137; subject_code=3102C199000008; subject_name=收益互换SAC-107352-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=138; subject_code=3102C199000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=139; subject_code=3102C199000263; subject_name=收益互换ZXSAC-107352-USD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.csv; raw_row_index=140; subject_code=3102C199000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=47; subject_code=11020199; subject_name=上交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=60; subject_code=11023199; subject_name=深交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=74; subject_code=11028199; subject_name=股票估值增值_港股通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=84; subject_code=1102C199; subject_name=股票估值增值_上交所_科创板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=108; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=109; subject_code=3102A1; subject_name=场外指数期权_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=110; subject_code=3102A101; subject_name=衍生工具_场外指数期权初始合约价值_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=111; subject_code=3102A101000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=112; subject_code=3102A101000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=113; subject_code=3102A101000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=114; subject_code=3102A101000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=115; subject_code=3102A102; subject_name=衍生工具_场外指数期权冲销初始合约价值_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=116; subject_code=3102A102000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=117; subject_code=3102A102000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=118; subject_code=3102A102000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=119; subject_code=3102A102000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=120; subject_code=3102A103; subject_name=衍生工具_场外指数期权成本_权利方; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=121; subject_code=3102A103000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=122; subject_code=3102A103000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=123; subject_code=3102A103000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=124; subject_code=3102A199; subject_name=衍生工具_场外指数期权成本_权利方_估值增值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=125; subject_code=3102A199000002; subject_name=中信证券20221024@场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=126; subject_code=3102A199000003; subject_name=国君证券OP-020039; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=127; subject_code=3102A199000004; subject_name=申万宏源OP-2177001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=128; subject_code=3102A199000005; subject_name=中金场外期权-938001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=129; subject_code=3102C1; subject_name=收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=130; subject_code=3102C101; subject_name=初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=131; subject_code=3102C101000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=132; subject_code=3102C101000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=133; subject_code=3102C102; subject_name=冲抵初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=134; subject_code=3102C102000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=135; subject_code=3102C102000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=136; subject_code=3102C199; subject_name=公允价值变动; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=137; subject_code=3102C199000008; subject_name=收益互换SAC-107352-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=138; subject_code=3102C199000009; subject_name=中信收益互换ZXSAC-107352; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=139; subject_code=3102C199000263; subject_name=收益互换ZXSAC-107352-USD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=20250327_PRODUCT_002_证券投资基金估值表.xls; raw_row_index=140; subject_code=3102C199000265; subject_name=华泰收益互换HTSC-21078-HKD; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=115; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=116; subject_code=3102.03; subject_name=中金所_投机_卖方_股指期货; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=117; subject_code=3102.03.01; subject_name=中金所_投机_卖方_股指期货_成本; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=118; subject_code=3102.03.01.IH2504 CFX; subject_name=IH2504; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=119; subject_code=3102.03.01.IH2506 CFX; subject_name=IH2506; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=120; subject_code=3102.03.02; subject_name=中金所_投机_卖方_股指期货_冲抵成本; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=121; subject_code=3102.03.02.IH2504 CFX; subject_name=IH2504; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=122; subject_code=3102.03.02.IH2506 CFX; subject_name=IH2506; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=126; subject_code=3199.01.01.120783--CNY--FC OTC; subject_name=120783--CNY--FC; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=127; subject_code=3199.01.01.120783--HKD--EQ OTC; subject_name=120783--HKD--EQ; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=128; subject_code=3199.01.01.120783--USD--EQ OTC; subject_name=120783--USD--EQ; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=PRODUCT_006_资产估值表_20250327.xls; raw_row_index=129; subject_code=3199.01.01.CICC-WSC-195824-20250320-0C OTC; subject_name=CICC-WSC-195824-20250320-0C; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=90; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=91; subject_code=3102.90; subject_name=其他衍生工具_场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=92; subject_code=3102.90.01; subject_name=其他衍生工具_场外期权_成本; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=93; subject_code=3102.90.01.1HX2J044 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20241212_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=94; subject_code=3102.90.01.1HX2J045 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20241231_01_RSPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=95; subject_code=3102.90.01.1HX2J046 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20241231_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=96; subject_code=3102.90.01.1HX2J047 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20250102_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=97; subject_code=3102.90.01.1HX2J048 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20250102_01_RSPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=98; subject_code=3102.90.01.1HX2J049 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20250103_01_RSPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=99; subject_code=3102.90.01.1HX2J050 ZC; subject_name=场外期权-PRODUCT_008（中信证券）-107353_C_20250103_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=100; subject_code=3102.90.01.1HYBB015 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-NSEAB01-24070101; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=101; subject_code=3102.90.01.1HYBB016 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-OSEAB02-24100901; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=102; subject_code=3102.90.01.1HYBB017 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-OSEAB02-24112501; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=103; subject_code=3102.90.01.1HYBB018 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-OSEAB02-24120601; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=104; subject_code=3102.90.01.1HYBB019 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-OSEAB02-24121301; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=105; subject_code=3102.90.01.1HYBB021 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-ACS01-25030602; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=106; subject_code=3102.90.01.1HYBB022 ZC; subject_name=场外期权-PRODUCT_008（国泰君安）-HXHY-YJ2H-ACS01-25031301; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=107; subject_code=3102.90.01.1HYBY018 ZC; subject_name=场外期权-PRODUCT_008（申万宏源）-SWHY-2177002-24004; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=108; subject_code=3102.90.01.1HYBY019 ZC; subject_name=场外期权-PRODUCT_008（申万宏源）-SWHY-2177002-24005; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=109; subject_code=3102.91; subject_name=其他衍生工具_收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=110; subject_code=3102.91.01; subject_name=其他衍生工具_收益互换_成本; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=111; subject_code=3102.91.01.1HX2T3 ZC; subject_name=收益互换-PRODUCT_008（华泰证券）-互换交易; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=112; subject_code=3102.91.01.1HX2Y5 ZC; subject_name=收益互换-PRODUCT_008（中信证券）-HKD-互换交易; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=113; subject_code=3102.91.01.1HX2Y7 ZC; subject_name=收益互换-PRODUCT_008（中信证券）-USD-互换交易; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_008委托资产资产估值表20250327.xls; raw_row_index=114; subject_code=3102.91.01.1HX2Y9 ZC; subject_name=收益互换-PRODUCT_008（中信证券）-CNY-互换交易; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=38; subject_code=11020199; subject_name=上交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=45; subject_code=11023199; subject_name=深交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=56; subject_code=11028199; subject_name=股票估值增值_港股通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=61; subject_code=1102C199; subject_name=股票估值增值_上交所_科创板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=90; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=91; subject_code=3102C1; subject_name=衍生工具_收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=92; subject_code=3102C196; subject_name=衍生工具_收益互换_公允价值变动_国泰君安; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=93; subject_code=3102C197; subject_name=衍生工具_收益互换_公允价值变动_华泰证券; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=94; subject_code=3102C198; subject_name=衍生工具_收益互换_公允价值变动_中信证券; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_010_证券投资基金估值表_2025-03-27.xls; raw_row_index=95; subject_code=3102C199; subject_name=衍生工具_收益互换_公允价值变动_中金公司; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=38; subject_code=11020199; subject_name=股票估值增值_上交所; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=49; subject_code=11023199; subject_name=股票估值增值_深交所; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=66; subject_code=11028199; subject_name=股票估值增值_沪港通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=82; subject_code=11050399; subject_name=ETF基金估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=108; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=109; subject_code=3102A2; subject_name=场外期权; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=110; subject_code=3102A201; subject_name=场外期权_成本; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=111; subject_code=3102A20101316236; subject_name=中信证券_112186_C_20250219_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=112; subject_code=3102A20101798086; subject_name=中信证券_112186_C_20250319_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=113; subject_code=3102A20101873529; subject_name=中信证券_112186_C_20250320_01_SPRING_RFQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=114; subject_code=3102A299; subject_name=场外期权_估值增值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=115; subject_code=3102A29901316236; subject_name=中信证券_112186_C_20250219_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=116; subject_code=3102A29901798086; subject_name=中信证券_112186_C_20250319_01_SPRING; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=117; subject_code=3102A29901873529; subject_name=中信证券_112186_C_20250320_01_SPRING_RFQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=118; subject_code=3102C1; subject_name=收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=119; subject_code=3102C199; subject_name=收益互换_估值增值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=120; subject_code=3102C199000001; subject_name=中信EQSWAP112186-000001; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=121; subject_code=3102C199000002; subject_name=中信112186-HKD-EQ-000002; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=122; subject_code=3102C199000003; subject_name=中信112186-USD-EQ-000003; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=PRODUCT_012_估值表_20250327.xls; raw_row_index=123; subject_code=3102C199000012; subject_name=中金WSC_PRODUCT_012; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=26; subject_code=11020199; subject_name=股票估值增值_上交所; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=32; subject_code=11023199; subject_name=股票估值增值_深交所; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=42; subject_code=11028199; subject_name=股票估值增值_沪港通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=53; subject_code=1102C199; subject_name=股票估值增值_上交所_科创板; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=76; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=77; subject_code=3102C1; subject_name=收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=78; subject_code=3102C199; subject_name=收益互换_估值增值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=79; subject_code=3102C199000001; subject_name=中金WSC_PRODUCT_007; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=80; subject_code=3102C199000004; subject_name=中信122395--USD--EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=81; subject_code=3102C199000008; subject_name=中信122395--HKD--EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=XXX007_PRODUCT_007_估值表_20250327.xls; raw_row_index=82; subject_code=3102C199000010; subject_name=中信EQSWAP122395; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=7; subject_code=10020101; subject_name=活期存款; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=10; subject_code=10020601000001; subject_name=应计活期存款利息; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=13; subject_code=10211318; subject_name=东证期货; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=16; subject_code=10310601; subject_name=中信建投证券; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=19; subject_code=10313238000001; subject_name=EQSWAP110768（A股）; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=20; subject_code=10313290; subject_name=中金PRODUCT_021收益互换; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=22; subject_code=10317301; subject_name=中信建投证券; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=31; subject_code=11020199; subject_name=上交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=37; subject_code=11023199; subject_name=深交所A股估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=51; subject_code=11028199; subject_name=股票估值增值_港股通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=56; subject_code=11050399; subject_name=ETF基金估值增值; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=58; subject_code=220501; subject_name=应付运营服务费; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=61; subject_code=22060101; subject_name=QD791A; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=62; subject_code=22060103; subject_name=QD791C; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=64; subject_code=220701; subject_name=应付托管费; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=68; subject_code=22090401041112; subject_name=41112; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=71; subject_code=22210502; subject_name=应交税费-应交增值税-金融商品转让销项税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=72; subject_code=222106; subject_name=应交税费-暂估增值税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=74; subject_code=22210701; subject_name=城建税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=75; subject_code=22210702; subject_name=教育费附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=76; subject_code=22210703; subject_name=地方教育附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=78; subject_code=22210801; subject_name=城建税; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=79; subject_code=22210802; subject_name=教育费附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=80; subject_code=22210803; subject_name=地方教育附加; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=83; subject_code=30032401; subject_name=证券清算款_港股通; entrypoint=subject; reasons=叶子行存在市价但缺少数量
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=84; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=85; subject_code=3102C1; subject_name=衍生工具_收益互换_初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=86; subject_code=3102C101; subject_name=衍生工具_收益互换_初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=87; subject_code=3102C101001985; subject_name=HKDEQ110768（港股）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=88; subject_code=3102C101002302; subject_name=HKDEQ110768（美股EQ）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=89; subject_code=3102C101003475; subject_name=中金PRODUCT_021收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=90; subject_code=3102C102; subject_name=衍生工具_收益互换_冲抵初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=91; subject_code=3102C102001985; subject_name=HKDEQ110768（港股）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=92; subject_code=3102C102002302; subject_name=HKDEQ110768（美股EQ）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=93; subject_code=3102C102003475; subject_name=中金PRODUCT_021收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=94; subject_code=3102C199; subject_name=衍生工具_收益互换_公允价值变动; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=95; subject_code=3102C199001657; subject_name=EQSWAP110768（A股）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=96; subject_code=3102C199001985; subject_name=HKDEQ110768（港股）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=97; subject_code=3102C199002302; subject_name=HKDEQ110768（美股EQ）; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=估值表_PRODUCT_021_20250327.xls; raw_row_index=98; subject_code=3102C199003475; subject_name=中金PRODUCT_021收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=25; subject_code=11028199; subject_name=股票估值增值_港股通; entrypoint=subject; reasons=估值增值汇总行，通常不作为持仓叶子
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=43; subject_code=3102; subject_name=衍生工具; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=44; subject_code=3102C1; subject_name=衍生工具_收益互换; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=45; subject_code=3102C101; subject_name=衍生工具_收益互换_初始合约价值; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=46; subject_code=3102C101000002; subject_name=和谐中信收益互换USD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=47; subject_code=3102C101000005; subject_name=和谐中信收益互换HKD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=48; subject_code=3102C101000006; subject_name=和谐中信收益互换人民币; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=49; subject_code=3102C199; subject_name=衍生工具_收益互换_公允价值变动; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=50; subject_code=3102C199000002; subject_name=和谐中信收益互换USD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=51; subject_code=3102C199000005; subject_name=和谐中信收益互换HKD-EQ; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+- source_file=证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx; raw_row_index=52; subject_code=3102C199000006; subject_name=和谐中信收益互换人民币; entrypoint=subject; reasons=衍生工具科目，需单独建模或排除
+
+## Review Queue By Source File
+- 2025-03-27_PRODUCT_001估值表.xlsx: 35 review entries; top reasons: 叶子行存在市价但缺少数量 (20), 衍生工具科目，需单独建模或排除 (9), 估值增值汇总行，通常不作为持仓叶子 (6)
+- 20250327_PRODUCT_002_证券投资基金估值表.csv: 37 review entries; top reasons: 衍生工具科目，需单独建模或排除 (33), 估值增值汇总行，通常不作为持仓叶子 (4)
+- 20250327_PRODUCT_002_证券投资基金估值表.xls: 37 review entries; top reasons: 衍生工具科目，需单独建模或排除 (33), 估值增值汇总行，通常不作为持仓叶子 (4)
+- PRODUCT_006_资产估值表_20250327.xls: 12 review entries; top reasons: 衍生工具科目，需单独建模或排除 (8), 叶子行存在市价但缺少数量 (4)
+- PRODUCT_008委托资产资产估值表20250327.xls: 25 review entries; top reasons: 衍生工具科目，需单独建模或排除 (25)
+- PRODUCT_010_证券投资基金估值表_2025-03-27.xls: 10 review entries; top reasons: 衍生工具科目，需单独建模或排除 (6), 估值增值汇总行，通常不作为持仓叶子 (4)
+- PRODUCT_012_估值表_20250327.xls: 20 review entries; top reasons: 衍生工具科目，需单独建模或排除 (16), 估值增值汇总行，通常不作为持仓叶子 (4)
+- XXX007_PRODUCT_007_估值表_20250327.xls: 11 review entries; top reasons: 衍生工具科目，需单独建模或排除 (7), 估值增值汇总行，通常不作为持仓叶子 (4)
+- 估值表_PRODUCT_021_20250327.xls: 40 review entries; top reasons: 叶子行存在市价但缺少数量 (21), 衍生工具科目，需单独建模或排除 (15), 估值增值汇总行，通常不作为持仓叶子 (4)
+- 证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx: 11 review entries; top reasons: 衍生工具科目，需单独建模或排除 (10), 估值增值汇总行，通常不作为持仓叶子 (1)

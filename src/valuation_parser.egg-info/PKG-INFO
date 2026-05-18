@@ -190,4 +190,5 @@ python -m valuation_parser.cli \
 
 1. 决定是否要为 `估值表解析_output_<date>.xlsx` 维护一份更完整的验收基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
 2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
-3. 继续补充更多资产类型与 review reason 的回归夹具，避免共享规则只在当前样本集上成立。
+3. 当新增资产类型或新的 review reason 进入共享规则时，再继续补充增量回归夹具；当前 `hk_equity`、`a_share`、`fund_or_etf` 的核心非衍生品 review path 已有专用覆盖。
+4. 若本轮 evidence-chain diff 与自动化验证保持一致，再按 `review-round1-baseline`、`review-round2-candidate`、`review-round3-evidence-closed` 方案评估打 tag。

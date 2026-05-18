@@ -94,6 +94,7 @@ POSITION_FIELDS = [
 ]
 
 REVIEW_FIELDS = [
+    "source_file",
     "broker",
     "valuation_date",
     "raw_row_index",
@@ -137,6 +138,7 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     success_count = sum(1 for route in routes if route.route_status == "success")
     failure_count = sum(1 for route in routes if route.route_status != "success")
     manual_override_count = sum(1 for route in routes if route.route_source == "manual_override")
+    generic_fallback_count = sum(1 for route in routes if route.route_source == "layout_fallback(generic)")
     flagged_subject_count = sum(1 for subject in subjects if subject.review_flag)
     flagged_position_count = sum(1 for position in positions if position.review_flag)
     review_item_count = len(review_items)
@@ -150,6 +152,10 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
         }
     )
     unsupported_asset_types = ["未识别"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
+    unrouted_files = sorted({Path(route.source_file).name for route in routes if route.route_status != "success"})
+    unrouted_lines = _build_unrecognized_object_lines(routes)
+    review_lines = _build_review_summary_lines(review_items=review_items, positions=positions)
+    review_index_lines = _build_review_index_lines(review_items=review_items, positions=positions)
 
     summary_lines = [
         "# Parse Summary",
@@ -165,6 +171,10 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
         f"- Review flagged positions: {flagged_position_count}",
         f"- Review items exported: {review_item_count}",
         f"- Normalization issues: {normalization_issue_count}",
+        f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
+        f"- Generic fallback routes used: {generic_fallback_count}",
+        "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
+        "- Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.",
         f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
         f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
     ]
@@ -182,8 +192,143 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
         )
         summary_lines.extend(f"| {asset_type_display} | {count} |" for asset_type_display, count in asset_type_coverage)
 
+    summary_lines.extend(
+        [
+            "",
+            "## Unrouted File Details",
+            *([f"- {source_file}" for source_file in unrouted_files] or ["- none"]),
+            "",
+            "## Unrecognized Object Index",
+            *unrouted_lines,
+            "",
+            "## Review Entry Index",
+            *review_index_lines,
+            "",
+            "## Review Queue By Source File",
+            *review_lines,
+        ]
+    )
+
     content = "\n".join(summary_lines)
     path.write_text(content + "\n", encoding="utf-8")
+
+
+def _build_unrecognized_object_lines(routes: list[RouteDecision]) -> list[str]:
+    failed_routes = [route for route in routes if route.route_status != "success"]
+    if not failed_routes:
+        return ["- none"]
+
+    lines: list[str] = []
+    for route in sorted(failed_routes, key=lambda item: Path(item.source_file).name):
+        lines.append(
+            "- "
+            f"source_file={Path(route.source_file).name}; "
+            f"product_id={route.product_id or 'none'}; "
+            f"association_code={route.association_code or 'none'}; "
+            f"route_message={route.route_message or 'none'}"
+        )
+    return lines
+
+
+def _build_review_index_lines(*, review_items: list[ReviewItem], positions: list[PositionRecord]) -> list[str]:
+    review_entries: dict[tuple[str, int | None, str | None, str | None], dict[str, object]] = {}
+
+    for review_item in review_items:
+        key = _review_item_entry_key(review_item)
+        entry = review_entries.setdefault(
+            key,
+            {
+                "entrypoints": set(),
+                "reasons": set(),
+            },
+        )
+        entry["entrypoints"].add("subject")
+        entry["reasons"].update(_split_review_reasons(review_item.review_reason))
+
+    for position in positions:
+        if not position.review_note:
+            continue
+        key = _position_entry_key(position)
+        entry = review_entries.setdefault(
+            key,
+            {
+                "entrypoints": set(),
+                "reasons": set(),
+            },
+        )
+        entry["entrypoints"].add("position")
+        entry["reasons"].update(_split_review_reasons(position.review_note))
+
+    if not review_entries:
+        return ["- none"]
+
+    lines: list[str] = []
+    for (source_file, raw_row_index, subject_code, subject_name), payload in sorted(review_entries.items()):
+        entrypoints = "+".join(sorted(payload["entrypoints"]))
+        reasons = "；".join(sorted(payload["reasons"])) or "none"
+        lines.append(
+            "- "
+            f"source_file={source_file}; "
+            f"raw_row_index={raw_row_index if raw_row_index is not None else 'none'}; "
+            f"subject_code={subject_code or 'none'}; "
+            f"subject_name={subject_name or 'none'}; "
+            f"entrypoint={entrypoints}; "
+            f"reasons={reasons}"
+        )
+    return lines
+
+
+def _build_review_summary_lines(*, review_items: list[ReviewItem], positions: list[PositionRecord]) -> list[str]:
+    review_entries: dict[tuple[str, int | None, str | None, str | None], set[str]] = {}
+
+    for review_item in review_items:
+        key = _review_item_entry_key(review_item)
+        reasons = review_entries.setdefault(key, set())
+        reasons.update(_split_review_reasons(review_item.review_reason))
+
+    for position in positions:
+        if not position.review_note:
+            continue
+        key = _position_entry_key(position)
+        reasons = review_entries.setdefault(key, set())
+        reasons.update(_split_review_reasons(position.review_note))
+
+    if not review_entries:
+        return ["- none"]
+
+    summary_lines: list[str] = []
+    source_files = sorted({entry_key[0] for entry_key in review_entries})
+    for source_file in source_files:
+        entries_for_file = [reasons for entry_key, reasons in review_entries.items() if entry_key[0] == source_file]
+        reason_counter: Counter[str] = Counter(
+            reason
+            for reasons in entries_for_file
+            for reason in reasons
+        )
+        top_reasons = ", ".join(
+            f"{reason} ({count})"
+            for reason, count in sorted(reason_counter.items(), key=lambda item: (-item[1], item[0]))[:3]
+        )
+        summary_lines.append(
+            f"- {source_file}: {len(entries_for_file)} review entries; top reasons: {top_reasons or 'none'}"
+        )
+    return summary_lines
+
+
+def _review_item_entry_key(review_item: ReviewItem) -> tuple[str, int | None, str | None, str | None]:
+    source_file = Path(review_item.source_file).name if review_item.source_file else "unknown"
+    return (source_file, review_item.raw_row_index, review_item.subject_code, review_item.subject_name)
+
+
+def _position_entry_key(position: PositionRecord) -> tuple[str, int | None, str | None, str | None]:
+    source_file = Path(position.source_file).name
+    return (source_file, position.raw_row_index, position.subject_code, position.subject_name or position.instrument_name)
+
+
+def _split_review_reasons(review_text: str | None) -> list[str]:
+    if not review_text:
+        return []
+    return [part.strip() for part in review_text.split("；") if part.strip()]
 
 
 def _has_normalization_issue(review_note: str | None) -> bool:
