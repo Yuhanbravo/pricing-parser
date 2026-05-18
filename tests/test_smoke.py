@@ -120,7 +120,7 @@ def test_pipeline_writes_non_empty_outputs_for_greatwall_sample(tmp_path: Path) 
     assert "Review flagged subjects:" in summary_content
     assert "Review items exported:" in summary_content
     assert "Supported asset types: 港股" in summary_content
-    assert "Unsupported asset types: none" in summary_content
+    assert "Unsupported asset types: 未识别" in summary_content
     assert "## Asset Type Coverage" in summary_content
     assert outputs["output_workbook"].exists()
     assert outputs["output_workbook"].name == "估值表解析_output_2025-03-27.xlsx"
@@ -223,7 +223,7 @@ def test_pipeline_writes_non_empty_outputs_for_full_output_raw_set(tmp_path: Pat
     assert "Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons." in summary_content
     assert "Review flagged subjects:" in summary_content
     assert "Supported asset types: A股股票, 场内基金/ETF, 存托凭证, 港股, 科创板股票" in summary_content
-    assert "Unsupported asset types: none" in summary_content
+    assert "Unsupported asset types: 未识别" in summary_content
     assert "## Asset Type Coverage" in summary_content
 
 

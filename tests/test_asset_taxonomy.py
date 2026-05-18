@@ -89,3 +89,64 @@ def test_classify_subject_taxonomy_marks_balance_sheet_items() -> None:
     assert clearing.asset_type_internal == "clearing_balance"
     assert payable.asset_type_internal == "payable"
     assert tax.asset_type_internal == "tax_payable"
+
+
+def test_classify_subject_taxonomy_swap_margin_boundary() -> None:
+    # Non-3102 subject with both 收益互换 and 保证金 in name -> margin_deposit, not derivative
+    swap_margin_non3102 = classify_subject_taxonomy(
+        subject_code="103132",
+        subject_name="收益互换协议履约保证金",
+    )
+    # 3102 subject with both 收益互换 and 保证金 in name -> derivative_swap (code wins)
+    swap_margin_3102 = classify_subject_taxonomy(
+        subject_code="3102A101MARGIN",
+        subject_name="收益互换履约保证金专户",
+    )
+    # Subject with only 收益互换 (no 保证金, non-3102) -> derivative_swap
+    swap_only_non3102 = classify_subject_taxonomy(
+        subject_code="1102A101000002",
+        subject_name="收益互换持仓",
+    )
+
+    assert swap_margin_non3102.asset_type_internal == "margin_deposit"
+    assert swap_margin_non3102.include_in_positions is False
+    assert swap_margin_non3102.default_review_flag == "0"
+
+    assert swap_margin_3102.asset_type_internal == "derivative_swap"
+    assert swap_margin_3102.include_in_positions is False
+    assert swap_margin_3102.default_review_flag == "1"
+
+    assert swap_only_non3102.asset_type_internal == "derivative_swap"
+    assert swap_only_non3102.review_category == "derivative_review"
+
+
+def test_load_asset_taxonomy_raises_on_invalid_review_flag() -> None:
+    import tempfile
+    from pathlib import Path
+
+    import pytest
+
+    from valuation_parser.taxonomy import _load_asset_taxonomy_cached
+
+    bad_yaml = """
+version: 1
+asset_types:
+  unknown:
+    display_name: 未识别
+    asset_class_l1: 未识别
+    asset_class_l2: 未识别
+    include_in_positions: false
+    default_review_flag: "yes"
+    default_review_category: unknown_subject
+"""
+    with tempfile.NamedTemporaryFile(suffix=".yaml", mode="w", delete=False) as tmp:
+        tmp.write(bad_yaml)
+        tmp_path = Path(tmp.name)
+
+    try:
+        _load_asset_taxonomy_cached.cache_clear()
+        with pytest.raises(ValueError, match="unrecognized default_review_flag"):
+            _load_asset_taxonomy_cached(tmp_path)
+    finally:
+        _load_asset_taxonomy_cached.cache_clear()
+        tmp_path.unlink()

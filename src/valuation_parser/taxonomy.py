@@ -69,7 +69,16 @@ def _load_asset_taxonomy_cached(config_path: Path) -> AssetTaxonomy:
     for key, item in (data.get("asset_types") or {}).items():
         if not isinstance(item, dict):
             continue
-        review_flag = item.get("default_review_flag")
+        review_flag_raw = item.get("default_review_flag")
+        if review_flag_raw in {0, 1, "0", "1"}:
+            normalized_review_flag = str(review_flag_raw)
+        elif review_flag_raw is None:
+            normalized_review_flag = None
+        else:
+            raise ValueError(
+                f"asset_taxonomy: entry {key!r} has unrecognized default_review_flag={review_flag_raw!r}; "
+                "expected 0, 1, '0', or '1'"
+            )
         entries[key] = AssetTaxonomyEntry(
             key=key,
             display_name=str(item.get("display_name") or key),
@@ -78,7 +87,7 @@ def _load_asset_taxonomy_cached(config_path: Path) -> AssetTaxonomy:
             include_in_positions=bool(item.get("include_in_positions")),
             # Normalize YAML ints to the existing string-based review flag
             # contract so taxonomy defaults and exporter flags compare cleanly.
-            default_review_flag=str(review_flag) if review_flag in {0, 1, "0", "1"} else None,
+            default_review_flag=normalized_review_flag,
             default_review_category=_clean_text(item.get("default_review_category")),
         )
 

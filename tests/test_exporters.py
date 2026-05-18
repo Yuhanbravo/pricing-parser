@@ -243,3 +243,46 @@ def test_write_review_items_includes_taxonomy_and_review_columns(tmp_path: Path)
 
     assert "asset_type_internal,asset_type_display,asset_class_l1,asset_class_l2,review_category,review_note" in content
     assert "derivative_swap,收益互换,衍生品类,收益互换,derivative_review,衍生工具科目，需单独建模或排除" in content
+
+
+def test_write_summary_reports_unsupported_types_from_subjects(tmp_path: Path) -> None:
+    summary_path = tmp_path / "parse_summary.md"
+    route = RouteDecision(
+        source_file="sample.xlsx",
+        product_id="PRODUCT_001",
+        association_code=None,
+        custodian_name_chinese="测试托管机构",
+        custodian_id="CUST001",
+        custodian_name="test_broker",
+        adapter_key="test",
+        route_source="mapping(product_id)",
+        route_status="success",
+        route_message="ok",
+    )
+    # Unknown-type subject (no position emitted for it)
+    unknown_subject = SubjectRecord(
+        source_file="sample.xlsx",
+        broker="测试",
+        valuation_date="2025-03-27",
+        subject_code="999999",
+        subject_name="未知标的",
+        is_leaf=True,
+        is_position_candidate=False,
+        asset_type_internal="unknown",
+        asset_type_display="未识别",
+        asset_class_l1="未识别",
+        asset_class_l2="未识别",
+        review_flag="1",
+    )
+
+    write_summary(
+        summary_path,
+        files_processed=1,
+        routes=[route],
+        subjects=[unknown_subject],
+        positions=[],
+        review_items=[],
+    )
+
+    content = summary_path.read_text(encoding="utf-8")
+    assert "Unsupported asset types: 未识别" in content

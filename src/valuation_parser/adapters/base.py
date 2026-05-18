@@ -7,7 +7,7 @@ import re
 
 from valuation_parser.models import ParseArtifacts, PositionRecord, ReviewItem, RouteDecision, SubjectRecord
 from valuation_parser.normalizers import REVIEW_FLAG_VALUE, derive_broker_name, infer_asset_type, normalize_security_code, resolve_review_flag
-from valuation_parser.taxonomy import classify_position_taxonomy, classify_subject_taxonomy
+from valuation_parser.taxonomy import AssetTaxonomy, classify_position_taxonomy, classify_subject_taxonomy, load_asset_taxonomy
 
 
 class BaseValuationAdapter(ABC):
@@ -44,6 +44,7 @@ def annotate_subject_hierarchy(subjects: list[SubjectRecord]) -> list[SubjectRec
 
 
 def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[list[SubjectRecord], list[PositionRecord], list[ReviewItem]]:
+    taxonomy = load_asset_taxonomy()
     flagged_subjects: list[SubjectRecord] = []
     positions: list[PositionRecord] = []
     review_items: list[ReviewItem] = []
@@ -53,6 +54,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
             subject_code=subject.subject_code,
             subject_name=subject.subject_name,
             review_reason=review_reason,
+            taxonomy=taxonomy,
         )
         subject_review_flag = _merge_review_flags(REVIEW_FLAG_VALUE if review_reason else None, subject_taxonomy.default_review_flag)
         if review_reason:
@@ -101,6 +103,7 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
             subject_code=subject.subject_code,
             subject_name=subject.subject_name,
             review_reason=review_reason,
+            taxonomy=taxonomy,
         )
         review_flag = _merge_review_flags(
             resolve_review_flag(normalization_flag, asset_type, review_reason),

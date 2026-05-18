@@ -16,7 +16,7 @@
 - Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.
 - Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.
 - Supported asset types: A股股票, 场内基金/ETF, 存托凭证, 港股, 科创板股票
-- Unsupported asset types: none
+- Unsupported asset types: 未识别
 
 ## Asset Type Coverage
 

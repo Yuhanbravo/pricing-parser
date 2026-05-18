@@ -151,7 +151,7 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             if position.asset_type_display or position.asset_type
         }
     )
-    unsupported_asset_types = ["未识别"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
+    unsupported_asset_types = ["未识别"] if any(subject.asset_type_internal == "unknown" for subject in subjects) else []
     unrouted_files = sorted({Path(route.source_file).name for route in routes if route.route_status != "success"})
     unrouted_lines = _build_unrecognized_object_lines(routes)
     review_lines = _build_review_summary_lines(review_items=review_items, positions=positions)
@@ -342,10 +342,6 @@ def _has_normalization_issue(review_note: str | None) -> bool:
             "无法推断资产类型",
         )
     )
-
-
-def _has_unknown_asset_type(review_note: str | None) -> bool:
-    return bool(review_note and "无法推断资产类型" in review_note)
 
 
 def _build_asset_type_coverage(subjects: list[SubjectRecord]) -> list[tuple[str, int]]:
