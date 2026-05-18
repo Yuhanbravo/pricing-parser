@@ -16,3 +16,5 @@ tmp/
 *.parquet
 *.csv
 !data_samples/README.md
+!data_samples/expected/*.csv
+!data_samples/expected/*.xlsx
