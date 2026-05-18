@@ -72,6 +72,44 @@ scope: pricing_parser only
 - 不把实验 skill 输出伪装成正式 canonical governance。
 - 不借 baseline refresh 处理 `PRODUCT_022`、adapter 扩张或 routing 改写等范围外事项。
 
+## Acceptance Criteria
+
+满足以下条件时，才可把一次 baseline refresh 判定为完成：
+
+- 进入 refresh 前，至少有一组与本轮改动直接相关的 focused tests 或 smoke tests 已通过。
+- 受控重跑入口、baseline 目录、临时输出目录在报告中写清楚。
+- 差异已被明确分类为：`预期契约更新`、`潜在回归` 或 `待确认`。
+- 只有被判定为 `预期契约更新` 的 expected 文件被刷新。
+- 刷新后，至少完成一次“expected 与受控输出一致”的验证。
+- baseline refresh 的结果已同步进任务报告或状态文档，而不只是停留在临时命令输出中。
+
+## Boundaries With Other Workflows
+
+### With `workflow-bootstrap`
+
+- `workflow-bootstrap` 负责角色链和流程壳层，例如 Drafter / Reviewer / Implementer / Reporter / Final Reviewer。
+- 本 skill 只负责其中“baseline refresh judgment”这一段受控流程。
+- 本 skill 不定义角色职责，也不替代 task package 编写、预审查或最终复核。
+
+### With `chatgpt-handoff-pilot`
+
+- `chatgpt-handoff-pilot` 负责 task package、bounded execution 和 execution report 的协议化组织。
+- 本 skill 只补充“当 expected baseline 需要刷新时，如何先判断、再刷新、再留痕”。
+- 本 skill 不能绕过 task package 授权，也不能单独批准范围扩大。
+
+## Recommended Report Structure
+
+建议至少记录以下字段：
+
+- rerun entry
+- baseline location
+- temp output location
+- focused tests run first
+- diff summary by artifact
+- refresh approved / rejected decision per artifact
+- post-refresh validation
+- documentation sync status
+
 ## Round 4 Trial Notes
 
 本轮实际试跑结论：
@@ -80,3 +118,4 @@ scope: pricing_parser only
 - `Review items exported` 保持 `238`，说明 subject-level review 覆盖扩大，但 review item 导出边界未被放宽。
 - `Supported asset types` 从旧 internal keys 改为 taxonomy display names，是预期展示口径更新。
 - `valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv` 新增 taxonomy 字段，是预期 schema 更新。
+- 在后续 swap-margin taxonomy 修复的 follow-up 复核中，文本 expected baseline 已与当前 rerun 输出保持一致，因此结论是“无需再次刷新，只需补充证据链说明”。

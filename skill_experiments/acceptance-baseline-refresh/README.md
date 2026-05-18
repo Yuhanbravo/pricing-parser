@@ -14,6 +14,14 @@
 - 在确认是预期变化后刷新 `data_samples/expected/`
 - 同步 `README.md`、`docs/HANDOFF.md`、`docs/status.md` 与任务报告
 
+按 Round 4 任务书要求，这个实验 skill 需要至少覆盖：
+
+- 何时使用 baseline refresh，而不是直接覆盖 expected
+- baseline refresh 的输入、输出和约束
+- refresh 前必须先有 focused validation
+- refresh 后必须补报告与状态同步
+- 与 `workflow-bootstrap`、`chatgpt-handoff-pilot` 的边界
+
 边界：
 
 - 这是项目内实验资产，不是正式 canonical skill。
@@ -26,6 +34,12 @@
 - 仍以文档化流程为主，没有额外自动化 orchestrator。
 - workbook 目前只做结构与命名层面的说明，未建立单独 workbook acceptance baseline。
 - 差异分类仍依赖实现者结合 task package 与 parse summary 做人工判断。
+
+本轮补充结论：
+
+- 在第一次 taxonomy baseline refresh 之后，后续 swap-margin taxonomy 修复又触发了一次 follow-up 复核。
+- 该次 follow-up 表明文本 baseline 已经同步，无需再次刷新 expected。
+- 这说明该实验 skill 不仅适用于“批准刷新”，也适用于“确认当前 baseline 已同步，因此拒绝无必要刷新”。
 
 若后续要进入 `ai-skill-hub`，仍需补齐：
 

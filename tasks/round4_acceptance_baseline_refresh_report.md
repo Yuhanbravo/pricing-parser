@@ -102,3 +102,52 @@ baseline refresh 完成后，同步更新了：
 ## Outcome
 
 本轮 baseline refresh 判定为：`accepted and synchronized`
+
+## Follow-up: Swap Margin Taxonomy Verification
+
+在后续修复“`收益互换` + `保证金` 科目应归入 `margin_deposit`，而非 `derivative_swap`”之后，又按同一实验流程追加执行了一次 follow-up 验证。
+
+### Follow-up Inputs
+
+- Controlled input set: `data_samples/raw/`
+- Baseline directory: `data_samples/expected/`
+- Temporary rerun output: `tmp/round4_swap_margin_refresh/current/`
+- Focused validations run first:
+	- `tests/test_asset_taxonomy.py`
+	- `tests/test_acceptance_baseline.py`
+
+### Follow-up Validation Result
+
+结论：`focused tests passed before rerun`
+
+说明：在进入 follow-up rerun 之前，focused tests 已通过，确认当前 taxonomy 行为与 acceptance baseline 测试契约一致。
+
+### Follow-up Diff Judgment
+
+本次 follow-up 复跑后，以下文本基线文件与当前 rerun 输出逐一一致：
+
+- `routing_results.csv`
+- `valuation_subjects.csv`
+- `valuation_positions.csv`
+- `review_items.csv`
+- `parse_summary.md`
+
+结论：`no additional text baseline refresh required`
+
+原因：此前针对 swap-margin taxonomy 修复而执行的 baseline refresh 已经把当前受控契约同步进 `data_samples/expected/`；本次 follow-up 只是复核同步状态，而不是产生新的契约变化。
+
+### Workbook Note
+
+本次 ad hoc workbook 逐行读取比较在脚本中遇到一次 `EOFError`，因此没有把该次脚本结果单独作为 follow-up 判定依据。
+
+本次 follow-up 对 workbook 的接受性判断仍以已通过的 `tests/test_acceptance_baseline.py` 为准；该测试包含 workbook baseline 比较，因此足以支持“当前 expected baseline 已与现行 taxonomy 修复同步”的结论。
+
+### Follow-up Outcome
+
+本次 follow-up 判定为：`already synchronized; no further refresh performed`
+
+这意味着：
+
+- 本次没有新增 expected 文件刷新
+- 本次没有新增 README / HANDOFF / status 同步动作
+- 本次 follow-up 的主要价值是补充证据链，确认当前 baseline 仍与修复后的输出一致
