@@ -15,6 +15,8 @@ class AssetTaxonomyEntry:
     asset_class_l1: str
     asset_class_l2: str
     include_in_positions: bool
+    # YAML keeps this as 0/1 for readability, but the loader normalizes it to
+    # the runtime review_flag representation ("0"/"1") used by merge logic.
     default_review_flag: str | None = None
     default_review_category: str | None = None
 
@@ -74,6 +76,8 @@ def _load_asset_taxonomy_cached(config_path: Path) -> AssetTaxonomy:
             asset_class_l1=str(item.get("asset_class_l1") or "未识别"),
             asset_class_l2=str(item.get("asset_class_l2") or "未识别"),
             include_in_positions=bool(item.get("include_in_positions")),
+            # Normalize YAML ints to the existing string-based review flag
+            # contract so taxonomy defaults and exporter flags compare cleanly.
             default_review_flag=str(review_flag) if review_flag in {0, 1, "0", "1"} else None,
             default_review_category=_clean_text(item.get("default_review_category")),
         )
