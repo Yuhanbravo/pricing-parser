@@ -44,7 +44,7 @@ Round 4 已达到任务包要求的“受控实现 + 验证 + baseline refresh +
 结论：`Pass`
 
 - `review_category` / `review_note` 仍作为 review 口径字段存在。
-- `525` review-flagged subjects 与 `238` review items 的组合被解释为预期契约结果，而非字段混用。
+- `508` review-flagged subjects 与 `238` review items 的组合被解释为预期契约结果，而非字段混用。
 
 ### 5. expected baseline 是否按流程刷新
 

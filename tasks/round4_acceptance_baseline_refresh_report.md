@@ -99,6 +99,8 @@ baseline refresh 完成后，同步更新了：
 - `PRODUCT_022` 仍不在本轮范围内
 - 项目本地 experiment skill 的边界说明
 
+> **Note**: 上述 `525` 为本轮初始 baseline refresh 时的计数。后续 swap-margin taxonomy 修复后重新验证，accepted baseline 已更新为 `508`。详见下方 Follow-up 节。
+
 ## Outcome
 
 本轮 baseline refresh 判定为：`accepted and synchronized`

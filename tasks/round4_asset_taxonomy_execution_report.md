@@ -101,6 +101,8 @@
 
 ## Current Verified Output Facts
 
+> **Note**: 以下数字反映的是本报告撰写时的执行结果。后续 swap-margin taxonomy 修复（`收益互换` + `保证金` → `margin_deposit`）将 `Review flagged subjects` 从 `525` 降至 `508`。当前 accepted baseline 为 `508`。
+
 - Processed files: `11`
 - Successful routes: `10`
 - Routing failures: `1`
