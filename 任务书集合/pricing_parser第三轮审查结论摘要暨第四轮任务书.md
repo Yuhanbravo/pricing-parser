@@ -286,9 +286,9 @@ Drafter -> Reviewer -> Implementer -> Reporter -> Final Reviewer
 建议将 `ai-skill-hub` 和当前项目放在同一个工作区下，但保持为两个独立 Git 仓库：
 
 ```text
-D:\dev\
+..\
 ├─ ai-skill-hub\
-└─ pricing-parser\
+└─ pricing-parser\          (当前项目)
 ```
 
 不要把 `ai-skill-hub` 直接复制进 `pricing-parser` 仓库提交。
@@ -296,14 +296,14 @@ D:\dev\
 ## 5.3 首次拉取 ai-skill-hub
 
 ```powershell
-cd D:\dev
+cd ..\
 git clone https://github.com/Yuhanbravo/ai-skill-hub.git
 ```
 
 如果已经有本地仓库，则更新：
 
 ```powershell
-cd D:\dev\ai-skill-hub
+cd ..\ai-skill-hub
 git pull
 ```
 
@@ -312,8 +312,8 @@ git pull
 建议在 VS Code 中同时打开：
 
 ```text
-D:\dev\pricing-parser
-D:\dev\ai-skill-hub
+..\pricing-parser    (当前项目)
+..\ai-skill-hub      (skill 仓库)
 ```
 
 这样可以一边开发 `pricing-parser`，一边查阅 `workflow-bootstrap` 的完整 skill 说明。
@@ -323,10 +323,10 @@ D:\dev\ai-skill-hub
 如果本轮希望 Codex 在 `pricing-parser` 项目中直接发现并使用该 skill，建议从 `ai-skill-hub` 同步：
 
 ```powershell
-cd D:\dev\ai-skill-hub
+cd ..\ai-skill-hub
 
 pwsh -File .\tools\sync_skills_to_nongit_project.ps1 `
-  -ProjectPath D:\dev\pricing-parser `
+  -ProjectPath ..\pricing-parser `
   -SkillName workflow-bootstrap `
   -Targets codex
 ```

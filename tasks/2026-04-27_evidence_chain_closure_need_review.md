@@ -9,7 +9,7 @@
 - 第一轮暴露的核心 P0 已在第二轮大体修正：`valuation_subjects.csv` / `valuation_positions.csv` 已真实导出 trace 字段，`mapping_loader` 已拒绝未知 `adapter_key`，strict-default 路径下未命中 mapping 的文件不再被静默计入成功路由。
 - 当前代码、输出和测试已经证明解析器主链可用：支持 11 份受控样本的 routing、subjects、positions、review_items 和 summary 导出。
 - 当前项目仍不能直接判定为“可进入并主线前复审”，原因不是核心解析链路失效，而是 docs / expected / outputs / tests / summary / tag 之间仍有证据漂移。
-- 最直接的漂移已经可见：当前 [output/parse_summary.md](d:\DUKE\hxhy\pricing_parser\output\parse_summary.md) 和 [data_samples/expected/parse_summary.md](d:\DUKE\hxhy\pricing_parser\data_samples\expected\parse_summary.md) 都是 `238 review items`，但 [README.md](d:\DUKE\hxhy\pricing_parser\README.md)、[docs/HANDOFF.md](d:\DUKE\hxhy\pricing_parser\docs\HANDOFF.md) 和 [docs/status.md](d:\DUKE\hxhy\pricing_parser\docs\status.md) 仍写 `242 review items`。
+- 最直接的漂移已经可见：当前 [output/parse_summary.md](../output/parse_summary.md) 和 [data_samples/expected/parse_summary.md](../data_samples/expected/parse_summary.md) 都是 `238 review items`，但 [README.md](../README.md)、[docs/HANDOFF.md](../docs/HANDOFF.md) 和 [docs/status.md](../docs/status.md) 仍写 `242 review items`。
 - 仓库里还同时保留旧阶段产物和过期治理报告，接手人难以一眼判断“当前契约”究竟以哪一组文档和输出为准。
 
 结论：项目当前适合进入第三轮，但第三轮的定位必须是“证据链收口”，而不是继续扩展解析能力。
@@ -21,7 +21,7 @@
 - 项目任务书要求的主干能力已经具备，第二轮也已修掉最关键的结构性偏差。
 - 目前剩余问题集中在验收层和交接层：文档数字漂移、expected baseline 不完整、summary 说明不够外显、历史产物与当前产物并列造成误导、tag 策略缺失。
 - 如果现在继续扩展 adapter、资产类型或核心算法，只会把审阅范围重新放大，让第三轮无法成为稳定的验收节点。
-- 结合 [估值表解析器项目任务书.md](d:\DUKE\hxhy\pricing_parser\估值表解析器项目任务书.md)、第一轮与第二轮审查摘要，最合理的下一步不是继续“做更多”，而是把现有结论统一成一套可信、可复审、可接手的证据链。
+- 结合 [估值表解析器项目任务书.md](../估值表解析器项目任务书.md)、第一轮与第二轮审查摘要，最合理的下一步不是继续“做更多”，而是把现有结论统一成一套可信、可复审、可接手的证据链。
 
 结论：第三轮的目标应是把现有结果收口成一个可供 AI 复审和人工合并决策使用的稳定候选节点。
 
@@ -77,13 +77,13 @@
 
 ### 核心文档与状态面
 
-- [README.md](d:\DUKE\hxhy\pricing_parser\README.md)
-- [docs/HANDOFF.md](d:\DUKE\hxhy\pricing_parser\docs\HANDOFF.md)
-- [docs/status.md](d:\DUKE\hxhy\pricing_parser\docs\status.md)
+- [README.md](../README.md)
+- [docs/HANDOFF.md](../docs/HANDOFF.md)
+- [docs/status.md](../docs/status.md)
 
 ### expected 与输出基线面
 
-- [data_samples/expected/parse_summary.md](d:\DUKE\hxhy\pricing_parser\data_samples\expected\parse_summary.md)
+- [data_samples/expected/parse_summary.md](../data_samples/expected/parse_summary.md)
 - `data_samples/expected/` 下新增或整理的 CSV / workbook 结构基线
 - 可能需要补充对历史输出目录的标注文档
 
@@ -101,7 +101,7 @@
 
 ### 本轮流程文档
 
-- [tasks/2026-04-27_evidence_chain_closure_need_review.md](d:\DUKE\hxhy\pricing_parser\tasks\2026-04-27_evidence_chain_closure_need_review.md)
+- [tasks/2026-04-27_evidence_chain_closure_need_review.md](2026-04-27_evidence_chain_closure_need_review.md)
 - 后续将继续生成对应的 task package、execution report 和 AI review report
 
 ## 6. 本轮完成后如何验收？
@@ -126,5 +126,5 @@
 
 ## Assumptions
 
-- “第二轮复审报告”在当前仓库内以 [任务书集合/pricing_parser第二轮审查结论摘要.md](d:\DUKE\hxhy\pricing_parser\任务书集合\pricing_parser第二轮审查结论摘要.md) 作为可执行输入来源。
+- “第二轮复审报告”在当前仓库内以 [任务书集合/pricing_parser第二轮审查结论摘要.md](../任务书集合/pricing_parser第二轮审查结论摘要.md) 作为可执行输入来源。
 - 本文仅作为 Step 1 的需求审合摘要，不替代后续正式 task package。
