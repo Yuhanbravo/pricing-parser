@@ -139,7 +139,7 @@ asset_types:
     default_review_flag: "yes"
     default_review_category: unknown_subject
 """
-    with tempfile.NamedTemporaryFile(suffix=".yaml", mode="w", delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(suffix=".yaml", mode="w", encoding="utf-8", delete=False) as tmp:
         tmp.write(bad_yaml)
         tmp_path = Path(tmp.name)
 
