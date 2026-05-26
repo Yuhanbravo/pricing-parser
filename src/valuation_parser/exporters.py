@@ -51,6 +51,11 @@ SUBJECT_FIELDS = [
     "pnl",
     "suspension_info",
     "review_flag",
+    "asset_type_internal",
+    "asset_type_display",
+    "asset_class_l1",
+    "asset_class_l2",
+    "review_category",
     "raw_text",
 ]
 
@@ -71,6 +76,10 @@ POSITION_FIELDS = [
     "instrument_code_std",
     "exchange",
     "asset_type",
+    "asset_type_internal",
+    "asset_type_display",
+    "asset_class_l1",
+    "asset_class_l2",
     "quantity",
     "unit_cost",
     "cost",
@@ -91,6 +100,12 @@ REVIEW_FIELDS = [
     "raw_row_index",
     "subject_code",
     "subject_name",
+    "asset_type_internal",
+    "asset_type_display",
+    "asset_class_l1",
+    "asset_class_l2",
+    "review_category",
+    "review_note",
     "quantity",
     "cost",
     "market_value",
@@ -129,34 +144,56 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
     review_item_count = len(review_items)
     normalization_issue_count = sum(1 for position in positions if _has_normalization_issue(position.review_note))
     adapter_keys = sorted({route.adapter_key for route in routes if route.adapter_key})
-    supported_asset_types = sorted({position.asset_type for position in positions if position.asset_type})
-    unsupported_asset_types = ["unknown_asset_type"] if any(_has_unknown_asset_type(position.review_note) for position in positions) else []
+    supported_asset_types = sorted(
+        {
+            position.asset_type_display or position.asset_type
+            for position in positions
+            if position.asset_type_display or position.asset_type
+        }
+    )
+    unsupported_asset_types = ["未识别"] if any(subject.asset_type_internal == "unknown" for subject in subjects) else []
     unrouted_files = sorted({Path(route.source_file).name for route in routes if route.route_status != "success"})
     unrouted_lines = _build_unrecognized_object_lines(routes)
     review_lines = _build_review_summary_lines(review_items=review_items, positions=positions)
     review_index_lines = _build_review_index_lines(review_items=review_items, positions=positions)
 
-    content = "\n".join(
+    summary_lines = [
+        "# Parse Summary",
+        "",
+        f"- Processed files: {files_processed}",
+        f"- Successful routes: {success_count}",
+        f"- Manual overrides: {manual_override_count}",
+        f"- Routing failures: {failure_count}",
+        f"- Supported adapters in run: {', '.join(adapter_keys) if adapter_keys else 'none'}",
+        f"- Subject rows exported: {len(subjects)}",
+        f"- Position rows exported: {len(positions)}",
+        f"- Review flagged subjects: {flagged_subject_count}",
+        f"- Review flagged positions: {flagged_position_count}",
+        f"- Review items exported: {review_item_count}",
+        f"- Normalization issues: {normalization_issue_count}",
+        f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
+        f"- Generic fallback routes used: {generic_fallback_count}",
+        "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
+        "- Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.",
+        f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
+        f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
+    ]
+
+    asset_type_coverage = _build_asset_type_coverage(subjects)
+    if asset_type_coverage:
+        summary_lines.extend(
+            [
+                "",
+                "## Asset Type Coverage",
+                "",
+                "| asset_type_display | count |",
+                "|---|---:|",
+            ]
+        )
+        summary_lines.extend(f"| {asset_type_display} | {count} |" for asset_type_display, count in asset_type_coverage)
+
+    summary_lines.extend(
         [
-            "# Parse Summary",
-            "",
-            f"- Processed files: {files_processed}",
-            f"- Successful routes: {success_count}",
-            f"- Manual overrides: {manual_override_count}",
-            f"- Routing failures: {failure_count}",
-            f"- Supported adapters in run: {', '.join(adapter_keys) if adapter_keys else 'none'}",
-            f"- Subject rows exported: {len(subjects)}",
-            f"- Position rows exported: {len(positions)}",
-            f"- Review flagged subjects: {flagged_subject_count}",
-            f"- Review flagged positions: {flagged_position_count}",
-            f"- Review items exported: {review_item_count}",
-            f"- Normalization issues: {normalization_issue_count}",
-            f"- Unrouted files: {', '.join(unrouted_files) if unrouted_files else 'none'}",
-            f"- Generic fallback routes used: {generic_fallback_count}",
-            "- Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.",
-            "- Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.",
-            f"- Supported asset types: {', '.join(supported_asset_types) if supported_asset_types else 'none'}",
-            f"- Unsupported asset types: {', '.join(unsupported_asset_types) if unsupported_asset_types else 'none'}",
             "",
             "## Unrouted File Details",
             *([f"- {source_file}" for source_file in unrouted_files] or ["- none"]),
@@ -171,6 +208,8 @@ def write_summary(path: Path, *, files_processed: int, routes: list[RouteDecisio
             *review_lines,
         ]
     )
+
+    content = "\n".join(summary_lines)
     path.write_text(content + "\n", encoding="utf-8")
 
 
@@ -305,8 +344,9 @@ def _has_normalization_issue(review_note: str | None) -> bool:
     )
 
 
-def _has_unknown_asset_type(review_note: str | None) -> bool:
-    return bool(review_note and "无法推断资产类型" in review_note)
+def _build_asset_type_coverage(subjects: list[SubjectRecord]) -> list[tuple[str, int]]:
+    counts = Counter(subject.asset_type_display for subject in subjects if subject.asset_type_display)
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))
 
 
 def write_excel_workbook(

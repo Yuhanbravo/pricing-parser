@@ -7,7 +7,7 @@
 - Supported adapters in run: citics, cmsc, csc, greatwall, gtja, guosen, orient, xyzc
 - Subject rows exported: 1022
 - Position rows exported: 182
-- Review flagged subjects: 238
+- Review flagged subjects: 508
 - Review flagged positions: 0
 - Review items exported: 238
 - Normalization issues: 0
@@ -15,8 +15,25 @@
 - Generic fallback routes used: 0
 - Fallback note: generic fallback runs only when --allow-generic-fallback is explicitly enabled.
 - Review entrypoint: first inspect the Review Entry Index below, then open valuation_subjects.csv / valuation_positions.csv rows with review_flag=1 and use review_items.csv.review_reason / valuation_positions.csv.review_note for concrete reasons.
-- Supported asset types: a_share, fund_or_etf, hk_equity
-- Unsupported asset types: none
+- Supported asset types: A股股票, 场内基金/ETF, 存托凭证, 港股, 科创板股票
+- Unsupported asset types: 未识别
+
+## Asset Type Coverage
+
+| asset_type_display | count |
+|---|---:|
+| 未识别 | 312 |
+| 收益互换 | 166 |
+| 保证金 | 137 |
+| 应交税费 | 97 |
+| 港股 | 85 |
+| A股股票 | 83 |
+| 现金及存款 | 59 |
+| 证券清算款 | 59 |
+| 应付款项 | 10 |
+| 科创板股票 | 10 |
+| 场内基金/ETF | 3 |
+| 存托凭证 | 1 |
 
 ## Unrouted File Details
 - 估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx

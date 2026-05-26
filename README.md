@@ -1,6 +1,6 @@
 # valuation-parser
 
-估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成一轮契约收口刷新：基于 `data_samples/raw/` 的全量 11 份受控样表固化了 `data_samples/expected/` strict-default 验收基线，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出，以及 `3102*` 衍生工具科目 review 规则；默认严格路由口径下保留 1 个未命中 mapping 的失败样本，且衍生品 review 不再提升为 `valuation_positions` 持仓行。本地运行仍可导出到已忽略的 `output/`，但该目录不再属于仓库外部契约。
+估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成 Round 4 资产术语收敛：基于 `data_samples/raw/` 的全量 11 份受控样表重新生成并校验了 `output/` 与 `data_samples/expected/`，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出、`3102*` 衍生工具科目 review 规则，以及统一的 taxonomy 展示口径；默认严格路由口径下仍保留 1 个未命中 mapping 的失败样本。
 
 ## 工作区边界
 
@@ -28,19 +28,19 @@ D:\intern_workspace\
 - 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
 - 支持 `.xls/.xlsx` 估值表输入
 - 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及按输入日期自动命名的 Excel 工作簿 `估值表解析_output_<date>.xlsx`
-- `parse_summary.md` 当前会额外汇总本轮运行已支持 / 未支持资产类型，便于快速判断样本覆盖面与剩余缺口
+- `parse_summary.md` 当前会按 taxonomy 展示口径汇总已支持 / 未支持资产类型，并追加 `Asset Type Coverage` 统计表，便于快速判断样本覆盖面与剩余缺口
 - `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
+- `valuation_subjects.csv`、`valuation_positions.csv` 与 `review_items.csv` 当前统一导出 taxonomy 字段：`asset_type_internal`、`asset_type_display`、`asset_class_l1`、`asset_class_l2`；subjects / review items 额外保留 `review_category`
 - `routing_results.csv` 中的 `custodian_name_chinese` 会收敛为标准化名称，避免同一托管机构以简称和全称混用
 - `valuation_positions.csv` 中的 `suspension_info` 会将 `【正常交易】` 等包裹格式收敛为纯文本 `正常交易`
 - 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
-- 当前 strict-default 权威基线统计为：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、238 条 review items、0 个 normalization issues；对应基线文件统一收口在 `data_samples/expected/`
-- 当前 strict-default 验收基线统一放在 `data_samples/expected/`，覆盖 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md` 和 workbook 基线 `估值表解析_output_2025-03-27.xlsx`；acceptance test 已按整张 workbook sheet 内容比对，不再只校验表头结构
-- 当前外部契约以 `README.md`、`docs/HANDOFF.md`、`docs/status.md` 与 `data_samples/expected/` 为准；`output/` 仅作为本地运行时的忽略导出目录，不参与仓库基线管理；旧 `output_phase*` 目录和 `docs/documentation_governance_report.*` 仅属历史排查产物，可按需从本地工作区清理
+- 最新 `output/` / `data_samples/expected/` 全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、508 条 review-flagged subjects、238 条 review items、0 个 normalization issues
+- 当前支持的 taxonomy 展示类型为：`A股股票`、`场内基金/ETF`、`存托凭证`、`港股`、`科创板股票`；收益互换、保证金、清算款、负债等非证券持仓仅保留在 subjects / review / summary 口径中，不进入 `valuation_positions.csv`
 - 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
-- 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `valuation_subjects.csv` 与 `review_items.csv`，但不会单独提升为 `valuation_positions.csv` 持仓行
-- `review_flag` 只表达该 subject/position 是否需要人工复核，`review_note` 记录行级原因，`review_items.csv` 则汇总本轮运行的人工复核队列。当前 strict-default 受控样本中 `review_flag=1` 的入口实际全部落在 `valuation_subjects.csv` / `review_items.csv`，`valuation_positions.csv` 中为 0 条；但 `valuation_positions.review_flag=1` 路径已由非衍生品专用回归夹具锁定
-- `parse_summary.md` 现已同时输出 `Unrecognized Object Index` 与 `Review Entry Index`，能直接定位未路由对象和待人工复核入口，而不只报总数
-- 测试已覆盖身份提取、映射加载、canonical `.xlsx` mapping 自动化回归、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item / position-review 回归；当前非衍生品 review path 已对 `hk_equity`、`a_share`、`fund_or_etf` 三类核心资产补齐专用夹具，其中还包含 `subject_name` 与 `instrument_name` 不一致时的 review entry 去重回归，防止 `Review Entry Index` 与 `Review Queue By Source File` 分组漂移
+- 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
+- `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `1` 标记所有需要人工复核的记录，未命中时保持空白；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身只承担“是否需要人工复核”的二值标记
+- `data_samples/expected/` 当前已刷新并纳入 Round 4 acceptance baseline：`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`
+- 测试已覆盖身份提取、映射加载、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item 回归
 
 当前已验证的真实样表：
 
@@ -51,6 +51,13 @@ D:\intern_workspace\
 - `估值表_PRODUCT_021_20250327.xls` -> `csc`
 - `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx` 默认未路由；仅在显式启用 `--allow-generic-fallback` 时走 `generic` fallback
 - `PRODUCT_006_资产估值表_20250327.xls`、`PRODUCT_010_证券投资基金估值表_2025-03-27.xls`、`PRODUCT_012_估值表_20250327.xls` 已在批量管线测试中分别覆盖 `citics`、`orient`、`gtja`
+
+Round 4 资产术语口径补充：
+
+- ETF / 场内基金统一归为 `fund_exchange_traded` / `场内基金/ETF`，属于基金类，不按权益类落地。
+- 收益互换统一归为 `derivative_swap` / `收益互换`，进入 review 口径，不进入 `valuation_positions.csv`。
+- 现金及存款、保证金、证券清算款、应付款项、应交税费等科目保留在 subjects / summary 口径中，不作为证券持仓导出。
+- `PRODUCT_022` 已明确不属于本轮处理范围，本轮不补 mapping、不新增 adapter，也不为消除单个 routing failure 改写 strict-default 契约。
 
 ## 项目结构
 
@@ -165,6 +172,7 @@ python -m valuation_parser.cli \
 
 - 当前项目状态、边界和下一步建议统一记录在 `docs/status.md`。
 - 每完成一个阶段，优先更新状态文档，再提交 `docs(status)` 或 `docs(handoff)` 类型的 commit。
+- Round 4 相关 workflow / baseline 留痕集中在 `tasks/` 与 `skill_experiments/acceptance-baseline-refresh/`；其中实验 skill 仅为项目内试跑资产，不进入 `ai-skill-hub`。
 
 ## 下一步建议
 

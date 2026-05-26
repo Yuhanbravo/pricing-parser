@@ -7,6 +7,7 @@ import re
 
 from valuation_parser.models import ParseArtifacts, PositionRecord, ReviewItem, RouteDecision, SubjectRecord
 from valuation_parser.normalizers import REVIEW_FLAG_VALUE, derive_broker_name, infer_asset_type, normalize_security_code, resolve_review_flag
+from valuation_parser.taxonomy import AssetTaxonomy, classify_position_taxonomy, classify_subject_taxonomy, load_asset_taxonomy
 
 
 class BaseValuationAdapter(ABC):
@@ -43,12 +44,19 @@ def annotate_subject_hierarchy(subjects: list[SubjectRecord]) -> list[SubjectRec
 
 
 def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[list[SubjectRecord], list[PositionRecord], list[ReviewItem]]:
+    taxonomy = load_asset_taxonomy()
     flagged_subjects: list[SubjectRecord] = []
     positions: list[PositionRecord] = []
     review_items: list[ReviewItem] = []
     for subject in subjects:
         review_reason = _determine_review_reason(subject)
-        subject_review_flag = REVIEW_FLAG_VALUE if review_reason else None
+        subject_taxonomy = classify_subject_taxonomy(
+            subject_code=subject.subject_code,
+            subject_name=subject.subject_name,
+            review_reason=review_reason,
+            taxonomy=taxonomy,
+        )
+        subject_review_flag = _merge_review_flags(REVIEW_FLAG_VALUE if review_reason else None, subject_taxonomy.default_review_flag)
         if review_reason:
             review_items.append(
                 ReviewItem(
@@ -58,6 +66,12 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                     raw_row_index=subject.raw_row_index,
                     subject_code=subject.subject_code,
                     subject_name=subject.subject_name,
+                    asset_type_internal=subject_taxonomy.asset_type_internal,
+                    asset_type_display=subject_taxonomy.asset_type_display,
+                    asset_class_l1=subject_taxonomy.asset_class_l1,
+                    asset_class_l2=subject_taxonomy.asset_class_l2,
+                    review_category=subject_taxonomy.review_category,
+                    review_note=review_reason,
                     quantity=subject.quantity,
                     cost=subject.cost,
                     market_value=subject.market_value,
@@ -68,12 +82,46 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
 
         instrument_code_raw = _extract_instrument_code(subject.subject_code)
         if not _should_emit_position(subject, review_reason, instrument_code_raw):
-            flagged_subjects.append(replace(subject, review_flag=subject_review_flag))
+            flagged_subjects.append(
+                replace(
+                    subject,
+                    review_flag=subject_review_flag,
+                    asset_type_internal=subject_taxonomy.asset_type_internal,
+                    asset_type_display=subject_taxonomy.asset_type_display,
+                    asset_class_l1=subject_taxonomy.asset_class_l1,
+                    asset_class_l2=subject_taxonomy.asset_class_l2,
+                    review_category=subject_taxonomy.review_category,
+                )
+            )
             continue
         instrument_code_std, exchange, normalization_flag = normalize_security_code(instrument_code_raw)
         asset_type = infer_asset_type(instrument_code_raw, exchange)
-        review_flag = resolve_review_flag(normalization_flag, asset_type, review_reason)
-        flagged_subjects.append(replace(subject, review_flag=review_flag))
+        position_taxonomy = classify_position_taxonomy(
+            asset_type=asset_type,
+            instrument_code_raw=instrument_code_raw,
+            exchange=exchange,
+            subject_code=subject.subject_code,
+            subject_name=subject.subject_name,
+            review_reason=review_reason,
+            taxonomy=taxonomy,
+        )
+        review_flag = _merge_review_flags(
+            resolve_review_flag(normalization_flag, asset_type, review_reason),
+            position_taxonomy.default_review_flag,
+        )
+        flagged_subjects.append(
+            replace(
+                subject,
+                review_flag=review_flag,
+                asset_type_internal=position_taxonomy.asset_type_internal,
+                asset_type_display=position_taxonomy.asset_type_display,
+                asset_class_l1=position_taxonomy.asset_class_l1,
+                asset_class_l2=position_taxonomy.asset_class_l2,
+                review_category=position_taxonomy.review_category,
+            )
+        )
+        if not position_taxonomy.include_in_positions and not subject.is_position_candidate:
+            continue
         positions.append(
             PositionRecord(
                 source_file=subject.source_file,
@@ -91,6 +139,10 @@ def build_positions_and_review_items(subjects: list[SubjectRecord]) -> tuple[lis
                 instrument_code_std=instrument_code_std,
                 exchange=exchange,
                 asset_type=asset_type,
+                asset_type_internal=position_taxonomy.asset_type_internal,
+                asset_type_display=position_taxonomy.asset_type_display,
+                asset_class_l1=position_taxonomy.asset_class_l1,
+                asset_class_l2=position_taxonomy.asset_class_l2,
                 quantity=subject.quantity,
                 unit_cost=subject.unit_cost,
                 cost=subject.cost,
@@ -264,3 +316,7 @@ def _build_review_note(
     if not notes:
         return None
     return "；".join(notes)
+
+
+def _merge_review_flags(*flags: str | None) -> str | None:
+    return REVIEW_FLAG_VALUE if any(flag == REVIEW_FLAG_VALUE for flag in flags) else None

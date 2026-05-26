@@ -82,6 +82,11 @@ class SubjectRecord:
     pnl: float | None = None
     suspension_info: str | None = None
     review_flag: str | None = None
+    asset_type_internal: str | None = None
+    asset_type_display: str | None = None
+    asset_class_l1: str | None = None
+    asset_class_l2: str | None = None
+    review_category: str | None = None
     raw_row_index: int | None = None
     raw_text: str | None = None
 
@@ -106,6 +111,10 @@ class PositionRecord:
     instrument_code_std: str | None = None
     exchange: str | None = None
     asset_type: str | None = None
+    asset_type_internal: str | None = None
+    asset_type_display: str | None = None
+    asset_class_l1: str | None = None
+    asset_class_l2: str | None = None
     quantity: float | None = None
     unit_cost: float | None = None
     cost: float | None = None
@@ -131,6 +140,12 @@ class ReviewItem:
     raw_row_index: int | None = None
     subject_code: str | None = None
     subject_name: str | None = None
+    asset_type_internal: str | None = None
+    asset_type_display: str | None = None
+    asset_class_l1: str | None = None
+    asset_class_l2: str | None = None
+    review_category: str | None = None
+    review_note: str | None = None
     quantity: float | None = None
     cost: float | None = None
     market_value: float | None = None
