@@ -1,0 +1,19 @@
+account_code_std,account_name_std,proposed_asset_type_internal,proposed_asset_type_display,proposed_asset_class_l1,proposed_asset_class_l2,include_in_positions,mapping_rule_id,mapping_basis,confidence,needs_review,review_note
+1002,银行存款,cash_deposit,现金及存款,现金类,银行存款,false,R5A-TAX-001,Direct match to existing Round 4 taxonomy for cash and deposits,high,no,
+1021,结算备付金,cash_deposit,现金及存款,现金类,银行存款,false,R5A-TAX-002,Current taxonomy has cash_deposit but no separate settlement-reserve subtype,medium,yes,Consider whether a later subtype is needed or keep folded into cash_deposit
+1031,存出保证金,margin_deposit,保证金,保证金类,存出保证金,false,R5A-TAX-003,Direct match to existing Round 4 taxonomy,high,no,
+1102,交易性股票投资,unknown,未识别,未识别,未识别,false,R5A-TAX-004,Current Round 4 taxonomy is market-segment specific and cannot map the standard stock subject one-to-one,low,yes,Need later rule split into A股 港股 科创板 存托凭证等
+1103,交易性债券投资,unknown,未识别,未识别,未识别,false,R5A-TAX-005,Current Round 4 taxonomy lacks a direct bond display bucket in config,low,yes,Defer runtime and taxonomy widening to later round
+1104,资产支持证券投资,unknown,未识别,未识别,未识别,false,R5A-TAX-006,Current Round 4 taxonomy lacks a direct ABS display bucket in config,low,yes,Keep as standard subject only in Round 5A
+1105,交易性基金投资,fund_exchange_traded,场内基金/ETF,基金类,场内基金,false,R5A-TAX-007,Task-package direction states 1105 may map to fund_exchange_traded for business display,medium,yes,Need later distinction between exchange-traded funds and other fund scenes
+1202,买入返售金融资产,unknown,未识别,未识别,未识别,false,R5A-TAX-008,Current taxonomy does not expose a dedicated repo asset class,low,yes,Do not force into ordinary positions in Round 5A
+1203,应收股利,unknown,未识别,未识别,未识别,false,R5A-TAX-009,Receivable subject does not directly equal an investable position bucket,medium,yes,May remain subject-level only even after standard mapping integration
+2203,应付赎回款,payable,应付款项,负债类,应付款项,false,R5A-TAX-010,Direct match to existing Round 4 payable bucket,high,no,
+2206,应付管理人报酬,payable,应付款项,负债类,应付款项,false,R5A-TAX-011,Direct match to existing Round 4 payable bucket,high,no,
+2207,应付托管费,payable,应付款项,负债类,应付款项,false,R5A-TAX-012,Direct match to existing Round 4 payable bucket,high,no,
+2208,应付销售服务费,payable,应付款项,负债类,应付款项,false,R5A-TAX-013,Direct match to existing Round 4 payable bucket,high,no,
+2221,应交税费,tax_payable,应交税费,负债类,税费,false,R5A-TAX-014,Direct match to existing Round 4 tax bucket,high,no,
+3003,证券清算款,clearing_balance,证券清算款,清算款类,证券清算款,false,R5A-TAX-015,Direct match to existing Round 4 clearing bucket,high,no,
+3102,衍生工具,unknown,未识别,未识别,未识别,false,R5A-TAX-016,Generic standard derivative subject is broader than current derivative_swap taxonomy value,low,yes,Future derivative subsystem should branch this instead of forcing ordinary taxonomy
+4001,实收基金,unknown,未识别,未识别,未识别,false,R5A-TAX-017,Owners-equity subject should not become an ordinary holding position,medium,yes,Keep as standard-accounting trace only
+NA,未分配利润,unknown,未识别,未识别,未识别,false,R5A-TAX-018,Owners-equity residual result should not become an ordinary holding position,medium,yes,Keep as subject-level accounting concept only

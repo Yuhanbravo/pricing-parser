@@ -1,0 +1,8 @@
+pattern_id,source_title,source_section,subject_code_pattern,subject_name_pattern,account_code_std,account_name_std,proposed_derivative_type,recognition_basis,confidence,needs_review,review_note
+DERIV-001,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^3102$,^衍生工具.*,3102,衍生工具,generic_derivative,Exact code and chapter heading identify derivative business,high,no,Use as derivative anchor not ordinary-position mapping
+DERIV-002,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^NA$,^.*互换.*$,NA,NA,swap,Chapter text explicitly includes 互换合同 among derivatives,medium,yes,Need contract-level data before precise subtype modeling
+DERIV-003,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^NA$,^.*收益互换.*$,NA,NA,total_return_swap,Repository business context treats 收益互换 as a derivative-review candidate,medium,yes,Do not force into valuation_positions.csv
+DERIV-004,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^NA$,^.*场外期权.*$,NA,NA,otc_option,Keyword-based recognition from derivative chapter language,medium,yes,Supplemental contract data required
+DERIV-005,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^NA$,^.*远期.*$,NA,NA,forward,Derivative chapter explicitly includes 远期合同,medium,yes,Need direction and maturity before downstream use
+DERIV-006,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^NA$,^.*掉期.*$,NA,NA,swap,Derivative chapter explicitly includes 掉期 or swap-like wording,medium,yes,Map to independent derivative subsystem later
+DERIV-007,证券投资基金会计核算操作实务手册,第五章衍生工具投资业务,^1031$,^.*保证金.*$,1031,存出保证金,derivative_margin_candidate,Margin may be routine trading margin or derivative-linked margin depending on scene,low,yes,Human review needed when no linked contract is visible
