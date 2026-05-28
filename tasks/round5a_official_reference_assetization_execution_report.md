@@ -24,6 +24,20 @@ Out of scope and kept unchanged:
 
 ## Files Changed
 
+### Submitted in git history
+
+- `1d13a55` `docs(assetization): add round5a drafts`
+	- `tasks/round5a_official_reference_assetization_task_package.md`
+- `67ccf64` `docs(assetization): add round5a pre-implementation review materials`
+	- `tasks/round5a_official_reference_assetization_pre_implementation_review.md`
+- `bf2cfb0` `feat(reference): add round5a official reference assets`
+	- `.gitignore`
+	- `docs/reference/`
+	- `docs/derivatives/`
+	- `data/reference/`
+- `58d3046` `docs(report): add round5a execution report`
+	- `tasks/round5a_official_reference_assetization_execution_report.md`
+
 ### Repo config
 
 - `.gitignore`
@@ -128,6 +142,24 @@ The bounded execution stayed in the intended reference-only surface. Runtime-reg
 - No attempt was made to handle `PRODUCT_022`.
 - No official reference file was wired into runtime configuration.
 
+## Not Done
+
+- No parser-side standard-accounting mapping was implemented.
+- No runtime fields such as `account_code_std` or `account_name_std` were added to existing exports.
+- No adapter or routing changes were made.
+- No expected-baseline refresh was performed.
+- No automatic valuation-method rules were implemented.
+- No OTC derivative contract parsing or lookthrough output was implemented.
+
+## Remaining Unsubmitted Working Tree Items
+
+The repository still contains untracked working-copy materials outside the formal Round 5A delivery surface. At report closeout time these were not committed as part of the role-based Round 5A history:
+
+- `scripts/`
+- historical working-copy files under `任务书集合/`
+
+These items were intentionally kept outside the submitted Round 5A formal delivery path, which now lives under `docs/reference/`, `docs/derivatives/`, and `data/reference/`.
+
 ## Open Review Items
 
 1. `1105 基金投资` versus `1105 交易性基金投资` was normalized to the current practice-manual naming, but this naming bridge remains explicitly documented.
@@ -153,5 +185,7 @@ The bounded execution stayed in the intended reference-only surface. Runtime-reg
 
 ## Commit Summary
 
+- Drafter commit: `1d13a55` - `docs(assetization): add round5a drafts`
+- Reviewer commit: `67ccf64` - `docs(assetization): add round5a pre-implementation review materials`
 - Implementer commit: `bf2cfb0` - `feat(reference): add round5a official reference assets`
-- Reporter commit: pending at report write time; recorded in git history when this report is committed
+- Reporter commit: `58d3046` - `docs(report): add round5a execution report`
