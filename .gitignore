@@ -13,6 +13,7 @@ dist/
 output/
 output*/
 tmp/
+任务书集合/
 *.log
 *.xlsx
 *.xls

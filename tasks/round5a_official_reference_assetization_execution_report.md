@@ -37,6 +37,16 @@ Out of scope and kept unchanged:
 	- `data/reference/`
 - `58d3046` `docs(report): add round5a execution report`
 	- `tasks/round5a_official_reference_assetization_execution_report.md`
+- `4f6e30e` `refactor(report): refine execution report structure and wording`
+    - `tasks/round5a_official_reference_assetization_execution_report.md`
+- `47355bb` `docs(report): final review and polish for round5a execution report`
+    - `tasks/round5a_official_reference_assetization_execution_report.md`
+
+#### Non-delivery commit (3690f0c equivalent — see below)
+
+- `3688f0c` `docs(task-package): Phase 5A - add official reference assetization task book with Round 5B/5C/5D design directions`
+	- `任务书集合/pricing_parser第四轮审查结论摘要暨第五轮任务书.md`
+	- **Status**: non-delivery. This file was introduced in a working-copy directory outside the formal Round 5A delivery paths (`docs/reference/`, `docs/derivatives/`, `data/reference/`, `tasks/`). The directory is now excluded by `.gitignore` and the file has been removed from tracking. See "Remaining Unsubmitted Working Tree Items" below for the rationale and resolution.
 
 ### Repo config
 
@@ -78,9 +88,10 @@ Out of scope and kept unchanged:
 
 - `tasks/round5a_official_reference_assetization_execution_report.md`
 
-### Supporting delivery fix
+### Supporting delivery fixes
 
 - Added a minimal `.gitignore` exception for `data/reference/*.csv` so the Round 5A structured reference CSV deliverables are not hidden by the repository-wide `*.csv` ignore rule.
+- Added `任务书集合/` to `.gitignore` and removed it from tracking to keep historical working-copy materials outside the formal delivery surface.
 
 ## Reference Assets Added
 
@@ -153,12 +164,19 @@ The bounded execution stayed in the intended reference-only surface. Runtime-reg
 
 ## Remaining Unsubmitted Working Tree Items
 
-The repository still contains untracked working-copy materials outside the formal Round 5A delivery surface. At report closeout time these were not committed as part of the role-based Round 5A history:
+The repository still contains untracked working-copy materials outside the formal Round 5A delivery surface. These were intentionally kept outside the submitted Round 5A formal delivery path, which lives under `docs/reference/`, `docs/derivatives/`, and `data/reference/`.
 
 - `scripts/`
 - historical working-copy files under `任务书集合/`
 
-These items were intentionally kept outside the submitted Round 5A formal delivery path, which now lives under `docs/reference/`, `docs/derivatives/`, and `data/reference/`.
+### Resolution: 任务书集合/ directory
+
+Commit `3688f0c` introduced `任务书集合/pricing_parser第四轮审查结论摘要暨第五轮任务书.md` into the branch diff. This file belongs to a historical working-copy directory that is outside the declared formal Round 5A delivery paths. Two steps were taken to resolve this:
+
+1. **`.gitignore` exclusion**: The `任务书集合/` directory was added to `.gitignore` to prevent future accidental promotion of working-copy materials.
+2. **Untracked**: All previously tracked files under `任务书集合/` were removed from Git tracking (`git rm --cached -r 任务书集合/`). The working copies remain on disk unchanged.
+
+Commit `3688f0c` is retained in the git history for traceability but is explicitly marked as non-delivery in this report. No formal Round 5A deliverable depends on files under `任务书集合/`.
 
 ## Open Review Items
 
