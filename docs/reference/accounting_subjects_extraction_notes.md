@@ -31,6 +31,23 @@ Round 5A only extracts a first-pass reference set centered on subject families t
 - A few cells keep extra spaces caused by conversion.
 - Derivative examples are clear enough for indexing, but not sufficient on their own for full OTC lookthrough implementation.
 
+## Row-Count Discrepancy: raw=19 vs normalized=18
+
+The raw CSV (`accounting_subjects_raw.csv`) contains 19 rows, while the normalized CSV (`accounting_subjects_normalized.csv`) contains 18 rows. The single-row difference is explained by a **deliberate merge of code 1105 entries**:
+
+| Source | Raw row | Code | Name |
+|---|---|---|---|
+| 中国基金估值标准2018 | Row 5 | 1105 | 基金投资 |
+| 证券投资基金会计核算操作实务手册-20240530 | Row 8 | 1105 | 交易性基金投资 |
+
+Both raw rows refer to the **same standard account code 1105** (fund investment). During normalization, they were merged into a single canonical entry using the operating manual's current naming (`交易性基金投资`), which is the more precise and practice-aligned form. The 2018 standard's older naming (`基金投资`) is retained in the raw CSV for traceability but is not duplicated in the normalized output.
+
+The normalized CSV row carries this annotation in its `normalization_note` field:
+
+> Normalized from earlier guidebook wording 基金投资 to current practice-manual wording
+
+No other row was dropped, merged, or lost between the two files.
+
 ## Why Review Queues Are Preserved
 
 The official sources are useful for standardization, but they do not remove the need for product-side business judgment. The repository therefore keeps explicit review surfaces for:
