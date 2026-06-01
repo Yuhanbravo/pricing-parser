@@ -42,11 +42,22 @@ Out of scope and kept unchanged:
 - `47355bb` `docs(report): final review and polish for round5a execution report`
     - `tasks/round5a_official_reference_assetization_execution_report.md`
 
-#### Non-delivery commit (3690f0c equivalent — see below)
+#### Non-delivery commit
 
 - `3688f0c` `docs(task-package): Phase 5A - add official reference assetization task book with Round 5B/5C/5D design directions`
 	- `任务书集合/pricing_parser第四轮审查结论摘要暨第五轮任务书.md`
 	- **Status**: non-delivery. This file was introduced in a working-copy directory outside the formal Round 5A delivery paths (`docs/reference/`, `docs/derivatives/`, `data/reference/`, `tasks/`). The directory is now excluded by `.gitignore` and the file has been removed from tracking. See "Remaining Unsubmitted Working Tree Items" below for the rationale and resolution.
+
+### Post-report refinement commits
+
+- `303cce3` `docs(reference): document raw=19 vs normalized=18 row-count discrepancy`
+	- `docs/reference/accounting_subjects_extraction_notes.md`
+- `636806d` `chore(gitignore): exclude 任务书集合/ from delivery surface and update execution report`
+	- `.gitignore`
+	- `tasks/round5a_official_reference_assetization_execution_report.md`
+- `892ce34` `docs(derivatives): add business-confirmation gate note and resolve P2-5 carry-over`
+	- `docs/derivatives/otc_derivative_review_rules.md`
+	- `data/reference/accounting_subject_mapping_review_queue.csv`
 
 ### Repo config
 
@@ -203,7 +214,47 @@ Commit `3688f0c` is retained in the git history for traceability but is explicit
 
 ## Commit Summary
 
-- Drafter commit: `1d13a55` - `docs(assetization): add round5a drafts`
-- Reviewer commit: `67ccf64` - `docs(assetization): add round5a pre-implementation review materials`
-- Implementer commit: `bf2cfb0` - `feat(reference): add round5a official reference assets`
-- Reporter commit: `58d3046` - `docs(report): add round5a execution report`
+### Role-based delivery commits
+
+| Role | Commit | Description |
+|---|---|---|
+| Drafter | `1d13a55` | `docs(assetization): add round5a drafts` |
+| Reviewer | `67ccf64` | `docs(assetization): add round5a pre-implementation review materials` |
+| Implementer | `bf2cfb0` | `feat(reference): add round5a official reference assets` |
+| Reporter | `58d3046` | `docs(report): add round5a execution report` |
+
+### Subsequent refinement and review
+
+| Commit | Description |
+|---|---|
+| `4f6e30e` | `refactor(report): refine execution report structure and wording` |
+| `47355bb` | `docs(report): final review and polish for round5a execution report` |
+
+### Non-delivery commit (retained for traceability)
+
+| Commit | Description |
+|---|---|
+| `3688f0c` | `docs(task-package): Phase 5A - add official reference assetization task book with Round 5B/5C/5D design directions` — non-delivery; file belongs to `任务书集合/` which is now excluded by `.gitignore` |
+
+### Post-report closure fixes
+
+| Commit | Description |
+|---|---|
+| `303cce3` | `docs(reference): document raw=19 vs normalized=18 row-count discrepancy` |
+| `636806d` | `chore(gitignore): exclude 任务书集合/ from delivery surface and update execution report` |
+| `892ce34` | `docs(derivatives): add business-confirmation gate note and resolve P2-5 carry-over` |
+
+### Full commit chain (chronological)
+
+```
+1d13a55 docs(assetization): add round5a drafts
+67ccf64 docs(assetization): add round5a pre-implementation review materials
+bf2cfb0 feat(reference): add round5a official reference assets
+58d3046 docs(report): add round5a execution report
+4f6e30e refactor(report): refine execution report structure and wording
+47355bb docs(report): final review and polish for round5a execution report
+3688f0c docs(task-package): Phase 5A - add official reference assetization task book (non-delivery)
+303cce3 docs(reference): document raw=19 vs normalized=18 row-count discrepancy
+636806d chore(gitignore): exclude 任务书集合/ from delivery surface and update execution report
+892ce34 docs(derivatives): add business-confirmation gate note and resolve P2-5 carry-over
+```
