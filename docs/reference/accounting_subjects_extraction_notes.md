@@ -52,6 +52,7 @@ No other row was dropped, merged, or lost between the two files.
 
 The official sources are useful for standardization, but they do not remove the need for product-side business judgment. The repository therefore keeps explicit review surfaces for:
 
-- raw subject patterns that may map to multiple standard subjects
-- standard subjects that should not become ordinary positions
-- derivative-related entries that belong to a later independent subsystem
+- raw subjects whose standard-code mapping is unresolved or deferred this pass
+- raw patterns whose business-scene interpretation requires product-side confirmation
+- derivative-related entries routed to a future independent subsystem
+- detail-line subjects where only a parent-subject mapping can be confirmed this round
