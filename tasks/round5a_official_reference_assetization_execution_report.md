@@ -58,6 +58,11 @@ Out of scope and kept unchanged:
 - `892ce34` `docs(derivatives): add business-confirmation gate note and resolve P2-5 carry-over`
 	- `docs/derivatives/otc_derivative_review_rules.md`
 	- `data/reference/accounting_subject_mapping_review_queue.csv`
+- `2742d98` `docs(reference): broaden review-queue rationale bullets to reflect actual queue diversity`
+	- `docs/reference/accounting_subjects_extraction_notes.md`
+- `65a89f8` `docs(reference): fix extraction-method path and clarify review-queue CSV header`
+	- `docs/reference/accounting_subjects_extraction_notes.md`
+	- `data/reference/accounting_subject_mapping_review_queue.csv`
 
 ### Repo config
 
