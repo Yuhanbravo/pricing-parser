@@ -1,3 +1,4 @@
+# Queue purpose: rows may be queued for human decision (needs_human_decision: yes) or for reference documentation (needs_human_decision: no — retained for future-round traceability). See docs/reference/accounting_subjects_extraction_notes.md § Why Review Queues Are Preserved.
 raw_subject_code_pattern,raw_subject_name_pattern,proposed_account_code_std,proposed_account_name_std,mapping_method,confidence,reason,needs_human_decision,review_note
 1105,^基金投资$,1105,交易性基金投资,exact_code_plus_name_normalization,medium,Older guidebook wording differs from current practice-manual wording,no,Use current practice-manual naming as normalized standard form
 NA,^未分配利润$,NA,未分配利润,concept_match_only,medium,Concept is explicit but this pass did not normalize the code,yes,Confirm standard code and whether a dedicated code should be carried into runtime later

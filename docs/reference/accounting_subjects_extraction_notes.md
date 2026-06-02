@@ -12,7 +12,7 @@ Round 5A only extracts a first-pass reference set centered on subject families t
 
 ## Extraction Method
 
-- Reused the already-converted Markdown working copies from 任务书集合 and copied them into the formal Round 5A delivery path.
+- Reused Markdown conversions now committed at docs/reference/markdown/.
 - Used exact subject-code and keyword lookups to avoid inventing unsupported rows.
 - Normalized only the fields needed for the first-pass reference CSVs.
 - Left unresolved or ambiguous rows in review queues instead of forcing full normalization.
