@@ -262,4 +262,7 @@ bf2cfb0 feat(reference): add round5a official reference assets
 303cce3 docs(reference): document raw=19 vs normalized=18 row-count discrepancy
 636806d chore(gitignore): exclude 任务书集合/ from delivery surface and update execution report
 892ce34 docs(derivatives): add business-confirmation gate note and resolve P2-5 carry-over
+2742d98 docs(reference): broaden review-queue rationale bullets to reflect actual queue diversity
+65a89f8 docs(reference): fix extraction-method path and clarify review-queue CSV header
+337eaad docs(report): record P2-4 review-queue rationale and P2-5/P2-6 path+CSV header commits in git history
 ```
