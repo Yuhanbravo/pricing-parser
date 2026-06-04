@@ -4,12 +4,14 @@ This file is the single source of truth for project handoff.
 
 ## Update Log
 
+- 2026-06-04: Ran project-level post-dev dual-refresh after AI entrypoint bootstrap; refreshed project status/handoff facts for thin Codex/Copilot entrypoints and task package conventions. Environment blockers: none; external sync and hook installation intentionally not performed.
 - 2026-05-14: Synchronized Round 4 asset taxonomy closure facts, refreshed expected-baseline references, and kept `PRODUCT_022` / project-local experiment skill boundaries explicit. Environment blockers: none.
 
 ## Current Status
 
 - Current phase: Round 4 asset taxonomy closure on top of the existing Phase 5 delivery baseline.
 - Latest bounded delivery reran the full 11-file controlled raw set under strict default routing, refreshed `data_samples/expected/`, and kept unresolved files out of implicit generic-fallback success paths.
+- Project-level AI collaboration entrypoints are now available: `AGENTS.md`, `.github/copilot-instructions.md`, and `tasks/README.md`. They are thin orientation files and should point back to existing canonical project sources instead of becoming a second rule set.
 - Verified adapters hit in the current run: `citics`, `cmsc`, `csc`, `greatwall`, `gtja`, `guosen`, `orient`, `xyzc`.
 - Latest validated strict-default baseline is stored under `data_samples/expected/`, including `routing_results.csv`, `valuation_subjects.csv`, `valuation_positions.csv`, `review_items.csv`, `parse_summary.md`, and the date-derived workbook `估值表解析_output_<date>.xlsx`; local reruns may still export into ignored directories such as `output/`, but those artifacts are not part of the tracked contract.
 
@@ -34,6 +36,7 @@ This file is the single source of truth for project handoff.
 - `ai_skill_hub` stays a separate sibling repository and is not part of this repository's runtime or packaging boundary.
 - `PRODUCT_022` remains intentionally unresolved under the strict-default path; Round 4 does not add mapping coverage or a dedicated adapter for it.
 - The project-local `skill_experiments/acceptance-baseline-refresh/` assets are experimental only and do not promote this workflow into `ai-skill-hub`.
+- Post-dev refresh for this repository is project-level only; use ai-skill-hub workflow guidance as a source, but do not perform system-level ai-skill-hub refresh, external sync, or hook installation from this project handoff.
 
 ## Verified Scope
 
@@ -59,9 +62,11 @@ This file is the single source of truth for project handoff.
 2. Decide how to close the remaining routing gap for `PRODUCT_022`: add mapping coverage, add a dedicated adapter path, or keep it as an intentional failure fixture.
 3. Add regression tests for review-item generation and workbook-export structure beyond the current derivative-subject rule and existing non-derivative asset-class fixtures.
 4. Evaluate whether the workbook summary should expose more taxonomy columns or a dedicated acceptance baseline in a later round.
+5. Confirm and document the authoritative PR validation command and branch naming convention in the existing thin-entry / canonical-source structure.
 
 ## Practical Takeover Notes
 
 - Start from `docs/status.md` when you need the current snapshot of phase, scope, and risks.
+- Use `AGENTS.md` for Codex/agent orientation, `.github/copilot-instructions.md` for Copilot-specific hints, and `tasks/README.md` for task package and execution report conventions.
 - Use `MIGRATION_PLAN.md` for planned convergence work and deferred items; do not overload this handoff file with implementation scheduling.
 - If you change parser behavior, rerun `data_samples/raw/` and regenerate outputs in an ignored output directory such as `output/`, then verify that workbook and CSV artifacts remain mutually consistent.

@@ -5,6 +5,7 @@
 - Current milestone: Round 4 asset taxonomy closure on top of the Phase 5 delivery baseline.
 - Latest bounded delivery verified the full `data_samples/raw/` set end to end under strict default routing, refreshed `data_samples/expected/`, and retained 1 routing failure instead of silent generic fallback success.
 - Latest review-rule update still forces `3102*` derivative subjects into `review_items`, and those rows are not promoted into `valuation_positions`.
+- Latest project-level AI collaboration refresh added thin Codex/Copilot entrypoints and task package conventions without changing parser behavior.
 
 ## Current Snapshot
 
@@ -21,6 +22,7 @@
 - Position exports now normalize the routine suspension marker to plain `正常交易`, avoiding bracketed formatting drift in downstream sheets.
 - The strict-default acceptance baseline is maintained under `data_samples/expected/`, including routing/subjects/positions/review CSVs, parse summary, and a full workbook-content baseline; the baseline was refreshed from a controlled rerun and verified against the Round 4 taxonomy contract.
 - Canonical `.xlsx` mapping is regression-covered inside the repository at both the loader and pipeline layers.
+- AI collaboration entrypoints are now in place: `AGENTS.md` for project-level agent orientation, `.github/copilot-instructions.md` for Copilot-specific guidance, and `tasks/README.md` for bounded task package / execution report conventions.
 
 ## Supported Scope
 
@@ -38,6 +40,7 @@
 - `ai_skill_hub` must remain a separate sibling repository imported via Git bundle.
 - New raw `.xls`, `.xlsx`, and `.csv` samples are not committed by default.
 - Generated outputs belong in ignored directories such as `output/` or `tmp/`.
+- AI entry files remain thin adapters; durable project facts stay in `README.md` / `docs/status.md`, executable behavior in `tests/`, and parser rules in `config/` or `src/valuation_parser/`.
 
 ## Known Gaps
 
@@ -53,3 +56,4 @@
 1. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
 2. Decide how to handle the remaining unmapped `PRODUCT_022` sample: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
 3. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule and existing non-derivative fixtures.
+4. Confirm the team's authoritative PR validation command and branch naming convention, then document it in the existing thin entry / canonical-source structure without creating a second rulebook.
