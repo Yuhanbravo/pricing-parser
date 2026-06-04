@@ -1,0 +1,20 @@
+source_title,source_version,source_section,raw_account_code,raw_account_name,raw_account_class,raw_detail_subject,raw_description,raw_text_excerpt_short,extraction_note,needs_review
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1002,银行存款,资产类,银行存款,核算存入银行或其他金融机构的各种款项,1002 银行存款,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1021,结算备付金,资产类,结算备付金,核算交易备付金和预付款,1021 结算备付金,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1031,存出保证金,资产类,存出保证金,包括日常存出保证金和远期存出保证金等,1031 存出保证金,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1104,资产支持证券投资,资产类,资产支持证券投资,核算资产支持证券投资,1104 资产支持证券投资,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1105,基金投资,资产类,基金投资,核算基金投资相关业务,1105 基金投资,Needs normalization against current practice-manual naming,yes
+证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第二章股票投资业务,1102,交易性股票投资,资产类,成本和估值增值,核算股票账面成本与公允价值变动,1102 交易性股票投资,Practical manual provides clearer current naming,no
+证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第三章债券及资产支持证券投资业务,1103,交易性债券投资,资产类,成本估值增值和应计利息,核算债券投资账面成本与公允价值变动及应计利息,1103 交易性债券投资,Practical manual provides clearer current naming,no
+证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第四章基金投资业务,1105,交易性基金投资,资产类,成本和估值增值,核算基金投资账面成本与公允价值变动,1105 交易性基金投资,Preferred normalized form for current design,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1202,买入返售金融资产,资产类,买入返售金融资产,核算返售证券融出资金,1202 买入返售金融资产,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,1203,应收股利,资产类,应收股利,核算应收现金股利,1203 应收股利,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,2203,应付赎回款,负债类,应付赎回款,核算基金赎回和转换转出相关款项,2203 应付赎回款,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,2206,应付管理人报酬,负债类,应付管理人报酬,核算应付管理费,2206 应付管理人报酬,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,2207,应付托管费,负债类,应付托管费,核算应付托管费,2207 应付托管费,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,2208,应付销售服务费,负债类,应付销售服务费,核算应付销售服务费,2208 应付销售服务费,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,2221,应交税费,负债类,应交税费,核算按权责发生制确认的税费,2221 应交税费,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,3003,证券清算款,往来类,证券清算款,核算证券结算相关应收应付款项,3003 证券清算款,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,会计科目总表,4001,实收基金,所有者权益类,实收基金,核算基金份额对应资本,4001 实收基金,Direct subject-code match from Markdown,no
+中国基金估值标准2018,2018年9月第2版,未分配利润说明,NA,未分配利润,所有者权益类,未分配利润,反映期末尚未分配的基金净利润或未弥补亏损,未分配利润,Concept is clearly present but code was not normalized in this pass,yes
+证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第五章衍生工具投资业务,3102,衍生工具,衍生品类,权证投资成本和估值增值,核算基金持有的权证等衍生工具账面成本与公允价值变动,3102 衍生工具,Useful as derivative indexing anchor rather than ordinary-position mapping,yes

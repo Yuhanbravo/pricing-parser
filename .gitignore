@@ -13,6 +13,7 @@ dist/
 output/
 output*/
 tmp/
+任务书集合/
 *.log
 *.xlsx
 *.xls
@@ -22,6 +23,7 @@ tmp/
 *.code-workspace
 docs/documentation_governance_report.md
 docs/documentation_governance_report.json
+!data/reference/*.csv
 !data_samples/README.md
 !data_samples/expected/*.csv
 !data_samples/expected/*.xlsx

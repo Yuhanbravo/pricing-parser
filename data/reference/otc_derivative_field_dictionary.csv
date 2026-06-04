@@ -1,0 +1,17 @@
+field_name,field_display_name,field_layer,required_for_level1,required_for_level2,description,example_value,source_or_reason,needs_external_data,review_note
+subject_code,科目代码,recognition,true,true,Raw valuation subject code,3102,Needed to preserve source traceability,no,
+subject_name,科目名称,recognition,true,true,Raw valuation subject name,收益互换估值增值,Needed to preserve source traceability,no,
+derivative_type,衍生品类型,contract,true,true,High-level derivative classification,total_return_swap,Needed for contract-level grouping,no,May remain tentative when only keyword evidence exists
+contract_id,合约编号,contract,false,true,Stable contract identifier,SWAP-2026-001,Needed to avoid merging unrelated derivative balances,yes,Often unavailable in valuation table only
+counterparty,交易对手方,contract,false,true,Contract counterparty,某券商,Required for OTC control and aggregation,yes,
+trade_direction,交易方向,contract,false,true,Long short or pay receive direction,pay_total_return,Needed for exposure interpretation,yes,
+notional_amount,名义本金,contract,false,true,Notional principal or reference amount,10000000,Needed for risk sizing,yes,
+market_value,公允价值,contract,true,true,Current fair value or market value,-125000,Commonly visible in valuation outputs or source subjects,no,
+valuation_appreciation,估值增值,contract,true,true,Fair-value movement amount,32500,Commonly visible in valuation outputs or source subjects,no,
+margin_amount,保证金,contract,false,true,Margin linked to the derivative contract,800000,May appear only as separate accounting subjects,yes,Need linkage logic when split from contract line
+maturity_date,到期日,contract,false,true,Final settlement or expiration date,2026-12-31,Needed for lifecycle analysis,yes,
+underlying_name,标的名称,exposure,false,true,Underlying asset name,沪深300指数,Needed for lookthrough exposure,yes,
+delta_adjusted_exposure,Delta调整后敞口,exposure,false,true,Exposure after sensitivity adjustment,5600000,Needed for risk aggregation,yes,
+valuation_method_hint,估值方法提示,review,false,true,Helpful clue about pricing method,第三方估值,Needed for later audit and review,yes,Often only available in supplemental reports
+review_category,复核类别,review,true,true,Reason bucket for manual review,derivative_review,Needed when contract data is incomplete,no,
+review_note,复核备注,review,true,true,Human-readable unresolved note,缺少合约编号和对手方,Needed to preserve unresolved gaps,no,

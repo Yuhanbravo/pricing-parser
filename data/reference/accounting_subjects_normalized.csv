@@ -1,0 +1,19 @@
+account_code_std,account_name_std,account_class_std,account_class_l1,account_class_l2,standard_source,standard_version,source_section,description_short,is_active,normalization_note,review_status
+1002,银行存款,资产类,货币资金,银行存款,中国基金估值标准2018,2018年9月第2版,会计科目总表,银行存款及同类资金余额,yes,Directly normalized from official subject list,approved
+1021,结算备付金,资产类,货币资金,结算备付金,中国基金估值标准2018,2018年9月第2版,会计科目总表,结算机构相关备付金,yes,Directly normalized from official subject list,approved
+1031,存出保证金,资产类,货币资金,保证金,中国基金估值标准2018,2018年9月第2版,会计科目总表,交易和结算相关保证金,yes,Directly normalized from official subject list,approved
+1102,交易性股票投资,资产类,交易性金融资产,股票投资,证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第二章股票投资业务,股票投资成本和公允价值变动,yes,Current practice-manual naming used as standard form,approved
+1103,交易性债券投资,资产类,交易性金融资产,债券投资,证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第三章债券及资产支持证券投资业务,债券投资成本公允价值变动和应计利息,yes,Current practice-manual naming used as standard form,approved
+1104,资产支持证券投资,资产类,交易性金融资产,资产支持证券投资,中国基金估值标准2018,2018年9月第2版,会计科目总表,资产支持证券投资余额,yes,Name retained from official guidebook,approved
+1105,交易性基金投资,资产类,交易性金融资产,基金投资,证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第四章基金投资业务,基金投资成本和公允价值变动,yes,Normalized from earlier guidebook wording 基金投资 to current practice-manual wording,approved
+1202,买入返售金融资产,资产类,买入返售资产,返售资产,中国基金估值标准2018,2018年9月第2版,会计科目总表,返售证券形成的融出资金,yes,Directly normalized from official subject list,approved
+1203,应收股利,资产类,应收款项,应收股利,中国基金估值标准2018,2018年9月第2版,会计科目总表,股票或基金红利应收款,yes,Directly normalized from official subject list,approved
+2203,应付赎回款,负债类,应付款项,赎回款,中国基金估值标准2018,2018年9月第2版,会计科目总表,赎回和转换转出相关应付款,yes,Directly normalized from official subject list,approved
+2206,应付管理人报酬,负债类,应付款项,管理费,中国基金估值标准2018,2018年9月第2版,会计科目总表,应付管理费,yes,Directly normalized from official subject list,approved
+2207,应付托管费,负债类,应付款项,托管费,中国基金估值标准2018,2018年9月第2版,会计科目总表,应付托管费,yes,Directly normalized from official subject list,approved
+2208,应付销售服务费,负债类,应付款项,销售服务费,中国基金估值标准2018,2018年9月第2版,会计科目总表,应付销售服务费,yes,Directly normalized from official subject list,approved
+2221,应交税费,负债类,应付款项,税费,中国基金估值标准2018,2018年9月第2版,会计科目总表,按权责发生制确认的税费余额,yes,Directly normalized from official subject list,approved
+3003,证券清算款,往来类,结算往来,证券清算款,中国基金估值标准2018,2018年9月第2版,会计科目总表,证券交易结算相关往来款,yes,Directly normalized from official subject list,approved
+3102,衍生工具,衍生品类,衍生工具,衍生工具,证券投资基金会计核算操作实务手册,2024-05-30 filename version marker,第五章衍生工具投资业务,衍生工具成本与公允价值变动的总类科目,yes,Kept as standard derivative anchor not ordinary-position category,pending_review
+4001,实收基金,所有者权益类,基金份额权益,实收基金,中国基金估值标准2018,2018年9月第2版,会计科目总表,基金份额对应实收资本,yes,Directly normalized from official subject list,approved
+NA,未分配利润,所有者权益类,基金份额权益,未分配利润,中国基金估值标准2018,2018年9月第2版,未分配利润说明,期末未分配利润或未弥补亏损,yes,Concept confirmed but code deferred for later normalization,pending_review
