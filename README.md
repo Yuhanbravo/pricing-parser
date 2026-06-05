@@ -118,6 +118,34 @@ refactor(normalizer): centralize asset type inference
 
 项目阶段性里程碑可以使用 `Phase 1 / 2 / 3`，但普通施工步骤不要写 Phase。
 
+## PR 协作约定
+
+PR 流程约定以本节为准；`AGENTS.md` 与 `.github/copilot-instructions.md` 只做薄引用，不另写第二套规则。
+
+本地 / CI 默认验证命令：
+
+- 涉及源码、配置、测试或 baseline 的改动：运行 `python -m pytest`。
+- 仅文档改动：至少运行 `git diff --check`；源码测试可标记为 `not_run`，并说明原因是只改文档。
+
+分支命名固定大类，topic 小类用短横线小写描述工作主题：
+
+- `docs/<topic>`：文档、状态、handoff、README、任务说明。
+- `feat/<topic>`：新增解析能力、adapter、导出能力、可见功能。
+- `fix/<topic>`：行为修复、回归修复、数据口径修正。
+- `review/<topic>`：review round、验收闭环、证据链整理。
+- `backup/<topic>`：本地保护性备份分支，仅用于迁移或纠偏前 checkpoint。
+
+历史分支形态继续兼容，例如 `feature/round4-asset-taxonomy`、`feature/round5a-official-reference-assetization`、`review/pr-3-round5a`、`review/round3-evidence-chain-closure`、`backup/local-before-pr3-gate-*`；新分支优先使用上面的固定大类，不要求重命名历史分支。
+
+topic 小类可以后续扩展；当前建议使用类似 `docs/pr-workflow-minimal-convention`、`review/round5a-status-refresh` 的短主题。round / PR 类工作可以继续使用 `round5a-*` 或 `pr-3-*`，保持与历史审阅节奏兼容。
+
+PR 描述至少说明：
+
+- 改了什么、没改什么、验证结果。
+- 如果改 parser 行为，说明相关测试新增或更新情况。
+- 如果改 `data_samples/expected/`、baseline、样本策略或输出格式，说明原因和验证方式。
+- 不提交临时 `output/`、raw 样本、缓存或本地运行产物。
+
 ## 安装
 
 ```bash
