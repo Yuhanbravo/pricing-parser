@@ -1,0 +1,60 @@
+name: DeepSeek Code Review
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  deepseek-review-on-command:
+    name: DeepSeek review on PR comment command
+    runs-on: ubuntu-latest
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/deepseek-review') &&
+      (
+        github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'
+      )
+    steps:
+      - name: DeepSeek Code Review
+        uses: hustcer/deepseek-review@2c55eac1c25bd36cc1565b0ab85d98b3b3a7f53a
+        with:
+          chat-token: ${{ secrets.CHAT_TOKEN }}
+          watch-mention: "/deepseek-review"
+          allowed-associations: "OWNER,MEMBER,COLLABORATOR"
+          model: "deepseek-v4-pro"
+          temperature: 0.3
+          max-length: 60000
+          exclude-patterns: "*.lock,*.log,*.min.js,*.map,dist/**,build/**"
+          sys-prompt: |
+            You are a strict but helpful code reviewer for a Python pricing/parser repository.
+
+            Focus on:
+            - logic errors;
+            - parser contract regressions;
+            - incorrect assumptions about input formats;
+            - broken fixtures or expected outputs;
+            - packaging or path issues;
+            - security-sensitive mistakes;
+            - obvious performance issues.
+
+            Ignore pure style, formatting, or typos unless they affect behavior.
+
+            Return your review as a JSON array:
+            [
+              {
+                "path": "file/relative/path",
+                "line": 42,
+                "severity": "high|medium|low",
+                "description": "problem description",
+                "suggestion": "how to fix"
+              }
+            ]
+
+            If no issues, return empty array [].
