@@ -24,23 +24,14 @@ D:\intern_workspace\
 
 ## 当前能力
 
-- 从文件名、Sheet 名、表头预览中提取 `product_id` 与 `association_code`
-- 读取 `.csv/.xlsx` 映射表，并兼容当前仓库中的紧凑版映射 CSV
-- 支持 `.xls/.xlsx` 估值表输入
-- 输出 `routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及按输入日期自动命名的 Excel 工作簿 `估值表解析_output_<date>.xlsx`
-- `parse_summary.md` 当前会按 taxonomy 展示口径汇总已支持 / 未支持资产类型，并追加 `Asset Type Coverage` 统计表，便于快速判断样本覆盖面与剩余缺口
-- `valuation_subjects.csv` 与 `valuation_positions.csv` 当前导出包含 trace 字段：`source_file`、`product_id`、`association_code`、`custodian_id`、`custodian_name`、`adapter_key`、`route_source`
-- `valuation_subjects.csv`、`valuation_positions.csv` 与 `review_items.csv` 当前统一导出 taxonomy 字段：`asset_type_internal`、`asset_type_display`、`asset_class_l1`、`asset_class_l2`；subjects / review items 额外保留 `review_category`
-- `routing_results.csv` 中的 `custodian_name_chinese` 会收敛为标准化名称，避免同一托管机构以简称和全称混用
-- `valuation_positions.csv` 中的 `suspension_info` 会将 `【正常交易】` 等包裹格式收敛为纯文本 `正常交易`
-- 当前注册并在受控路径中验证命中的 adapter key：`citics`、`cmsc`、`csc`、`greatwall`、`gtja`、`guosen`、`orient`、`xyzc`
-- 最新受控全量运行结果：11 个文件、10 次成功路由、1 次路由失败、1022 条科目、182 条持仓、508 条 review-flagged subjects、238 条 review items、0 个 normalization issues；权威 strict-default baseline 维护在 `data_samples/expected/`
-- 当前支持的 taxonomy 展示类型为：`A股股票`、`场内基金/ETF`、`存托凭证`、`港股`、`科创板股票`；收益互换、保证金、清算款、负债等非证券持仓仅保留在 subjects / review / summary 口径中，不进入 `valuation_positions.csv`
-- 对于 `PRODUCT_022` 这类能提取身份但未命中有效 mapping 的文件，默认会保留 `failed` 路由结果；只有显式传入 `--allow-generic-fallback` 时才允许 `generic` 兜底解析
-- 共享 review 逻辑已覆盖 `3102*` 衍生工具科目，命中后会进入 `review_items.csv`
-- `valuation_positions.csv` 与 `valuation_subjects.csv` 中的 `review_flag` 使用 `1` 标记所有需要人工复核的记录，未命中时保持空白；`review_note` 与 `review_items.csv` 保留具体原因，`review_flag` 本身只承担“是否需要人工复核”的二值标记
-- `data_samples/expected/` 当前已刷新并纳入 Round 4 acceptance baseline：`routing_results.csv`、`valuation_subjects.csv`、`valuation_positions.csv`、`review_items.csv`、`parse_summary.md`，以及 workbook-content baseline
-- 测试已覆盖身份提取、映射加载、路由、adapter 样表、基于 `data_samples/raw/` 全量样表的 smoke，以及 review-item 回归
+解析器从估值表文件中提取身份信息、路由到对应托管机构适配器、解析科目与持仓，并输出标准化 CSV / Markdown / Excel 产物。核心能力：
+
+- 基于 mapping-driven routing 自动识别托管机构并选择适配器
+- 共享解析与导出管线，统一输出 `routing_results`、`valuation_subjects`、`valuation_positions`、`review_items`、`parse_summary` 以及 Excel 工作簿
+- 统一 taxonomy 展示口径与 review 标记规则
+- 严格默认路由：未命中 mapping 的文件保留 `failed` 状态，不走隐式兜底
+
+> 详细的适配器列表、taxonomy 类型、最新运行统计和验收基线见 **[docs/status.md](docs/status.md)** 的 Current Snapshot 与 Supported Scope。
 
 当前已验证的真实样表：
 
@@ -200,6 +191,22 @@ python -m valuation_parser.cli \
 - 如果确实需要保留样本，请只保留极小、脱敏、明确用于测试的 fixture，并单独说明用途。
 - `data_samples/` 应主要承担目录约定、README 说明和极少量受控 expected fixture 的角色，而不是存放日常开发 raw 数据。
 
+## 文档分类与事实源
+
+本仓库文档按受众与权威性分为以下层级：
+
+- **AI-only wrapper**（薄入口，只做指针引用）：`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md`
+- **Human-AI shared**（稳定说明与工作约定）：`README.md`（本文档）
+- **Current-state SSOT**（可变项目状态的唯一事实源）：`docs/status.md`
+- **Task records**（任务包与执行报告，审计留痕，不是规则中心）：`tasks/`
+
+关键边界：
+
+- `docs/status.md` 是项目当前状态、支持范围、已知缺口和下一步建议的**唯一事实源**；其他文档只引用、不复制可变状态。
+- `tasks/` 中的执行报告是历史审计记录，不能反向覆盖当前状态文档中的结论。
+- AI 入口文件（`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md`）保持薄层，不扩展为第二规则库。
+- `ai-skill-hub` 是 sibling reference repository，不提交进本仓库。
+
 ## 状态文档
 
 - 当前项目状态、边界和下一步建议统一记录在 `docs/status.md`。
@@ -209,7 +216,4 @@ python -m valuation_parser.cli \
 
 ## 下一步建议
 
-1. 决定是否要为 `估值表解析_output_<date>.xlsx` 维护一份更完整的验收基线，并补入 `routing_results` 与 `parse_summary` 的对照面。
-2. 明确 `PRODUCT_022` 这类未命中 mapping 的样本是补 mapping、补 adapter，还是长期保留为显式失败夹具。
-3. 当新增资产类型或新的 review reason 进入共享规则时，再继续补充增量回归夹具；当前 `hk_equity`、`a_share`、`fund_or_etf` 的核心非衍生品 review path 已有专用覆盖。
-4. 确认团队权威 PR 验证命令与分支命名约定，并放入现有薄入口 / canonical source 结构中，不新增第二套规则。
+> 详细的下一步建议见 **[docs/status.md](docs/status.md)** 的 Recommended Next Steps。
