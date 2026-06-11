@@ -130,7 +130,7 @@ AI 入口文件的简要说明：
 - On branch master
 Your branch is up to date with 'origin/master'.
 - master
-- C:\Users\Evelyn\miniforge3\envs\pricing-parser-py312\python.exe
+- %USERPROFILE%\miniforge3\envs\pricing-parser-py312\python.exe
 - 52 passed in 12.49s
 
 - Already up to date.
