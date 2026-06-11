@@ -32,7 +32,7 @@
 
 VS Code workspace使用情况，以及固定路径配置检查：
 
-- 使用 VS Codet workspace 同时打开两个仓库，且workspace 文件未提交到仓库
+- 使用 VS Code workspace 同时打开两个仓库，且 workspace 文件未提交到仓库
 - 固定路径检查结果：在一些md文件中写了 D:\intern_workspace 等硬编码路径，与当前本地目录 pricing_parser 不一致，这些是文档示例路径，不影响运行，也不影响本地路径配置。此外还搜索到一些二进制文件（.xlsx / .xls），可能是误报，此部分文件属于测试样本数据，不是代码或配置，也不影响运行。
 
 
