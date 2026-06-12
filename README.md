@@ -1,6 +1,8 @@
 # valuation-parser
 
-估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。当前已完成 Round 4 资产术语收敛：基于 `data_samples/raw/` 的全量 11 份受控样表重新生成并校验了受控输出与 `data_samples/expected/`，覆盖 mapping-driven routing、8 个已命中 adapter key、标准化 CSV/Markdown/Excel 导出、`3102*` 衍生工具科目 review 规则，以及统一的 taxonomy 展示口径；默认严格路由口径下仍保留 1 个未命中 mapping 的失败样本。
+估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。解析器从估值表文件中提取身份信息、路由到对应托管机构适配器、解析科目与持仓，并输出标准化 CSV / Markdown / Excel 产物。
+
+> 当前运行统计、已验证的适配器列表、taxonomy 类型和支持范围见 **[docs/status.md](docs/status.md)** 的 Current Snapshot 与 Supported Scope。
 
 ## 工作区边界
 
@@ -33,22 +35,9 @@ D:\intern_workspace\
 
 > 详细的适配器列表、taxonomy 类型、最新运行统计和验收基线见 **[docs/status.md](docs/status.md)** 的 Current Snapshot 与 Supported Scope。
 
-当前已验证的真实样表：
+> 已验证的样表与适配器映射关系见 **[docs/status.md](docs/status.md)** 的 Current Snapshot。
 
-- `证券投资基金估值表_PRODUCT_023_2025-03-27.xlsx` -> `greatwall`
-- `20250327_PRODUCT_002_证券投资基金估值表.xls` 与 `20250327_PRODUCT_002_证券投资基金估值表.csv` -> `xyzc`
-- `2025-03-27_PRODUCT_001估值表.xlsx` -> `guosen`
-- `PRODUCT_008委托资产资产估值表20250327.xls` -> `cmsc`
-- `估值表_PRODUCT_021_20250327.xls` -> `csc`
-- `估值表日报-XXX022-PRODUCT_022-4-20250327.xlsx` 默认未路由；仅在显式启用 `--allow-generic-fallback` 时走 `generic` fallback
-- `PRODUCT_006_资产估值表_20250327.xls`、`PRODUCT_010_证券投资基金估值表_2025-03-27.xls`、`PRODUCT_012_估值表_20250327.xls` 已在批量管线测试中分别覆盖 `citics`、`orient`、`gtja`
-
-Round 4 资产术语口径补充：
-
-- ETF / 场内基金统一归为 `fund_exchange_traded` / `场内基金/ETF`，属于基金类，不按权益类落地。
-- 收益互换统一归为 `derivative_swap` / `收益互换`，进入 review 口径，不进入 `valuation_positions.csv`。
-- 现金及存款、保证金、证券清算款、应付款项、应交税费等科目保留在 subjects / summary 口径中，不作为证券持仓导出。
-- `PRODUCT_022` 已明确不属于本轮处理范围，本轮不补 mapping、不新增 adapter，也不为消除单个 routing failure 改写 strict-default 契约。
+> Round 4 资产术语口径已在 `config/asset_taxonomy.yaml`、`src/valuation_parser/taxonomy.py` 和 `tests/` 中落地；当前 taxonomy 展示类型和支持范围见 **[docs/status.md](docs/status.md)** 的 Supported Scope。
 
 ## 项目结构
 
