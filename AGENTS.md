@@ -22,10 +22,7 @@ CLI usage is documented in `README.md`; prefer those examples over inventing new
 
 ## Work Boundaries
 
-- Keep `ai_skill_hub` as a sibling reference repository, not as files committed into this repository.
-- Do not commit new raw `.xls`, `.xlsx`, or `.csv` samples by default.
-- Write generated outputs to ignored locations such as `output/` or `tmp/`.
-- Follow the PR validation, branch naming, and review requirements in the `README.md` PR collaboration section.
+- Repository-level rules (workspace boundaries, sample policy, output conventions, PR validation) are defined in `README.md`; this section covers AI-agent-specific behavior only.
 - Before changing behavior, inspect the related module under `src/valuation_parser/` and the matching tests.
 - If a task changes routing, adapter behavior, taxonomy, exports, or review logic, update focused tests with the change.
 
