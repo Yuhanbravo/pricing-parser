@@ -1,5 +1,7 @@
 # 文档治理 P1 修复执行报告
 
+> **免责声明**：本文件为 historical execution report（历史执行报告），仅记录 2026-06-12 会话中执行的 P1 文档治理修复过程。本文件不是当前规则源，也不是当前状态源。当前项目状态以 **[docs/status.md](../docs/status.md)** 为准，稳定规则与工作约定以 **[README.md](../README.md)** 为准。
+
 ## Status
 
 **done for authorized P1 scope** — 全部 4 项 P1 修复已实施并验证；P0 已在 2026-06-11 完成，P2 为后续待确认项。
@@ -12,7 +14,7 @@
 
 - `README.md`（3 处 P1 修复）
 - `AGENTS.md`（1 处 P1 修复）
-- `tasks/2026-06-12_p1_fix_execution_report.md`（本文件）
+- `tasks/2026-06-12_claude_doc_governance_execution_report_fix_P1.md`（本文件）
 
 **受约束排除：**
 
@@ -25,7 +27,7 @@
 |---|---|---|
 | `README.md` | 修改（3 次编辑） | P1-1：开头段去 Round 4（17 行交付细节 → 1 句项目概述 + SSOT 指针）；P1-2：样表列表移除（8 条文件名→适配器映射 → blockquote 指针）；P1-3：Round 4 补充移除（4 条历史 taxonomy 决策 → blockquote 指针指向 config/tests + SSOT） |
 | `AGENTS.md` | 修改（1 次编辑） | P1-4：Work Boundaries 精简（6 条 → 3 条：合并 4 条与 README 重复的项目规则为 1 条指针，保留 2 条 AI-agent 专属行为规则） |
-| `tasks/2026-06-12_p1_fix_execution_report.md` | 新建 | 本报告 |
+| `tasks/2026-06-12_claude_doc_governance_execution_report_fix_P1.md` | 新建 | 本报告 |
 
 ## What changed
 
@@ -58,9 +60,10 @@ P1 的共同问题：**在非 SSOT 文件中复制了可变状态或规则，形
 
 - **自动化测试**：`not_run` — 按 `README.md` PR 协作约定，仅文档改动可将源码测试标记为 `not_run`。本次所有改动均不涉及 `src/`、`config/`、`tests/`、`data_samples/expected/`、`.github/workflows/`。
 - **手动验证**：每次编辑后均确认修改正确；所有修改段落的结构、指针链接和内容均已验证。
-- **Git 变更范围检查**：`passed` — 确认本次会话仅触及 `README.md`（修改）、`AGENTS.md`（修改）、`tasks/2026-06-12_p1_fix_execution_report.md`（新建）。未修改 `src/`、`config/`、`tests/`、`data_samples/expected/`、`.github/workflows/` 中的任何文件。
+- **Git 变更范围检查**：`passed` — 确认本次会话仅触及 `README.md`（修改）、`AGENTS.md`（修改）、`tasks/2026-06-12_claude_doc_governance_execution_report_fix_P1.md`（新建）。未修改 `src/`、`config/`、`tests/`、`data_samples/expected/`、`.github/workflows/` 中的任何文件。
 - **Markdown lint**：`not_run` — 渲染输出中未观察到结构问题。
-- **DeepSeek PR Review**：`triggered` / `passed` — DeepSeek PR Review 配置已在本次治理训练之前的会话中完成并触发成功，本次报告记录该结果。
+- **README 规则覆盖检查**：`verified` — README.md 已明确覆盖以下四项：workspace boundaries（工作区边界）、sample policy（样本与数据策略）、output conventions（运行产物写入 output/ / tmp/）、PR validation（PR 协作约定，含分支命名、pytest、PR 描述规则）。无需补写。
+- **DeepSeek PR Review**：`triggered` / `passed` — DeepSeek PR Review 配置已在本次治理训练之前的会话中完成并触发成功，本次报告记录该结果。。
 
 ## Deviations from task package
 
