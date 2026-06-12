@@ -1,6 +1,6 @@
 # valuation-parser
 
-估值表解析器项目脚手架，按”路由层 + 公共解析层 + 托管机构适配层”组织。解析器从估值表文件中提取身份信息、路由到对应托管机构适配器、解析科目与持仓，并输出标准化 CSV / Markdown / Excel 产物。
+估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。解析器从估值表文件中提取身份信息、路由到对应托管机构适配器、解析科目与持仓，并输出标准化 CSV / Markdown / Excel 产物。
 
 > 当前运行统计、已验证的适配器列表、taxonomy 类型和支持范围见 **[docs/status.md](docs/status.md)** 的 Current Snapshot 与 Supported Scope。
 
