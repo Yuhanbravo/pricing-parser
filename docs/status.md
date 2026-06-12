@@ -6,10 +6,7 @@
 - Latest bounded delivery verified the full `data_samples/raw/` set end to end under strict default routing, refreshed `data_samples/expected/`, and retained 1 routing failure instead of silent generic fallback success.
 - Latest review-rule update still forces `3102*` derivative subjects into `review_items`, and those rows are not promoted into `valuation_positions`.
 - Latest project-level AI collaboration refresh added thin Codex/Copilot entrypoints and task package conventions without changing parser behavior.
-- DeepSeek PR Review configuration has been completed.
-- First-round handoff material refresh has been completed; pending final closure review.
-- Current priority is docs-only governance training (audit → report → fix); parser behavior is intentionally frozen during this phase. Feature iteration on workbook baseline and export consistency is deferred until documentation structure is confirmed.
-- Claude Code initialization is limited to a thin `CLAUDE.md` entrypoint and does not change parser behavior.
+- Recent AI collaboration setup completed: DeepSeek PR Review workflow, first-round handoff material refresh (pending final closure review), thin `CLAUDE.md` entrypoint, and docs-only governance training round (audit → report → P0 fix cycle). Parser behavior is intentionally frozen during this phase; feature iteration on workbook baseline and export consistency is deferred until documentation structure is confirmed.
 
 ## Current Snapshot
 

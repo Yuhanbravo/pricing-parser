@@ -2,7 +2,7 @@
 
 ## Status
 
-**partial** — P0 修复已实施并验证；P1/P2 修复待用户确认后执行。
+**done for authorized P0 scope** — P0 修复已实施并验证；P1/P2 修复为后续待确认项，不在本报告授权范围内。
 
 ## Scope
 
