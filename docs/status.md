@@ -38,7 +38,7 @@
 
 ## Repository Rules
 
-> Repository-level rules (workspace boundaries, sample policy, output conventions, and thin-entry rules for AI files) are defined in **[README.md](../README.md)**. This section intentionally defers to README.md as the single source; do not duplicate rules here. Multi-round development staging is maintained in **[docs/roadmap.md](roadmap.md)**.
+> Repository-level rules (workspace boundaries, sample policy, output conventions, and thin-entry rules for AI files) are defined in **[README.md](../README.md)**. This section intentionally defers to README.md as the single source; do not duplicate rules here. Multi-round development staging is maintained in **[roadmap.md](roadmap.md)**.
 
 ## Known Gaps
 
