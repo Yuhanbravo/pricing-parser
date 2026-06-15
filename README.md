@@ -3,6 +3,7 @@
 估值表解析器项目脚手架，按“路由层 + 公共解析层 + 托管机构适配层”组织。解析器从估值表文件中提取身份信息、路由到对应托管机构适配器、解析科目与持仓，并输出标准化 CSV / Markdown / Excel 产物。
 
 > 当前运行统计、已验证的适配器列表、taxonomy 类型和支持范围见 **[docs/status.md](docs/status.md)** 的 Current Snapshot 与 Supported Scope。
+> 多轮开发阶段规划见 **[docs/roadmap.md](docs/roadmap.md)**。
 
 ## 工作区边界
 
@@ -187,6 +188,7 @@ python -m valuation_parser.cli \
 - **AI-only wrapper**（薄入口，只做指针引用）：`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md`
 - **Human-AI shared**（稳定说明与工作约定）：`README.md`（本文档）
 - **Current-state SSOT**（可变项目状态的唯一事实源）：`docs/status.md`
+- **Roadmap**（多轮开发阶段规划与排序）：`docs/roadmap.md`
 - **Task records**（任务包与执行报告，审计留痕，不是规则中心）：`tasks/`
 
 关键边界：
