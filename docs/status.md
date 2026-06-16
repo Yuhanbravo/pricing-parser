@@ -51,6 +51,8 @@
 
 ## Recommended Next Steps
 
+当前 roadmap 阶段：R0 收尾，准备进入 R1（Workbook 基线与导出一致性）。
+
 1. Once documentation structure is stable, resume feature planning: workbook baseline maintenance, export consistency checks, and review-item regression expansion.
 2. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
 3. Decide how to handle the remaining unmapped `PRODUCT_022` sample: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.

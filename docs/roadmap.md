@@ -56,7 +56,7 @@
 
 - 精简或校准 `README.md`、`docs/status.md`、`tasks/README.md` 的职责说明。
 - 确认 AI entrypoints 只保留薄引用，不扩写成规则中心。
-- 为后续任务包建立统一 execution report 结构。
+- 沿用并必要时轻量校准 `tasks/README.md` 中的 task package / execution report 结构，不另建第二套任务报告规范。
 - 在不改变 parser runtime 的前提下补齐文档入口链接。
 
 ### 进入条件
@@ -276,6 +276,12 @@ Baseline impact: none / expected update / needs review
 - `Owner decision required`：涉及业务语义、默认策略、baseline 策略时通常为 `yes`。
 - `Validation command`：列出实际运行的命令，例如 `git diff --check` 或 `python -m pytest`。
 - `Baseline impact`：说明是否影响 `data_samples/expected/`、workbook baseline 或输出字段。
+
+`Validation command` 填写原则：
+
+- docs-only PR：至少运行 `git diff --check`。
+- 涉及 parser runtime / tests / config / baseline 的 PR：应包含对应的 `python -m pytest` 或项目约定的 acceptance / regression 命令。
+- 如果未运行验证命令，PR 描述必须说明原因。
 
 ## 13. 推荐推进顺序
 
