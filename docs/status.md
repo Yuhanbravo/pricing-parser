@@ -38,7 +38,7 @@
 
 ## Repository Rules
 
-> Repository-level rules (workspace boundaries, sample policy, output conventions, and thin-entry rules for AI files) are defined in **[README.md](../README.md)**. This section intentionally defers to README.md as the single source; do not duplicate rules here.
+> Repository-level rules (workspace boundaries, sample policy, output conventions, and thin-entry rules for AI files) are defined in **[README.md](../README.md)**. This section intentionally defers to README.md as the single source; do not duplicate rules here. Multi-round development staging is maintained in **[roadmap.md](roadmap.md)**.
 
 ## Known Gaps
 
@@ -50,6 +50,8 @@
 - Historical materials referenced by older review notes, such as `output_phase*` and `docs/documentation_governance_report.*`, should be treated as legacy snapshots rather than current contract artifacts and should only be retained with an explicit historical label.
 
 ## Recommended Next Steps
+
+当前 roadmap 阶段：R0 收尾，准备进入 R1（Workbook 基线与导出一致性）。
 
 1. Once documentation structure is stable, resume feature planning: workbook baseline maintenance, export consistency checks, and review-item regression expansion.
 2. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
