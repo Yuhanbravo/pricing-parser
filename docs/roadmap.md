@@ -19,6 +19,7 @@
 - `README.md`：稳定项目说明、工作区边界、安装运行方式、样本策略、PR 协作约定和文档入口。
 - `docs/status.md`：当前状态 SSOT，记录最新支持范围、已知缺口、当前 snapshot 和推荐下一步。
 - `docs/roadmap.md`：多轮规划与阶段排序，说明未来工作如何拆分、哪些点需要 owner decision。
+- `docs/adr/`：正式 owner decision record；只有 `Accepted` ADR 可作为实现指导。
 - `tasks/README.md`：任务包与 execution report 的规范入口。
 - `tasks/*.md`：历史 audit trail，用于追溯具体任务执行过程，不反向覆盖 `docs/status.md` 或本文档。
 - AI 入口文件：`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md` 等保持薄入口，只做指针引用，不复制状态、路线图或长期规则。
