@@ -189,11 +189,13 @@ python -m valuation_parser.cli \
 - **Human-AI shared**（稳定说明与工作约定）：`README.md`（本文档）
 - **Current-state SSOT**（可变项目状态的唯一事实源）：`docs/status.md`
 - **Roadmap**（多轮开发阶段规划与排序）：`docs/roadmap.md`
+- **Owner decision records**（正式 owner decision / ADR）：`docs/adr/README.md`
 - **Task records**（任务包与执行报告，审计留痕，不是规则中心）：`tasks/`
 
 关键边界：
 
 - `docs/status.md` 是项目当前状态、支持范围、已知缺口和下一步建议的**唯一事实源**；其他文档只引用、不复制可变状态。
+- `docs/adr/` 记录正式 owner decision；只有 `Accepted` ADR 可作为实现指导。
 - `tasks/` 中的执行报告是历史审计记录，不能反向覆盖当前状态文档中的结论。
 - AI 入口文件（`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md`）保持薄层，不扩展为第二规则库。
 - `ai-skill-hub` 是 sibling reference repository，不提交进本仓库。
