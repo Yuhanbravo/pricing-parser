@@ -92,6 +92,7 @@
 - 梳理 workbook sheet、字段顺序、命名规则和 summary 内容。
 - 为 CSV 与 workbook 中相同语义字段建立一致性检查。
 - 更新或新增 export regression，避免格式漂移。
+- R1-P2 仍优先完成 workbook ↔ CSV consistency regression；已 staged 的 RC1 脱敏样本不应在 R1 直接扩大 expected baseline。
 
 ### 进入条件
 
@@ -159,6 +160,7 @@
 - 为新 custodian adapter 增加最小路由和解析覆盖。
 - 明确 manual adapter override 与 `--allow-generic-fallback` 的使用边界。
 - 维护 routing results 的 trace fields 和失败原因可读性。
+- 在 owner 决策后，从 `data_samples/local_rc1/pricing-parser-rc1-intake-001/` 选择脱敏样本进入正式 adapter / expected baseline 任务，例如 `pricing-parser-sample-adapter-baseline-001`。
 
 ### 进入条件
 
@@ -291,6 +293,7 @@ Baseline impact: none / expected update / needs review
 1. 先完成 R0，保持文档治理和 AI 协作入口稳定。
 2. 再推进 R1，确认 workbook baseline 与导出一致性策略。
 3. 随后推进 R2，为 review item 影响面建立更充分 regression。
+   RC1 sample intake remains local planning until R3; do not turn local staging into expected baseline during R1.
 4. 在 baseline 和 review surface 可控后推进 R3，处理路由与产品覆盖决策。
 5. 之后推进 R4，扩展 taxonomy 与业务分类。
 6. 最后推进 R5，改善运营可用性和下游消费体验。

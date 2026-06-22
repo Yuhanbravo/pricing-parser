@@ -7,11 +7,13 @@
 - Latest review-rule update still forces `3102*` derivative subjects into `review_items`, and those rows are not promoted into `valuation_positions`.
 - Latest project-level AI collaboration refresh added thin Codex/Copilot entrypoints and task package conventions without changing parser behavior.
 - Recent AI collaboration setup completed: DeepSeek PR Review workflow, first-round handoff material refresh (pending final closure review), thin `CLAUDE.md` entrypoint, and docs-only governance training round (audit → report → P0 fix cycle). Parser behavior is intentionally frozen during this phase; feature iteration on workbook baseline and export consistency is deferred until documentation structure is confirmed.
+- RC1 sanitized sample handoff materials from `Pricing_sheet` are staged locally under ignored `data_samples/local_rc1/pricing-parser-rc1-intake-001/` for intake planning only; this does not create a parser baseline, expected output, or runtime change.
 
 ## Current Snapshot
 
 - Routing, parsing, normalization, and export are working end to end on the full 11-file controlled raw set, with one sample intentionally left unresolved by default because it has no active mapping match.
 - The authoritative strict-default baseline lives under `data_samples/expected/`; ad hoc reruns may also generate artifacts in ignored directories such as `output/`.
+- Local RC1 intake staging exists under ignored `data_samples/local_rc1/pricing-parser-rc1-intake-001/`; it is a planning input for later R3 sample-adapter baseline decisions, not part of the current acceptance baseline.
 - Latest parse summary reports: 11 processed files, 10 successful routes, 1 routing failure, 1022 subject rows, 182 position rows, 508 review-flagged subjects, 238 review items, and 0 normalization issues.
 - Latest parse summary now reports supported and unsupported asset-type coverage using taxonomy display names, plus explicit `Asset Type Coverage`, `Unrecognized Object Index`, and `Review Entry Index` sections.
 - `review_flag` marks whether a subject or position needs manual review; `review_note` carries the row-level reason; `review_items.csv` is the run-level review queue.
@@ -53,8 +55,10 @@
 
 当前 roadmap 阶段：R0 收尾，准备进入 R1（Workbook 基线与导出一致性）。
 
-1. Once documentation structure is stable, resume feature planning: workbook baseline maintenance, export consistency checks, and review-item regression expansion.
-2. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
-3. Decide how to handle the remaining unmapped `PRODUCT_022` sample: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
-4. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule and existing non-derivative fixtures.
-5. Confirm the team's authoritative PR validation command and branch naming convention, then document it in the existing thin entry / canonical-source structure without creating a second rulebook.
+1. Continue R1-P2 workbook ↔ CSV consistency regression on the current controlled baseline; do not broaden `data_samples/expected/` from RC1 local staging in R1.
+2. Once documentation structure is stable, resume feature planning: workbook baseline maintenance, export consistency checks, and review-item regression expansion.
+3. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
+4. Decide how to handle the remaining unmapped `PRODUCT_022` sample: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
+5. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule and existing non-derivative fixtures.
+6. Confirm the team's authoritative PR validation command and branch naming convention, then document it in the existing thin entry / canonical-source structure without creating a second rulebook.
+7. Later in R3, plan `pricing-parser-sample-adapter-baseline-001` to decide whether selected sanitized RC1 samples graduate from ignored local staging into tracked parser baselines and owner-approved expected outputs.
