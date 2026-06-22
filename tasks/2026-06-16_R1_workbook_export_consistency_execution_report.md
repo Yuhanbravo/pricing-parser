@@ -34,11 +34,10 @@ done
 1. CSV 和 workbook 在 `exporters.py` 中共享同一组 `*_FIELDS` 常量，架构上已杜绝字段漂移
 2. `data_samples/expected/估值表解析_output_2025-03-27.xlsx` 已作为 workbook-content baseline 存在，且被 `test_acceptance_baseline.py` 通过 sheet-content 结构化比对覆盖
 3. 测试缺口主要集中在：无独立 `write_excel_workbook()` 单元测试、无跨格式（CSV ↔ workbook）一致性测试、无文件名确定性测试
-4. 所有策略性结论（workbook 验收角色、baseline 策略、CSV 权威性、文件名契约）已标记为 `owner decision required`
+4. 所有策略性结论（workbook 验收角色、baseline 策略、CSV 权威性、文件名契约）已整理为 decision note，5 项决策已由 owner 确认
 
 ## Validation results
 
-以下验证命令已在本分支实际运行：
 
 ### git diff --check
 
@@ -50,20 +49,20 @@ done
 
 ### git diff --name-only
 
-```
-（无输出 — 当前无已暂存变更，所有文件均为新增未跟踪状态）
-```
+tasks/2026-06-16_R1_workbook_export_consistency_audit.md
+tasks/2026-06-16_R1_workbook_baseline_owner_decision_note.md
+tasks/2026-06-16_R1_workbook_export_consistency_p2_test_design.md
+tasks/2026-06-16_R1_workbook_export_consistency_execution_report.md
 
 ### git status --short
+PR diff 仅包含以下 4 个新任务文件，全部在 `tasks/` 目录下：
 
-```
-?? tasks/2026-06-16_R1_workbook_baseline_owner_decision_note.md
-?? tasks/2026-06-16_R1_workbook_export_consistency_audit.md
-?? tasks/2026-06-16_R1_workbook_export_consistency_p2_test_design.md
-?? tasks/2026-06-16_R1_workbook_export_consistency_execution_report.md
-```
+A  tasks/2026-06-16_R1_workbook_export_consistency_audit.md
+A  tasks/2026-06-16_R1_workbook_baseline_owner_decision_note.md
+A  tasks/2026-06-16_R1_workbook_export_consistency_execution_report.md
+A  tasks/2026-06-16_R1_workbook_export_consistency_p2_test_design.md
 
-4 个新文件，均为 `tasks/` 目录下的审计/决策/设计/报告文档。无已修改文件、无已删除文件。
+无已修改文件、无已删除文件、无 `src/`、`config/`、`tests/`、`data_samples/`、`.github/workflows/` 变更。
 
 ### python -m pytest
 
@@ -85,17 +84,17 @@ python -m pytest: not_run — docs / audit / decision-prep only; no runtime, tes
 
 - **日期派生文件名**：当前所有 raw 样本日期均为 `2025-03-27`，baseline 文件名固定。如果将来添加不同日期的样本，需同步更新 `data_samples/expected/` 中的 workbook baseline 文件名和测试中的硬编码断言。此风险已在 owner decision note（Decision 4）中提出。
 - **Workbook sheet 名称硬编码**：`write_excel_workbook()` 中的 sheet 名称（`"routing_results"` 等）为内联字符串字面量，不与 CSV 文件名常量联动。虽然当前稳定，但如果在 P2 中将 sheet 名称提取为常量可进一步降低维护风险。
-- **P2 实现依赖 owner decision**：P2 test design 中的测试实现方案取决于 owner 对 Decision Note 的确认（尤其是 Decision 1 和 Decision 2）。
+- **P2 实现已解除依赖**：5 项 owner decision 已全部确认（见上方），P2 可按 confirmed direction 直接实施。
 
-## Owner decisions still pending
+## Owner decisions (confirmed)
 
-Owner Decision Note（`tasks/2026-06-16_R1_workbook_baseline_owner_decision_note.md`）中以下 5 项决策均标记为 `pending`：
+Owner Decision Note（`tasks/2026-06-16_R1_workbook_baseline_owner_decision_note.md`）中 5 项决策已由 owner 确认：
 
-1. **Decision 1**：Workbook 验收角色（推荐 B — CSV 镜像）
-2. **Decision 2**：独立 workbook baseline 策略（推荐维持当前 content-level sheet baseline）
-3. **Decision 3**：CSV vs workbook 权威性（推荐 CSV 为权威）
-4. **Decision 4**：文件名稳定性（推荐保持当前行为但纳入测试契约）
-5. **Decision 5**：P2 回归方向（实习生建议 P0 优先实现 Test 3/4/5，Test 1/2 可选；详见 P2 test design）
+1. **Decision 1**：✅ **confirmed** — 采用选项 B。Workbook 定位为 CSV 的 Excel 镜像 / 人工友好派生物，不作为独立权威产物。
+2. **Decision 2**：✅ **confirmed** — 维持当前 sheet-content / structured read comparison 口径，不升级为二进制验收。
+3. **Decision 3**：✅ **confirmed** — CSV 为语义权威。若 CSV 与 workbook 不一致，应视为 bug，但判断和修复应优先回到 CSV、字段常量和 `to_row()` 数据源。
+4. **Decision 4**：✅ **confirmed** — 保持当前日期派生文件名规则，不在本轮修改 runtime 文件名行为。在 R1-P2 中纳入 regression test。
+5. **Decision 5**：✅ **confirmed** — 授权进入 R1-P2: workbook ↔ CSV consistency regression implementation。R1-P2 只允许新增 focused tests，不改 runtime、不刷新 baseline、不处理 R2/R3/R4 内容。
 
 ## Recommended next PR
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-本文档基于 R1-P1 只读审计结果，整理 workbook 验收角色、baseline 策略、CSV vs workbook 权威性、文件名稳定性和 P2 回归方向的 owner decision 选项。所有策略性结论均标记为 `owner decision required`，本轮 PR 不做自行决定。
+本文档基于 R1-P1 只读审计结果，整理 workbook 验收角色、baseline 策略、CSV vs workbook 权威性、文件名稳定性和 P2 回归方向的 owner decision 选项。5 项决策已由 owner 确认（详见各 Decision 的 `confirmed` 标记）。
 
 ## Facts from audit
 
@@ -37,9 +37,9 @@
 4. 避免 `.xlsx` 二进制 diff 带来的非语义噪声（如 openpyxl 内部样式/元数据差异）。
 5. 如果下游消费方后续要求 workbook 作为正式交付物，可从 B 升级到 A——但反过来（从 A 退到 B）更困难。
 
-### Owner decision
+### Owner decision (Decision 1)
 
-- **pending** — 待 owner 确认
+- **confirmed** — 采用选项 B。Workbook 定位为 CSV 的 Excel 镜像 / 人工友好派生物，不作为独立权威产物。
 
 ## Decision 2: Independent workbook baseline
 
@@ -63,9 +63,9 @@
 3. 无需额外文本提取步骤——当前方案的比对逻辑简洁、可读、可调试。
 4. 如果将来需要更轻量的 baseline 文本化，可考虑将 workbook 每 sheet 导出为 CSV 片段作为 extracted baseline——但这在当前阶段并非必要，因为 CSV baseline 本身已在 `data_samples/expected/` 中维护。
 
-### Owner decision
+### Owner decision (Decision 2)
 
-- **pending** — 待 owner 确认
+- **confirmed** — 维持当前 sheet-content / structured read comparison 口径，不升级为二进制验收。不采用 .xlsx 字节级 binary baseline。
 
 ## Decision 3: CSV vs workbook authority
 
@@ -89,9 +89,9 @@
 3. 当前测试架构以 CSV baseline 为核心：`test_acceptance_baseline.py` 逐文件比对 CSV 文本内容，workbook 则通过结构化数据比对。CSV 是更"直接"的真值源。
 4. 在代码层面，如果 `*_FIELDS` 常量或 `to_row()` 方法出错，CSV 和 workbook 会同时出错——因为共享同一数据源。真正的"不一致"更可能来自 openpyxl 序列化层的漂移，而非数据层漂移。
 
-### Owner decision
+### Owner decision (Decision 3)
 
-- **pending** — 待 owner 确认
+- **confirmed** — CSV 为语义权威。若 CSV 与 workbook 不一致，应视为 bug，但判断和修复应优先回到 CSV、字段常量和 `to_row()` 数据源。
 
 ## Decision 4: Filename stability
 
@@ -122,9 +122,9 @@
 3. 当前测试（`test_smoke.py`）已硬编码验证 `"估值表解析_output_2025-03-27.xlsx"`，但未测试文件名生成逻辑本身。P2 应单独测试 `_build_output_workbook_filename()` 的确定性。
 4. 如果将来输入样本日期发生变化，baseline 文件名需随之更新——这是接受的维护成本，应在 `docs/status.md` 中注明。
 
-### Owner decision
+### Owner decision (Decision 4)
 
-- **pending** — 待 owner 确认
+- **confirmed** — 保持当前日期派生文件名规则，不在本轮修改 runtime 文件名行为。在 R1-P2 中纳入 regression test。
 
 ## Decision 5: P2 regression direction
 
@@ -149,9 +149,9 @@
 - Baseline 刷新：P1 阶段不做 baseline 变更
 - Runtime 行为变更：P1/P2 仅做只读审计和测试设计，P2 实现测试不改变 parser
 
-### Owner decision
+### Owner decision (Decision 5)
 
-- **pending** — 待 owner 确认
+- **confirmed** — 授权进入 R1-P2: workbook ↔ CSV consistency regression implementation。R1-P2 只允许新增 focused tests，不改 runtime、不刷新 baseline、不处理 R2/R3/R4 内容。
 
 ## Items not decided in this PR
 
