@@ -108,7 +108,14 @@ SHEET_FIELD_MAP = {
 
 @pytest.fixture(scope="module")
 def pipeline_outputs(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
-    """Run the full pipeline once on ``data_samples/raw/`` (module-scoped)."""
+    """Run the full pipeline once on ``data_samples/raw/`` (module-scoped).
+
+    .. warning::
+        All tests using this fixture must treat the output files as **read-only**.
+        The fixture is module-scoped for performance; mutating the shared output
+        directory will cause cross-test contamination. If you need to modify
+        output files, use a separate ``tmp_path``-scoped fixture instead.
+    """
     output_dir = tmp_path_factory.mktemp("output_consistency")
     return run_pipeline(
         Path("data_samples/raw"),
