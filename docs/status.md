@@ -53,12 +53,13 @@
 
 ## Recommended Next Steps
 
-当前 roadmap 阶段：R0 收尾，准备进入 R1（Workbook 基线与导出一致性）。
+Current roadmap stage: R1-P2 / R3 bridge.
 
-1. Continue R1-P2 workbook ↔ CSV consistency regression on the current controlled baseline; do not broaden `data_samples/expected/` from RC1 local staging in R1.
-2. Once documentation structure is stable, resume feature planning: workbook baseline maintenance, export consistency checks, and review-item regression expansion.
-3. Decide whether the generated workbook `估值表解析_output_<date>.xlsx` should also have a separately maintained acceptance baseline.
-4. Decide how to handle the remaining unmapped `PRODUCT_022` sample: fill the mapping gap, add a dedicated adapter route, or keep it as an explicit failure fixture.
-5. Add regression checks for review-item generation and workbook-export consistency beyond the current `3102*` rule and existing non-derivative fixtures.
-6. Confirm the team's authoritative PR validation command and branch naming convention, then document it in the existing thin entry / canonical-source structure without creating a second rulebook.
-7. Later in R3, plan `pricing-parser-sample-adapter-baseline-001` to decide whether selected sanitized RC1 samples graduate from ignored local staging into tracked parser baselines and owner-approved expected outputs.
+1. R1-P2 workbook / CSV consistency regression has landed.
+2. R3 RC1 intake planning has landed at `tasks/2026-06-24_R3_rc1_sample_intake_planning_note.md`.
+3. Next step: **R3-A** — custodian / product-custodian SSOT alignment. Fix the `product_id → custodian_id → parser_adapter_key` mapping chain, establish canonical custodian registry and alias table. Owner will provide a sanitized product-custodian SSOT seed (local-only, gitignored).
+4. After R3-A: **R3-B** — RC1 first-intake dry run and baseline proposal. First intake uses 3 samples in layered roles: RC1_024 (baseline candidate, orient/month_end/.xlsx), RC1_030 (dry-run, citic→citics/quarter_end/.xlsx), RC1_026 (dry-run, guoxin→guosen/month_end/.xls / xlrd path).
+5. Expected output generation requires a dedicated implementation PR with owner approval. First RC1 expected baseline must be owner-reviewed.
+6. Introduce remaining RC1 samples incrementally after initial dry runs establish stable patterns.
+7. Defer R2 (review item regression expansion) until RC1 intake exposes actual review queue patterns from new sample scenarios.
+8. RC1_001 (UNKNOWN) is a permanent gap-analysis reference. `PRODUCT_022` remains a separate strict-default routing failure, not part of RC1 intake.
