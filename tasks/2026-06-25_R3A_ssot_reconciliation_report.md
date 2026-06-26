@@ -175,7 +175,7 @@ SSOT seed 中以下托管人标注 `has_parser_adapter=no`，但 parser 实际**
 | source_adapter_key (RC1) | RC1 manifest | `guoxin` |
 | parser_adapter_key | SSOT seed / parser mapping | `guosen` |
 | alias 关系 | SSOT seed | `guoxin → guosen` |
-| 实际 workbook | local_rc1 | `.xls`（Excel COM / xlrd） |
+| 实际 workbook | local_rc1 | `.xls`（xlrd path） |
 
 ✅ **链路闭合**。通过 alias `guoxin → guosen` 可正确路由。需在 parser intake 时做 alias 转换。注意：RC1 manifest 标注 `extension=.xlsx`，但实际 workbook 文件名为 `.xls`，应以实际文件格式为准；parser 已支持 `.xls` 预览和解析。
 
@@ -197,7 +197,7 @@ SSOT seed 中以下托管人标注 `has_parser_adapter=no`，但 parser 实际**
 
 ---
 
-## 7.4 3个 Product Map 在 Parser Mapping 中的覆盖情况
+## 7. Product Map 在 Parser Mapping 中的覆盖情况
 
 ### 7.1 已在 Parser Mapping 中出现
 
@@ -315,6 +315,8 @@ Parser mapping（compact 格式）包含以下 product：
 **R3-A2a（推荐立即执行）**：
 - 更新 SSOT seed 中 `has_parser_adapter` 和 `parser_adapter_key` 字段（中信建投→`csc`、长城证券→`greatwall`、招商证券→`cmsc`）
 - 此为 SSOT seed 元数据修正，不涉及 parser 代码变更
+
+> **边界说明**：R3-A2a is an owner-side / local seed metadata correction. It must not be implemented by committing SSOT seed files to pricing-parser.
 
 **R3-A2b（需 owner 决策后执行）**：
 - 统一 `custodian_id` 编号体系（以 SSOT seed 为准，还是以 parser mapping 为准？）
