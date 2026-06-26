@@ -361,3 +361,46 @@ Parser mapping（compact 格式）包含以下 product：
 **总体评估**：SSOT seed 的 `product_id → custodian_id → parser_adapter_key` 链路在核心路径上（RC1 首批 3 个样本）是闭合的。parser mapping 与 SSOT seed 之间存在 custodian_id 编号体系不一致的问题，但不影响 R3-B1 首批 dry run。建议先完成 R3-A2a（SSOT seed 元数据修正），然后在 owner 决策后再执行 R3-A2b（mapping 体系统一）。
 
 **R3-B1 可以进入，不需要等待 R3-A2b 完成。**
+
+---
+
+## 13. Owner Review Decisions
+
+Owner conditional approval — 认可本报告并授权在完成 3 项 docs-only 小修后直接 squash merge。
+
+### Merge Authorization
+
+PR `docs(r3a): add ssot reconciliation report for rc1 intake #13` 合并条件：
+
+- diff 仅包含 `tasks/2026-06-25_R3A_ssot_reconciliation_report.md`
+- 无 runtime / adapter / loader / mapping 变更
+- 无 tests / baseline / expected output 变更
+- 未提交 SSOT seed 文件
+- 未提交 RC1 workbook 或 local output
+- `git diff --check` 通过
+- `git status --short` 和 `git diff --name-only` 已确认
+
+### Recorded Decisions
+
+| # | decision | rationale |
+|---|---|---|
+| D1 | 接受本 PR 作为 R3-A1 SSOT reconciliation planning report | 对账报告满足任务书 3.2A 验收标准 |
+| D2 | 后续 `custodian_id` 编号体系以 owner-provided SSOT seed 为准 | 避免两套编号体系继续冲突，SSOT seed 是 owner 侧权威来源 |
+| D3 | R3-A2a 可以作为本地 seed metadata 修正执行，但不得提交 SSOT seed 文件到 pricing-parser 仓库 | SSOT seed 是 local-only / gitignored 材料 |
+| D4 | R3-A2b 暂不立即执行 | mapping 体系统一、12 个 running product 补 mapping、alias-aware loader、无 adapter 托管人 scope 等事项另开 owner-approved planning / implementation PR |
+
+---
+
+## 14. Next Task After Merge
+
+PR merge 后进入 **R3-B1**：RC1 first-intake 3-sample dry run report。
+
+目标是对以下 3 个样本做本地 dry run 并产出报告：
+
+| sample | role | 验证要点 |
+|---|---|---|
+| RC1_024 | baseline candidate | `orient` 精确匹配，month_end / `.xlsx`，最低风险 |
+| RC1_030 | dry-run candidate | 验证 `citic → citics` alias，quarter_end / `.xlsx` |
+| RC1_026 | dry-run candidate | 验证 `guoxin → guosen` alias，month_end / `.xls`（xlrd path） |
+
+**R3-B1 边界**：仍然不得提交 parser output、expected baseline、RC1 workbook 或 SSOT seed。
