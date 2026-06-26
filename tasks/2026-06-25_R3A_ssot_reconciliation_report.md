@@ -366,19 +366,6 @@ Parser mapping（compact 格式）包含以下 product：
 
 ## 13. Owner Review Decisions
 
-Owner conditional approval — 认可本报告并授权在完成 3 项 docs-only 小修后直接 squash merge。
-
-### Merge Authorization
-
-PR `docs(r3a): add ssot reconciliation report for rc1 intake #13` 合并条件：
-
-- diff 仅包含 `tasks/2026-06-25_R3A_ssot_reconciliation_report.md`
-- 无 runtime / adapter / loader / mapping 变更
-- 无 tests / baseline / expected output 变更
-- 未提交 SSOT seed 文件
-- 未提交 RC1 workbook 或 local output
-- `git diff --check` 通过
-- `git status --short` 和 `git diff --name-only` 已确认
 
 ### Recorded Decisions
 
